@@ -33,7 +33,9 @@
           email: this.email,
           password: this.password
         })
-        .then(console.log('Action dispatched'))
+        .then(() => {
+          this.$router.push('/dashboard/')
+        })
         .catch(e => {
           console.log(e)
         })

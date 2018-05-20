@@ -15,7 +15,11 @@
       </li>
     </ul>
     <button @click="logUserIn">Log In</button>
-    <button @click="logUserOut">Log Out</button>
+    <button @click="removeToken">Log Out</button>
+    <button @click="vuexToken">Vuex Token</button>
+    <button @click="localToken">Local Token</button>
+    <button @click="tokenExpiry">Token Expiry</button>
+    <button @click="hasTokenExpired">Expired?</button>
   </header>
 </template>
 
@@ -33,6 +37,25 @@
       },
       logUserIn(){
         console.log('Login')
+      },
+      removeToken() {
+        this.$store.dispatch('removeToken')
+        console.log('remove token method')
+      },
+      vuexToken() {
+        let vuexToken = this.$store.getters.vuexToken
+        console.log(vuexToken)
+      },
+      localToken() {
+        let localToken = localStorage.getItem('token')
+        console.log(localToken)
+      },
+      tokenExpiry() {
+        let localExpiry = localStorage.getItem('tokenExpiration')
+        console.log(localExpiry)
+      },
+      hasTokenExpired() {
+        console.log(new Date().getTime() > localStorage.getItem('tokenExpiration'))
       }
     },
     computed: {

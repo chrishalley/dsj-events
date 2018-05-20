@@ -10,6 +10,7 @@
       return {
 
       }
-    }
+    },
+    middleware: ['auth', 'checkAuth']
   }
 </script>
