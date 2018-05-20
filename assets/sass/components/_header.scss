@@ -1,0 +1,25 @@
+.header {
+  background-color: blue;
+  color: $color-white;
+  padding: 1em;
+  margin-bottom: 1em;
+
+  &__nav {
+    list-style: none;
+
+    &-item {
+      display: inline-block;
+
+      &:not(:last-child) {
+        margin-right: 1em;
+      }
+
+      &:hover,
+      &:active {
+        cursor: pointer;
+        font-weight: bold;
+      }
+    }
+  }
+
+}
