@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      user: {
+      currentUser: {
         loggedIn: false,
         username: ''
       }
@@ -12,14 +12,14 @@ const createStore = () => {
       // createNewUser(state, payload) {
       //   console.log(payload)
       // },
-      setUser(state, payload) {
-        state.user.username = payload.email
-        state.user.loggedIn = true
+      setCurrentUser(state, payload) {
+        state.currentUser.username = payload.email
+        state.currentUser.loggedIn = true
       }
     },
     getters: {
-      user(state) {
-        return state.user
+      currentUser(state) {
+        return state.currentUser
       }
     },
     actions: {
@@ -34,8 +34,8 @@ const createStore = () => {
           returnSecureToken: true
         })
         .then(res => {
-          console.log(res)
-          vuexContext.commit('setUser', res)
+          this.$router.push('/dashboard/')
+          vuexContext.commit('setCurrentUser', res)
         })
         .catch(e => {
           console.log(e)
