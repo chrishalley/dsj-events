@@ -5,7 +5,6 @@ $gutter-vertical: 1em;
 .row {
   max-width: $grid-width;
   margin: 0 auto;
-  background-color: #EEE;
   padding: 1em 2em;
 
   &:not(:last-child) {
@@ -16,7 +15,6 @@ $gutter-vertical: 1em;
 
   [class^="col-"] {
     display: inline-block;
-    background-color: orangered;
     padding: 1em;
     float: left;
 
@@ -50,5 +48,28 @@ $gutter-vertical: 1em;
     width: calc(3 * ((100% - 3 * #{$gutter-horizontal}) / 4) + 2 * #{$gutter-horizontal});
   }
 
+  .offset-1 {
+    margin-left: calc(100% / 12);
+  }
+
+  .offset-2 {
+    margin-left: calc(2 * (100% / 12));
+  }
+
+  .offset-3 {
+    margin-left: calc(3 * (100% / 12));
+  }
+
+  .offset-4 {
+    margin-left: calc(100% / 12);
+  }
+
+  .offset-5 {
+    margin-left: calc(2 * (100% / 12));
+  }
+
+  .offset-6 {
+    margin-left: calc(3 * (100% / 12));
+  }
 
 }

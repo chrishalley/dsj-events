@@ -1,10 +1,12 @@
 <template>
   <div>
     <section class="row">
-      <EventForm></EventForm>
-      <SignInForm></SignInForm>
+      <!-- <EventForm></EventForm> -->
+      <div class="col-1-of-2 offset-3">
+        <LogInForm></LogInForm>
+      </div>
     </section>
-    <section class="grid-test">
+    <!-- <section class="grid-test">
       <div class="row">
         <div class="col-1-of-2">1 of 2</div>
         <div class="col-1-of-2">1 of 2</div>
@@ -33,19 +35,19 @@
         <div class="col-1-of-4">1 of 4</div>
         <div class="col-3-of-4">3 of 4</div>
       </div>
-    </section>
+    </section> -->
   </div>
 
 </template>
 
 <script>
 import EventForm from '~/components/EventForm.vue'
-import SignInForm from '~/components/SignInForm.vue'
+import LogInForm from '~/components/LogInForm.vue'
 
 export default {
   components: {
     EventForm,
-    SignInForm
+    LogInForm
   }
 }
 </script>
