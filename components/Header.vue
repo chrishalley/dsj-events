@@ -15,7 +15,7 @@
       </li>
     </ul>
     <button @click="logUserIn">Log In</button>
-    <button @click="removeToken">Log Out</button>
+    <button @click="logUserOut">Log Out</button>
     <button @click="vuexToken">Vuex Token</button>
     <button @click="localToken">Local Token</button>
     <button @click="tokenExpiry">Token Expiry</button>
@@ -32,15 +32,13 @@
       }
     },
     methods: {
-      logUserOut() {
-        console.log('Log out')
-      },
       logUserIn(){
-        console.log('Login')
+        console.log('Login button')
+        this.$router.push('/login/')
       },
-      removeToken() {
-        this.$store.dispatch('removeToken')
-        console.log('remove token method')
+      logUserOut() {
+        this.$store.dispatch('logUserOut')
+        console.log('user log out (method)')
       },
       vuexToken() {
         let vuexToken = this.$store.getters.vuexToken

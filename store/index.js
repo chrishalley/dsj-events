@@ -22,7 +22,12 @@ const createStore = () => {
         state.currentUser.token = localStorage.getItem('token')
       },
       clearToken(state) {
+        console.log('clear token mutation')
         state.currentUser.token = null
+      },
+      unsetCurrentUser(state) {
+        state.currentUser.username = ''
+        state.currentUser.loggedIn = false
       }
     },
     getters: {
@@ -65,10 +70,19 @@ const createStore = () => {
           vuexContext.commit('clearToken')
         }, duration * 1000)
       },
-      removeToken(vuexContext) {
-        // localStorage.setItem('token', null)
+      logUserOut(vuexContext) {
+        console.log('log user out action')
         console.log(new Date().getTime())
         console.log(localStorage.getItem('tokenExpiration'))
+        localStorage.removeItem('token')
+        localStorage.removeItem('tokenExpiration')
+        vuexContext.commit('clearToken')
+        vuexContext.commit('unsetCurrentUser')
+      },
+      removeToken(vuexContext) {
+
+
+
       },
       initAuth(vuexContext, req) {
         let token
