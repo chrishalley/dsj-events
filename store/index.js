@@ -19,7 +19,7 @@ const createStore = () => {
         state.currentUser.loggedIn = true
       },
       setToken(state) {
-        state.currentUser.token = localStorage.getItem('token')
+          state.currentUser.token = localStorage.getItem('token')
       },
       clearToken(state) {
         console.log('clear token mutation')
@@ -53,12 +53,16 @@ const createStore = () => {
           returnSecureToken: true
         })
         .then(res => {
-          vuexContext.commit('setCurrentUser', res)
+          //Set token and expiration date in local storage
           localStorage.setItem('token', res.idToken)
           localStorage.setItem('tokenExpiration', new Date().getTime() + (res.expiresIn * 3600))
+          // Commit mutations to set current user and token in Vuex store
+          vuexContext.commit('setCurrentUser', res)
           vuexContext.commit('setToken')
+          // Set the token and expiration date in cookie
           Cookie.set('jwt', res.idToken)
           Cookie.set('expirationDate', new Date().getTime() + (res.expiresIn * 3600))
+          // Dispatch action to clear token from Vuex store once token becomes invalid
           vuexContext.dispatch('setTokenExpire', res.expiresIn)
         })
         .catch(e => {
@@ -85,16 +89,24 @@ const createStore = () => {
 
       },
       initAuth(vuexContext, req) {
+
+        // Set variables
         let token
         let expirationDate
+        console.log('initAuth begun')
+
         if (req) {
+          console.log('function running on server')
           if (!req.headers.cookie) {
+            console.log('No cookie in header')
             return
           }
           const jwtCookie = req.headers.cookie
             .split(';')
             .find(c => c.trim().startsWith('jwt='))
+            console.log(jwtCookie)
           if (!jwtCookie) {
+            console.log('no jwtCookie')
             return
           }
           token = jwtCookie.split('=')[1]
@@ -103,16 +115,44 @@ const createStore = () => {
             .find(c => c.trim().startsWith('expirationDate='))
             .split('=')[1]
         } else {
+          console.log('function running in browser')
+          // Get token values from local storage
           token = localStorage.getItem('token')
           expirationDate = localStorage.getItem('tokenExpiration')
 
+          // If token has expired or there is no token, then return
           if (new Date().getTime() > +expirationDate || !token) {
+            console.log('Token expired or no token')
             return
           }
+          vuexContext.commit('setToken')
         }
+        // Token exists and is not expired so dispatch token timeout action with remaining time
+        console.log('Token exists and is valid')
         vuexContext.dispatch('setTokenExpire', +expirationDate - new Date().getTime())
+        // Set token in Vuex store
         vuexContext.commit('setToken')
-      }
+        // Use token to get user from Firebase - Don't think I need all this:
+        // this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=' + process.env.fbAPIKey, {
+        //   idToken: token
+        // })
+        // .then(res => {
+        //   console.log(res)
+        //   let user = res.users[0]
+        //   console.log(user)
+        //   vuexContext.commit('setCurrentUser', user)
+        // })
+        // .catch(e => {
+        //   console.log(e)
+        // })
+
+      },
+      // checkToken () {
+      //   let currentTime = new Date().getTime()
+      //   let tokenExpiry = localStorage.getItem('tokenExpiration')
+      //   console.log('Current Time: ' + currentTime)
+      //   console.log('Token Expiry: ' + tokenExpiry)
+      // }
     }
   })
 }

@@ -11,6 +11,6 @@
 
       }
     },
-    middleware: ['auth', 'checkAuth']
+    middleware: ['checkAuth', 'auth']
   }
 </script>
