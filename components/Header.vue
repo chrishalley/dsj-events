@@ -3,6 +3,7 @@
     <h1>Logo</h1>
     <p>Welcome: {{currentUser.username}}</p>
     <p>Status: {{status}}</p>
+    <p>Token valid until: {{tokenExpiry()}}</p>
     <ul class="header__nav">
       <li class="header__nav-item">
         <nuxt-link to="/">Home</nuxt-link>
@@ -49,8 +50,8 @@
         console.log(localToken)
       },
       tokenExpiry() {
-        let localExpiry = localStorage.getItem('tokenExpiration')
-        console.log(localExpiry)
+        // let tokenExpiry = new Date(parseInt(localStorage.getItem('tokenExpiration'), 10))
+        // return tokenExpiry
       },
       hasTokenExpired() {
         console.log(new Date().getTime() > localStorage.getItem('tokenExpiration'))
