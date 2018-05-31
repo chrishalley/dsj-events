@@ -1,0 +1,59 @@
+.users-list {
+
+  &__tile {
+    background-color: $color-white;
+    padding: $space-medium;
+    border-radius: 2px;
+    box-shadow: 0 .5rem 1rem rgba($color-black, 0.1);
+    transition: box-shadow 0.2s, transform 0.2s;
+    backface-visibility: hidden;
+
+    &:not(:last-child) {
+      margin-bottom: $space-small;
+    }
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.01);
+      box-shadow: 0 1rem 1rem rgba($color-black, 0.1);
+    }
+
+  }
+
+  &__tile-info {
+    display: inline-block;
+
+    &:not(:last-child) {
+      margin-right: $space-medium;
+    }
+
+    &--name {
+      font-style: italic;
+    }
+  }
+
+  &__status-chip {
+    display: inline-block;
+    background-color: $color-black;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-right: $space-medium;
+    border-radius: 50%;
+    transition: background-color 0.4s;
+  }
+
+  &__status-chip--pending {
+    background-color: orange;
+  }
+
+  &__status-chip--approved {
+    background-color: green;
+  }
+
+  &__status-chip--suspended {
+    background-color: orangered;
+  }
+
+
+
+}

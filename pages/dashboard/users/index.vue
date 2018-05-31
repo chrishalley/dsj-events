@@ -16,18 +16,21 @@
         users: []
       }
     },
+    asyncData() {
+      console.log('Async data!')
+
+    },
     methods: {
 
     },
     beforeCreate() {
       this.$axios.$get('https://dsj-events-app.firebaseio.com/users.json')
-      .then(res => {
-        console.log(res)
-        this.users = res
-      })
-      .catch(e => {
-        console.log(e)
-      })
+        .then(res => {
+          this.users = res
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     middleware: ['checkAuth', 'auth']
   }

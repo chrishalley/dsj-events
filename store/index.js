@@ -83,6 +83,14 @@ const createStore = () => {
         })
         .then(res => {
           console.log(res)
+          // this.$axios.$put('https://dsj-events-app.firebaseio.com/users/' + res.name + '.json', {
+          //   userId: res.name,
+          //   firstName: res.firstName,
+          //   lastName: res.lastName,
+          //   email: res.email,
+          //   applicationDate: res.applicationDate,
+          //   userStatus: res.userStatus
+          // })
         })
         .catch(e => {
           console.log(e)
@@ -170,7 +178,7 @@ const createStore = () => {
 
       },
       loadUsers() {
-        
+
       }
       // checkToken () {
       //   let currentTime = new Date().getTime()

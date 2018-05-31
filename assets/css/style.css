@@ -116,3 +116,42 @@ body {
     .login-form__button:hover {
       cursor: pointer;
       background-color: #008fa1; }
+
+.users-list__tile {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+  backface-visibility: hidden; }
+  .users-list__tile:not(:last-child) {
+    margin-bottom: 1rem; }
+  .users-list__tile:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
+
+.users-list__tile-info {
+  display: inline-block; }
+  .users-list__tile-info:not(:last-child) {
+    margin-right: 2rem; }
+  .users-list__tile-info--name {
+    font-style: italic; }
+
+.users-list__status-chip {
+  display: inline-block;
+  background-color: #000;
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-right: 2rem;
+  border-radius: 50%;
+  transition: background-color 0.4s; }
+
+.users-list__status-chip--pending {
+  background-color: orange; }
+
+.users-list__status-chip--approved {
+  background-color: green; }
+
+.users-list__status-chip--suspended {
+  background-color: orangered; }

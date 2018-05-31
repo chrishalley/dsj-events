@@ -1,9 +1,17 @@
 <template>
   <div>
-    <h1>Users List</h1>
-    <ul>
-      <li v-for="(user, i) in users" :key="i">{{user}}</li>
-    </ul>
+    <div class="users-list">
+      <div v-for="(user, i) in users" :key="i" class="users-list__tile">
+        <div class="users-list__status-chip" :class="statusClass(user)"></div>
+        <p class="users-list__tile-info users-list__tile-info--name">{{user.firstName}} {{user.lastName}}</p>
+        <p class="users-list__tile-info"><a href="mailto:${user.email}">{{user.email}}</a></p>
+        <p class="users-list__tile-info">{{user.applicationDate | DDMMYY}}</p>
+        <p class="users-list__tile-info">{{user.userStatus}}</p>
+        <p style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.userStatus !== 'Approved'">Approve</p>
+        <p style="color: orange" class="users-list__tile-info" @click="userSuspend(user)" v-if="user.userStatus === 'Approved'">Suspend</p>
+        <p style="color: red" class="users-list__tile-info" @click="userRemove(user)">Delete</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -15,7 +23,46 @@
 
       }
     },
+    filters: {
+      DDMMYY(value) {
+        let date = new Date(value)
+        let day = date.getDay().length > 1 ? date.getDay() : '0' + date.getDay()
+        let month = date.getMonth().length > 1 ? date.getMonth() : '0' + date.getMonth()
+        let year = date.getFullYear()
+        return day + '/' + month + '/' + year
+      }
+    },
     methods: {
+      userApprove(user) {
+        user.userStatus = 'Approved'
+      },
+      userRemove(user) {
+        user.userStatus = 'Pending'
+      },
+      userSuspend(user) {
+        user.userStatus = 'Suspended'
+      },
+      statusClass(user) {
+        let statusClass = {}
+        let userStatus = user.userStatus
+        console.log(userStatus)
+        switch(userStatus) {
+          case 'Approved':
+            statusClass = {'users-list__status-chip--approved': true}
+            break;
+          case 'Pending':
+            statusClass = {'users-list__status-chip--pending': true}
+            break;
+          case 'Suspended':
+            statusClass = {'users-list__status-chip--suspended': true}
+            break;
+          default:
+            statusClass = {}
+        }
+        return statusClass
+      }
+    },
+    computed: {
 
     }
   }

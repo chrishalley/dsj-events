@@ -60,12 +60,10 @@
             lastName: this.lastName,
             email: this.email
           })
-          .then((res) => {
-            console.log(res)
+          .then(res => {
+            // console.log(res)
           })
-          .catch(e => {
-            console.log(e)
-          })
+          .catch()
         }
       },
       onSetMode(mode) {
