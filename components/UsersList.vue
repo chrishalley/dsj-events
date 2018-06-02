@@ -34,7 +34,14 @@
     },
     methods: {
       userApprove(user) {
-        user.userStatus = 'Approved'
+        this.$store.dispatch('userApprove', user)
+        .then(res => {
+          console.log('Back to UsersList')
+          user.userStatus = 'Approved'
+        })
+        .catch(e => {
+          console.log(e)
+        })
       },
       userRemove(user) {
         user.userStatus = 'Pending'

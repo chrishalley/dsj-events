@@ -1,5 +1,6 @@
 import Vuex from 'vuex'
 import Cookie from 'js-cookie'
+import firebase from 'firebase'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -48,11 +49,12 @@ const createStore = () => {
       authenticateUser(vuexContext, authData) {
         let authURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' + process.env.fbAPIKey
 
-        return this.$axios.$post(authURL, {
-          email: authData.email,
-          password: authData.password,
-          returnSecureToken: true
-        })
+        // return this.$axios.$post(authURL, {
+        //   email: authData.email,
+        //   password: authData.password,
+        //   returnSecureToken: true
+        // })
+        firebase.auth().signInWithEmailAndPassword(authData.email, authData.password)
         .then(res => {
           console.log(res)
           //Set token and expiration date in local storage
@@ -74,7 +76,7 @@ const createStore = () => {
       registerUser(vuexContext, userData) {
         let authURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + process.env.fbAPIKey
 
-        return this.$axios.$post('https://dsj-events-app.firebaseio.com/users.json', {
+        return this.$axios.$post(process.env.baseURL + 'users.json', {
           firstName: userData.firstName,
           lastName: userData.lastName,
           email: userData.email,
@@ -179,13 +181,22 @@ const createStore = () => {
       },
       loadUsers() {
 
+      },
+      userApprove(vuexContext, user) {
+        console.log('userApprove action')
+        this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' + process.env.fbAPIKey, {
+          email: user.email,
+          password: 'password',
+          returnSecureToken: true
+        })
+        .then(res => {
+          console.log(res)
+          console.log('User created!')
+        })
+        .catch(e => {
+          console.log(e)
+        })
       }
-      // checkToken () {
-      //   let currentTime = new Date().getTime()
-      //   let tokenExpiry = localStorage.getItem('tokenExpiration')
-      //   console.log('Current Time: ' + currentTime)
-      //   console.log('Token Expiry: ' + tokenExpiry)
-      // }
     }
   })
 }

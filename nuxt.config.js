@@ -34,26 +34,15 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~plugins/firebase.js'
   ],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
-   //  {
-   //   src: '@rafamaciel/firebase',
-   //   options: {
-   //      apiKey: "AIzaSyAtV5Wa4T0r3b7iQDUDd4nTLjiK3E3JywA",
-   //      authDomain: "dsj-events-app.firebaseapp.com",
-   //      databaseURL: "https://dsj-events-app.firebaseio.com",
-   //      projectId: "dsj-events-app",
-   //      storageBucket: "dsj-events-app.appspot.com",
-   //      messagingSenderId: "266119371200"
-   //   }
-   // }
-
+    // Doc: https://github.com/nuxt-community/axios-module#usage
   ],
   /*
   ** Axios module configuration
@@ -82,6 +71,7 @@ module.exports = {
     }
   },
   env: {
+    baseURL: 'https://dsj-events-app.firebaseio.com/',
     fbAPIKey: 'AIzaSyAtV5Wa4T0r3b7iQDUDd4nTLjiK3E3JywA'
   }
 }

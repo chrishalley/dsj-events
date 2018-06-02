@@ -24,7 +24,7 @@
 
     },
     beforeCreate() {
-      this.$axios.$get('https://dsj-events-app.firebaseio.com/users.json')
+      this.$axios.$get(process.env.baseURL + 'users.json')
         .then(res => {
           this.users = res
         })

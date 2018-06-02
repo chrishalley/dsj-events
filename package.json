@@ -16,9 +16,10 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.0.0",
+    "firebase": "^5.0.4",
     "js-cookie": "^2.2.0",
     "nuxt": "^1.0.0",
-    "nuxt-firebase": "0.0.3"
+    "vuefire": "^1.4.5"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
