@@ -18,7 +18,6 @@
     },
     asyncData() {
       console.log('Async data!')
-
     },
     methods: {
 

@@ -9,4 +9,7 @@ let config = {
     messagingSenderId: "266119371200"
 }
 
-firebase.initializeApp(config)
+
+if (firebase.apps.length === 0) {
+    firebase.initializeApp(config)
+  }

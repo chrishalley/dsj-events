@@ -19,6 +19,7 @@
       <input class="login-form__input" id="password" type="password" v-model="password" placeholder="Pssst... don't use 'password'">
     </div>
     <div class="input-group">
+      <p v-text="toast.message"></p>
       <button class="login-form__button" @click.prevent="onSubmit">{{mode.toUpperCase()}}</button>
     </div>
   </form>
@@ -33,20 +34,24 @@
         firstName: '',
         lastName: '',
         email: '',
-        password: ''
+        password: '',
+        toast: {
+          status: 'Good',
+          message: 'This is some placeholder text'
+        }
       }
     },
     methods: {
       onSubmit(){
         if(this.isLogin) {
           // Run method to start login auth
-          console.log('Start login suth')
+          console.log('Start login auth')
           this.$store.dispatch('authenticateUser', {
-            isLogin: this.isLogin,
             email: this.email,
             password: this.password
           })
-          .then(() => {
+          .then((res) => {
+            console.log('Login method: ' + res)
             this.$router.push('/dashboard/')
           })
           .catch(e => {
