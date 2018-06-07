@@ -18,8 +18,10 @@
       <label class="login-form__label" for="password">Password</label>
       <input class="login-form__input" id="password" type="password" v-model="password" placeholder="Pssst... don't use 'password'">
     </div>
+    <div class="login-form__toast">
+      <p>{{toast.message}}</p>
+    </div>
     <div class="input-group">
-      <p v-text="toast.message"></p>
       <button class="login-form__button" @click.prevent="onSubmit">{{mode.toUpperCase()}}</button>
     </div>
   </form>
@@ -37,7 +39,7 @@
         password: '',
         toast: {
           status: 'Good',
-          message: 'This is some placeholder text'
+          message: ''
         }
       }
     },
@@ -45,30 +47,50 @@
       onSubmit(){
         if(this.isLogin) {
           // Run method to start login auth
-          console.log('Start login auth')
           this.$store.dispatch('authenticateUser', {
             email: this.email,
             password: this.password
           })
-          .then((res) => {
-            console.log('Login method: ' + res)
-            this.$router.push('/dashboard/')
+          .then(res => {
+            this.toast = {
+              status: 'Good',
+              message: 'Your story checks out'
+            }
+            let vm = this
+            setTimeout(() => {
+              vm.toast = {
+                status: '',
+              message: ''
+              }
+              vm.$router.push('/dashboard/')
+            }, 3000)
           })
           .catch(e => {
-            console.log(e)
+            this.toast = {
+              status: 'Bad',
+              message: e.code
+            }
+            let vm = this
+            setTimeout(() => {
+              vm.toast = {
+                status: '',
+              message: ''
+              }
+            }, 3000)
           })
         } else {
           // Run method to start user registration
-          console.log('Start user reg')
-          this.$store.dispatch('registerUser', {
+          this.$store.dispatch('applyUser', {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email
           })
           .then(res => {
-            // console.log(res)
+            console.log(res)
           })
-          .catch()
+          .catch(e => {
+            console.log(e)
+          })
         }
       },
       onSetMode(mode) {

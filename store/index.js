@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import Cookie from 'js-cookie'
 import firebase from 'firebase'
+import { resolve } from 'url';
 
 const createStore = () => {
   return new Vuex.Store({
@@ -54,27 +55,49 @@ const createStore = () => {
         //   password: authData.password,
         //   returnSecureToken: true
         // })
-        firebase.auth().signInWithEmailAndPassword(authData.email, authData.password)
+        return new Promise((resolve, reject) => {
+          firebase.auth().signInWithEmailAndPassword(authData.email, authData.password)
+            .then(res => {
+              let user = res.user
+              //Set token and expiration date in local storage
+              localStorage.setItem('token', user.qa)
+              localStorage.setItem('tokenExpiration', new Date().getTime() + (3600 * 1000))
+              // Commit mutations to set current user and token in Vuex store
+              vuexContext.commit('setCurrentUser', user)
+              vuexContext.commit('setToken')
+              // Set the token and expiration date in cookie
+              Cookie.set('jwt', user.qa)
+              Cookie.set('expirationDate', new Date().getTime() + (3600 * 1000))
+              // Dispatch action to clear token from Vuex store once token becomes invalid
+              vuexContext.dispatch('setTokenExpire', 3600 * 1000)
+              // Push user to dashboard
+              // this.$router.push('/dashboard/')
+              resolve(res);
+            })
+            .catch(e => {
+              console.log(e);
+              reject(e);
+            })
+        })
+      },
+      applyUser(vuexContext, userData) {
+        // ** Need to run checks to see if user has applied before
+        return new Promise((resolve, reject) => {
+          firebase.database().ref('/users/').push({
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            userStatus: 'Pending',
+            applicationDate: (new Date()).toString(),
+            userId: ''
+          })
           .then(res => {
-            console.log(res)
-            let user = res.user
-            //Set token and expiration date in local storage
-            localStorage.setItem('token', user.qa)
-            localStorage.setItem('tokenExpiration', new Date().getTime() + (3600 * 1000))
-            // Commit mutations to set current user and token in Vuex store
-            vuexContext.commit('setCurrentUser', user)
-            vuexContext.commit('setToken')
-            // Set the token and expiration date in cookie
-            Cookie.set('jwt', user.qa)
-            Cookie.set('expirationDate', new Date().getTime() + (3600 * 1000))
-            // Dispatch action to clear token from Vuex store once token becomes invalid
-            vuexContext.dispatch('setTokenExpire', 3600 * 1000)
-            // Push user to dashboard
-            // this.$router.push('/dashboard/')
+            resolve(res)
           })
           .catch(e => {
-            console.log(e)
+            reject(e)
           })
+        })
       },
       registerUser(vuexContext, userData) {
         firebase.database().ref('users/').push({
@@ -123,8 +146,7 @@ const createStore = () => {
       },
       deleteUser(vuexContext, user) {
         console.log('User to delete: ')
-        console.log(user)
-        this.$axios.$post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/deleteAccount?key=' + process.env.fbAPIKey, user.uid)
+        firebase.database().ref('/users/' + user.userId).remove()
         .then(res => {
           console.log('User deleted: ')
           console.log(res)
