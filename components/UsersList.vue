@@ -33,6 +33,7 @@
       }
     },
     methods: {
+      // Dispatch action to approve user application
       userApprove(user) {
         this.$store.dispatch('approveUser', user)
         .then(res => {

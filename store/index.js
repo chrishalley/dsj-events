@@ -81,15 +81,21 @@ const createStore = () => {
         })
       },
       applyUser(vuexContext, userData) {
-        // ** Need to run checks to see if user has applied before
+        // ! Need to run checks to see if user has applied before
+
+        // Create an empty entry in the users node so that we can store the reference in the temporary user's data
+        let newUserKey = firebase.database().ref('users').push().key
+        console.log(newUserKey)
+
+        // UPDATE that empty entry with the user's information, including the reference key
         return new Promise((resolve, reject) => {
-          firebase.database().ref('/users/').push({
+          firebase.database().ref('/users/' + newUserKey).update({
             firstName: userData.firstName,
             lastName: userData.lastName,
             email: userData.email,
             userStatus: 'Pending',
             applicationDate: (new Date()).toString(),
-            userId: ''
+            userId: newUserKey
           })
           .then(res => {
             resolve(res)
@@ -119,12 +125,15 @@ const createStore = () => {
           console.log(e)
         })
       },
+
       approveUser(vuexContext, userData) {
         console.log('approveUser() action started')
         console.log(userData)
         // let user = firebase.database().ref('users' + userData.userId)
         // console.log(user)
         //Create new user in Firebase Auth Dashboard
+        let tempUserKey = userData.userId
+        console.log(tempUserKey)
         firebase.auth().createUserWithEmailAndPassword(userData.email, 'password')
         .then((res) => {
           console.log('User creation res: ')
@@ -139,11 +148,15 @@ const createStore = () => {
             approvedDate: new Date().toString(),
             userId: res.user.uid
           })
+          // Delete old entry for pending user
+          firebase.database().ref('/users/' + tempUserKey).remove()
+          console.log('Temp user deleted')
         })
         .catch(e => {
           console.log(e)
         })
       },
+
       deleteUser(vuexContext, user) {
         console.log('User to delete: ')
         firebase.database().ref('/users/' + user.userId).remove()
@@ -208,6 +221,7 @@ const createStore = () => {
             .find(c => c.trim().startsWith('expirationDate='))
             .split('=')[1]
           vuexContext.commit('setTokenServer', token)
+          
         } else {
           console.log('function running in browser')
           // Get token values from local storage
@@ -225,6 +239,7 @@ const createStore = () => {
 
         console.log('Token exists and is valid')
         vuexContext.dispatch('setTokenExpire', +expirationDate - new Date().getTime())
+        
         // Set token in Vuex store
         // vuexContext.commit('setToken')
         // Use token to get user from Firebase - Don't think I need all this:

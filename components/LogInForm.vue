@@ -52,6 +52,7 @@
             password: this.password
           })
           .then(res => {
+            console.log(res)
             this.toast = {
               status: 'Good',
               message: 'Your story checks out'
