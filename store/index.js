@@ -125,7 +125,6 @@ const createStore = () => {
           console.log(e)
         })
       },
-
       approveUser(vuexContext, userData) {
         console.log('approveUser() action started')
         console.log(userData)
@@ -156,12 +155,29 @@ const createStore = () => {
           console.log(e)
         })
       },
-
-      deleteUser(vuexContext, user) {
+      deleteUser(vuexContext, userData) {
         console.log('User to delete: ')
-        firebase.database().ref('/users/' + user.userId).remove()
+        firebase.database().ref('/users/' + userData.userId).remove()
         .then(res => {
           console.log('User deleted: ')
+          console.log(res)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+      },
+      suspendUser(vuexContext, userData) {
+        firebase.database().ref('/users/' + userData.userId).update({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          userStatus: 'Suspended',
+          applicationDate: userData.applicationDate,
+          approvedDate: userData.approvedDate,
+          userId: userData.userId
+        })
+        .then(res => {
+          console.log('User suspended:')
           console.log(res)
         })
         .catch(e => {

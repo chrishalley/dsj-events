@@ -33,8 +33,8 @@
       }
     },
     methods: {
-      // Dispatch action to approve user application
-      userApprove(user) {
+      
+      userApprove(user) { // Dispatch action to approve user application
         this.$store.dispatch('approveUser', user)
         .then(res => {
           // console.log(user)
@@ -44,13 +44,14 @@
           console.log(e)
         })
       },
-      userRemove(user) {
+      userRemove(user) { // Delete user from user node
         console.log('userRemove()')
         this.$store.dispatch('deleteUser', user)
         user.userStatus = 'Deleted'
       },
-      userSuspend(user) {
+      userSuspend(user) { // Add 'Suspended' flag to user's data, preventing access in future but not deleting their account
         user.userStatus = 'Suspended'
+        this.$store.dispatch('suspendUser', user)
       },
       statusClass(user) {
         let statusClass = {}
