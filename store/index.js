@@ -50,14 +50,15 @@ const createStore = () => {
               if (matchArray.length > 1) {
               } else if (matchArray.length === 1) {
                 if (matchArray[0].userStatus.toLowerCase() === "suspended") {
-                  alert('This user is suspended!')
+                  reject('This user is suspended!')
                 } else if (matchArray[0].userStatus.toLowerCase() === "pending") {
-                  alert('This user is pending...')
+                  reject('This user is pending...')
                 }else {
-                  vuexContext.dispatch('authenticateUser', authData)
+                  console.log('This user is approved')
+                  resolve()
                 }
               } else {
-                console.log('Error: no matches')
+                reject('Error: no matches')
               }
             })
             .catch(e => {
@@ -67,7 +68,7 @@ const createStore = () => {
       },
       authenticateUser(vuexContext, authData) {
         return new Promise((resolve, reject) => {
-          this.$axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${process.env.fbAPIKey}`, {
+          return this.$axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${process.env.fbAPIKey}`, {
             email: authData.email,
             password: authData.password,
             returnSecureToken: true
@@ -81,7 +82,8 @@ const createStore = () => {
             Cookie.set('token', token)
             Cookie.set('tokenExpirationDate', tokenExpirationDate)
             vuexContext.commit('setToken', token)
-            resolve()
+            console.log('REsolve auth user')
+            resolve('Boobs')
           })
           .catch(e => {
             console.log(e)
@@ -89,7 +91,7 @@ const createStore = () => {
           })
         })
       },
-      initAuth(vuexContext, req) {
+      initAuth(vuexContext, req) { // Runs between admin route changes to check validity of token and tokenExpiryDate
         // Set variables
         let token, tokenExpirationDate, uid
         if (req) {

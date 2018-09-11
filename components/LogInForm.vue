@@ -18,7 +18,11 @@
     },
     data() {
       return {
-        isLogin: true
+        isLogin: true,
+        toast: {
+          status: null,
+          message: null
+        }
       }
     },
     computed: {
@@ -28,12 +32,17 @@
     },
     methods: {
       onSubmit(user){
-        if(this.isLogin) {
-          this.$store.dispatch('checkUserStatus', user)
+        if(this.isLogin) { // Check if mode is login or register
+          this.$store.dispatch('checkUserStatus', user) // Check if user has not been suspended or deleted
             .then((res) => {
-              console.log('Login successful')
-              this.$router.push('/dashboard/users')
-              // console.log('onSubmit response: ', res)
+              return this.$store.dispatch('authenticateUser', user) // Run authentication on username and password, set cookies and tokens
+            })
+            .then(() => {
+              setTimeout(() => {
+                console.log('This: ', this)
+              }, 2000)
+              console.log('Router push')
+              this.$router.push('/dashboard/users') // Push user into dashboard
             })
             .catch((e) => {
               console.log(e)
