@@ -34,7 +34,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~plugins/firebase.js'
+    '~plugins/firebase.js',
+    '~plugins/vuelidate.js'
   ],
 
   /*
@@ -68,7 +69,11 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+    vendor: [
+      'firebase',
+      'vuelidate'
+    ]
   },
   env: {
     baseURL: 'https://dsj-events-app.firebaseio.com/',

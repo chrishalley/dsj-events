@@ -31,6 +31,6 @@
           console.log(e)
         })
     },
-    middleware: ['checkAuth', 'auth']
+    layout: 'admin'
   }
 </script>

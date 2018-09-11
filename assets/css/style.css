@@ -165,3 +165,5 @@ button {
   button:hover {
     cursor: pointer;
     background-color: #ddd; }
+  button:disabled, button[disabled] {
+    background-color: red; }

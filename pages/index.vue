@@ -17,6 +17,7 @@
       goToLogin() {
         this.$router.push('/login/')
       }
-    }
+    },
+    layout: 'admin'
   }
 </script>

@@ -48,6 +48,7 @@ export default {
   components: {
     EventForm,
     LogInForm
-  }
+  },
+  layout: 'default'
 }
 </script>

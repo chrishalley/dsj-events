@@ -19,7 +19,8 @@
     "firebase": "^5.0.4",
     "js-cookie": "^2.2.0",
     "nuxt": "^1.0.0",
-    "vuefire": "^1.4.5"
+    "vuefire": "^1.4.5",
+    "vuelidate": "^0.7.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

@@ -26,14 +26,13 @@
     filters: {
       DDMMYY(value) {
         let date = new Date(value)
-        let day = date.getDay().length > 1 ? date.getDay() : '0' + date.getDay()
-        let month = date.getMonth().length > 1 ? date.getMonth() : '0' + date.getMonth()
+        let day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+        let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
         let year = date.getFullYear()
         return day + '/' + month + '/' + year
       }
     },
     methods: {
-      
       userApprove(user) { // Dispatch action to approve user application
         this.$store.dispatch('approveUser', user)
         .then(res => {

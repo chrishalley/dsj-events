@@ -11,6 +11,6 @@
 
       }
     },
-    middleware: ['checkAuth', 'auth']
+    layout: 'admin'
   }
 </script>
