@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="login-form__title mb-sm"><span @click="isLogin = !isLogin">Login</span> / <span @click="isLogin = !isLogin">Register</span></h3>
-    <login-form :mode="mode" v-if="isLogin" @submitLogin="onSubmit"></login-form>
+    <login-form :mode="mode" v-if="isLogin" @submitLogin="onSubmit" :toast="toast"></login-form>
     <register-form :mode="mode" v-if="!isLogin" @submitRegistration="onSubmit"></register-form>
   </div>
 </template>
@@ -20,7 +20,7 @@
       return {
         isLogin: true,
         toast: {
-          status: null,
+          status: 'warning',
           message: null
         }
       }
@@ -38,11 +38,17 @@
               return this.$store.dispatch('authenticateUser', user) // Run authentication on username and password, set cookies and tokens
             })
             .then(() => {
+              this.toast = {
+                status: 'good',
+                message: 'User approved!'
+              }
               setTimeout(() => {
-                console.log('This: ', this)
+                this.toast = {
+                  status: 'warning',
+                  message: null
+                }
+                this.$router.push('/dashboard/users') // Push user into dashboard
               }, 2000)
-              console.log('Router push')
-              this.$router.push('/dashboard/users') // Push user into dashboard
             })
             .catch((e) => {
               console.log(e)
