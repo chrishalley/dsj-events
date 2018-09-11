@@ -51,7 +51,8 @@
               }, 2000)
             })
             .catch((e) => {
-              console.log(e)
+              const error = e.response.data.error
+              this.toast.message = error.message
             })
         } else {
           // Run method to start user registration

@@ -83,11 +83,10 @@ const createStore = () => {
             Cookie.set('tokenExpirationDate', tokenExpirationDate)
             vuexContext.commit('setToken', token)
             console.log('REsolve auth user')
-            resolve('Boobs')
+            resolve()
           })
           .catch(e => {
-            console.log(e)
-            reject()
+            reject(e)
           })
         })
       },
