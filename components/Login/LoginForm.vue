@@ -1,64 +1,71 @@
 <template>
-  <div>
-    <h3 class="login-form__title mb-sm"><span @click="isLogin = !isLogin">Login</span> / <span @click="isLogin = !isLogin">Register</span></h3>
-    <login-form :mode="mode" v-if="isLogin" @submitLogin="onSubmit" :toast="toast"></login-form>
-    <register-form :mode="mode" v-if="!isLogin" @submitRegistration="onSubmit"></register-form>
-  </div>
+    <div>
+        <form class="login-form text-center">
+            <p>Mode: {{mode}}</p>
+            <div class="login-form__input-group" :class="{invalid: $v.user.email.$error}">
+                <label class="login-form__label" for="email">Email</label>
+                <input class="login-form__input" id="email" type="text" v-model="user.email" placeholder="eg. username@gmail.com" @blur="$v.user.email.$touch()">
+            </div>
+            <div class="login-form__input-group" :class="{invalid: $v.user.password.$error}">
+                <label class="login-form__label" for="password">Password</label>
+                <input class="login-form__input" id="password" type="password" v-model="user.password" placeholder="Pssst... don't use 'password'" @blur="$v.user.password.$touch()">
+            </div>
+            <div class="input-group">
+                <button class="login-form__button" @click.prevent="submitLogin" :disabled="$v.$invalid">{{mode.toUpperCase()}}</button>
+            </div>
+            <toast :toast="toast"></toast>
+        </form>
+    </div>
 </template>
 
 <script>
-  import LoginForm from '~/components/Login/LoginForm.vue'
-  import RegisterForm from '~/components/Login/RegisterForm.vue'
+import { required, email, minLength } from 'vuelidate/lib/validators'
+import Toast from '~/components/Base/Toast.vue'
 
-  export default {
-    name: 'logInForm',
-    components: {
-      LoginForm,
-      RegisterForm
-    },
+export default {
     data() {
-      return {
-        isLogin: true,
-        toast: {
-          status: 'warning',
-          message: null
+        return {
+            user: {
+                email: '',
+                password: ''
+            }
         }
-      }
     },
     computed: {
-      mode() {
-        return this.isLogin ? 'Login' : 'Register'
-      }
-    },
-    methods: {
-      onSubmit(user){
-        if(this.isLogin) { // Check if mode is login or register
-          this.$store.dispatch('checkUserStatus', user) // Check if user has not been suspended or deleted
-            .then((res) => {
-              return this.$store.dispatch('authenticateUser', user) // Run authentication on username and password, set cookies and tokens
-            })
-            .then(() => {
-              this.toast = {
-                status: 'good',
-                message: 'User approved!'
-              }
-              setTimeout(() => {
-                this.toast = {
-                  status: 'warning',
-                  message: null
-                }
-                this.$router.push('/dashboard/users') // Push user into dashboard
-              }, 2000)
-            })
-            .catch((e) => {
-              const error = e.response.data.error
-              this.toast.message = error.message
-            })
-        } else {
-          // Run method to start user registration
-          this.$store.dispatch('applyUser', user)
+        formValid() {
+            return true
         }
-      }
+    },
+    components: {
+        toast: Toast
+    },
+    props: ['mode', 'toast'],
+    methods: {
+        submitLogin() {
+                this.$emit('submitLogin', this.user)
+        }
+    },
+    validations: {
+        user: {
+            email: {
+                required: required,
+                email: email
+            },
+            password: {
+                required: required,
+                minLength: minLength(6)
+            }
+        }
     }
-  }
+}
 </script>
+
+<style scoped>
+.invalid {
+    border: red solid 1px;
+}
+
+.invalid label{
+    color: red;
+}
+</style>

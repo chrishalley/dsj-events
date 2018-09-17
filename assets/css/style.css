@@ -94,7 +94,6 @@ body {
   .login-form__input {
     width: 60%;
     margin: 0 auto;
-    margin-left: 1rem;
     padding: 1rem;
     border: none;
     border-bottom: 1px solid #00BCD4; }

@@ -5,10 +5,6 @@
   box-shadow: 0 .5rem 1rem rgba($color-black, 0.1);
   border-radius: 2px;
 
-  &__title {
-
-  }
-
   &__input-group {
     display: block;
 
@@ -20,7 +16,6 @@
   &__input {
     width: 60%;
     margin: 0 auto;
-    margin-left: $space-small;
     padding: 1rem;
     border: none;
     border-bottom: 1px solid $color-primary;
