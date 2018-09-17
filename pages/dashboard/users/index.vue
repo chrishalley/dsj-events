@@ -25,7 +25,9 @@
     beforeCreate() {
       this.$axios.$get(process.env.baseURL + 'users.json')
         .then(res => {
-          this.users = res
+          this.users = Object.keys(res).map((key) => {
+            return res[key]
+          })
         })
         .catch(e => {
           console.log(e)

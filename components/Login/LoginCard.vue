@@ -2,7 +2,7 @@
   <div>
     <h3 class="login-form__title mb-sm"><span @click="isLogin = !isLogin">Login</span> / <span @click="isLogin = !isLogin">Register</span></h3>
     <login-form :mode="mode" v-if="isLogin" @submitLogin="onSubmit" :toast="toast"></login-form>
-    <register-form :mode="mode" v-if="!isLogin" @submitRegistration="onSubmit"></register-form>
+    <register-form :mode="mode" v-if="!isLogin" @submitRegistration="onSubmit" :toast="toast"></register-form>
   </div>
 </template>
 
@@ -51,8 +51,16 @@
               }, 2000)
             })
             .catch((e) => {
-              const error = e.response.data.error
-              this.toast.message = error.message
+              this.toast.status = 'error'
+              if (e.response) {
+                this.toast.message = e.response.data.error.message
+              } else {
+                this.toast.message = e
+              }
+              setTimeout(() => {
+                this.toast.message = null
+                this.toast.status = 'warning'
+              }, 2000)
             })
         } else {
           // Run method to start user registration

@@ -1,15 +1,37 @@
 <template>
   <div>
     <div class="users-list">
+      <div class="users-list__header">
+        <ul class="users-list__header-list">
+          <li class="users-list__header-list-item users-list__header-list-item--status-chip">Status</li>
+          <li class="users-list__header-list-item users-list__header-list-item--name">Name<span @click="orderByName(users)">A</span></li>
+          <li class="users-list__header-list-item users-list__header-list-item--email">Email</li>
+          <li class="users-list__header-list-item users-list__header-list-item--date">Join Date</li>
+          <li class="users-list__header-list-item users-list__header-list-item--status">Status</li>
+          <li class="users-list__header-list-item users-list__header-list-item--actions">Actions</li>
+        </ul>
+      </div>
       <div v-for="(user, i) in users" :key="i" class="users-list__tile">
-        <div class="users-list__status-chip" :class="statusClass(user)"></div>
+        <ul class="users-list__tile-list">
+          <li class="users-list__tile-info">
+            <div class="users-list__status-chip" :class="statusClass(user)"></div>
+          </li>
+          <li class="users-list__tile-info users-list__tile-info--name">{{user.firstName}} {{user.lastName}}</li>
+          <li class="users-list__tile-info"><a href="mailto:${user.email}">{{user.email}}</a></li>
+          <li class="users-list__tile-info">{{user.applicationDate | DDMMYY}}</li>
+          <li class="users-list__tile-info">{{user.userStatus}}</li>
+          <li style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.userStatus !== 'Approved'">Approve</li>
+          <li style="color: orange" class="users-list__tile-info" @click="userSuspend(user)" v-if="user.userStatus === 'Approved'">Suspend</li>
+          <li style="color: red" class="users-list__tile-info" @click="userRemove(user)" v-if="user.userStatus !== 'Deleted'">Delete</li>
+        </ul>
+        <!-- <div class="users-list__tile-info users-list__status-chip" :class="statusClass(user)"></div>
         <p class="users-list__tile-info users-list__tile-info--name">{{user.firstName}} {{user.lastName}}</p>
         <p class="users-list__tile-info"><a href="mailto:${user.email}">{{user.email}}</a></p>
         <p class="users-list__tile-info">{{user.applicationDate | DDMMYY}}</p>
         <p class="users-list__tile-info">{{user.userStatus}}</p>
         <p style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.userStatus !== 'Approved'">Approve</p>
         <p style="color: orange" class="users-list__tile-info" @click="userSuspend(user)" v-if="user.userStatus === 'Approved'">Suspend</p>
-        <p style="color: red" class="users-list__tile-info" @click="userRemove(user)">Delete</p>
+        <p style="color: red" class="users-list__tile-info" @click="userRemove(user)" v-if="user.userStatus !== 'Deleted'">Delete</p> -->
       </div>
     </div>
   </div>
@@ -34,12 +56,28 @@
     },
     methods: {
       userApprove(user) { // Dispatch action to approve user application
-        this.$store.dispatch('approveUser', user)
-        .then(res => {
-          // console.log(user)
-          user.userStatus = 'Approved'
+        this.$store.dispatch('getUserByEmail', user)
+        .then((value) => {
+          if (!value) { // In the case that an account for that email does not already exist
+            this.$store.dispatch('approveUser', user)
+            .then(res => {
+              user.userStatus = 'Approved'
+            })
+            .catch(e => {
+              console.log(e)
+            })
+          } else { // An account already exists
+            console.log('An account already exists')
+            this.$store.dispatch('reinstateUser', user) // Reinstate user in the database
+            .then(res => {
+              user.userStatus = 'Approved' // Change user's local status
+            })
+            .catch(e => {
+              console.log(e)
+            })
+          }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e)
         })
       },
@@ -55,7 +93,6 @@
       statusClass(user) {
         let statusClass = {}
         let userStatus = user.userStatus
-        console.log(userStatus)
         switch(userStatus) {
           case 'Approved':
             statusClass = {'users-list__status-chip--approved': true}
@@ -66,11 +103,43 @@
           case 'Suspended':
             statusClass = {'users-list__status-chip--suspended': true}
             break;
+          case 'Deleted':
+            statusClass = {'users-list__status-chip--deleted': true}
+            break;
           default:
             statusClass = {}
         }
         return statusClass
+      },
+      orderByName(users) {
+        // let array = ['Trevor', 'Paul', 'Dan', 'Harry']
+        // array.sort((a, b) => {
+        //   console.log(a, b)
+        //   return a > b
+        // })
+        // console.log(array)
+        this.users.sort((a,b) => {
+          const nameA = a.firstName.toLowerCase()
+          const nameB = b.firstName.toLowerCase()
+          return (nameA > nameB) ? -1 : (nameA < nameB) ? -1 : 0
+        })
+        console.log(this.users)
       }
+      //   console.log(users)
+      //   console.log('click')
+      //   console.log(typeof users)
+      //   console.log('orderByName()')
+      //   for (let i = 0; i < (users.length - 1); i++) {
+      //     console.log(users[i].firstName)
+      //     if (users[i+1].firstName < users[i].firstName) {
+      //       console.log('switch')
+      //       let userHolder = users[i]
+      //       users[i] = users[i+1]
+      //       users[i+1] = userHolder
+      //       userHolder = null
+      //     }
+      //   }
+      // }
     },
     computed: {
 

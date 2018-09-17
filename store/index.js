@@ -9,7 +9,9 @@ const createStore = () => {
       currentUser: {
         username: '',
         token: null
-      }
+      },
+      dsjEvents: [],
+      items: []
     },
     mutations: {
       setCurrentUser(state, payload) {
@@ -26,6 +28,10 @@ const createStore = () => {
       },
       unsetCurrentUser(state) {
         state.currentUser.username = ''
+      },
+      addEvent(state, dsjEvent) {
+        state.dsjEvents.push({...dsjEvent})
+        console.log('event pushed')
       }
     },
     getters: {
@@ -37,6 +43,9 @@ const createStore = () => {
       },
       vuexToken(state) {
         return state.currentUser.token
+      },
+      getDsjEvents(state) {
+        return state.dsjEvents
       }
     },
     actions: {
@@ -58,7 +67,7 @@ const createStore = () => {
                   resolve()
                 }
               } else {
-                reject('Error: no matches')
+                reject('No account found')
               }
             })
             .catch(e => {
@@ -82,7 +91,6 @@ const createStore = () => {
             Cookie.set('token', token)
             Cookie.set('tokenExpirationDate', tokenExpirationDate)
             vuexContext.commit('setToken', token)
-            console.log('REsolve auth user')
             resolve()
           })
           .catch(e => {
@@ -168,22 +176,10 @@ const createStore = () => {
         })
       },
       approveUser(vuexContext, userData) {
-        console.log('approveUser() action started')
-        console.log(userData)
-        // let user = firebase.database().ref('users' + userData.userId)
-        // Check for user's existence in Firebase Auth
-        this.$axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=${process.env.fbAPIKey}`, userData.userId)
-          .then(res => {
-            console.log('Check: ', res)
-          })
-          .catch(e => console.log(e))
         // Create new user in Firebase Auth Dashboard
         let tempUserKey = userData.userId
-        console.log(tempUserKey)
         firebase.auth().createUserWithEmailAndPassword(userData.email, 'password')
         .then((res) => {
-          console.log('User creation res: ')
-          console.log(res.user.uid)
           //Create matching user entry in Firebase Database
           firebase.database().ref('/users/' + res.user.uid).set({
             firstName: userData.firstName,
@@ -196,7 +192,6 @@ const createStore = () => {
           })
           // Delete old entry for pending user
           firebase.database().ref('/users/' + tempUserKey).remove()
-          console.log('Temp user deleted')
         })
         .catch(e => {
           console.log(e)
@@ -223,9 +218,26 @@ const createStore = () => {
           approvedDate: userData.approvedDate,
           userId: userData.userId
         })
-        .then(res => {
-          console.log('User suspended:')
-          console.log(res)
+        .then(() => {
+          console.log('User suspended')
+        })
+        .catch(e => {
+          console.log(e)
+        })
+      },
+      reinstateUser(vuexContext, userData) {
+        console.log(userData)
+        firebase.database().ref('/users/' + userData.userId).update({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          userStatus: 'Approved',
+          applicationDate: userData.applicationDate,
+          approvedDate: userData.approvedDate,
+          userId: userData.userId
+        })
+        .then(() => {
+          console.log('User reinstated')
         })
         .catch(e => {
           console.log(e)
@@ -251,25 +263,15 @@ const createStore = () => {
         // Push to home
         this.$router.push('/login/')
       },
-      removeToken(vuexContext) {
-
-
-
-      },
-      preLogIn(vueContext, email) {
-        
-
-        return new Promise(function(resolve, reject){
-          let query = firebase.database().ref('/users/').orderByKey()
-          // console.log(query)
-          resolve(
-            query.once('value')
-          .then(res => {
-            let users = res.val()
-            return users
-          })
-          )
+      getUserByEmail(vuexContext, user) {
+        return firebase.auth().fetchSignInMethodsForEmail(user.email)
+        .then((res) => {
+          return res.length > 0
         })
+      },
+      saveEvent(vuexContext, dsjEvent) {
+        console.log('action')
+        vuexContext.commit('addEvent', dsjEvent)
       }
     }
   })

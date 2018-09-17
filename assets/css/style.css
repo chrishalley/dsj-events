@@ -131,10 +131,14 @@ body {
     transform: scale(1.01);
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
 
+.users-list__tile-list {
+  list-style: none;
+  display: flex; }
+
 .users-list__tile-info {
-  display: inline-block; }
-  .users-list__tile-info:not(:last-child) {
-    margin-right: 2rem; }
+  display: inline-block;
+  text-align: center;
+  flex-grow: 1; }
   .users-list__tile-info--name {
     font-style: italic; }
 
@@ -146,15 +150,24 @@ body {
   margin-right: 2rem;
   border-radius: 50%;
   transition: background-color 0.4s; }
+  .users-list__status-chip--pending {
+    background-color: orange; }
+  .users-list__status-chip--approved {
+    background-color: green; }
+  .users-list__status-chip--suspended {
+    background-color: orange; }
+  .users-list__status-chip--deleted {
+    background-color: orangered; }
 
-.users-list__status-chip--pending {
-  background-color: orange; }
-
-.users-list__status-chip--approved {
-  background-color: green; }
-
-.users-list__status-chip--suspended {
-  background-color: orangered; }
+.users-list__header-list {
+  list-style: none;
+  display: flex;
+  padding: 1rem; }
+  .users-list__header-list-item {
+    flex-grow: 1;
+    text-align: center; }
+    .users-list__header-list-item--status-chip {
+      flex-grow: .5; }
 
 button {
   padding: 1.5rem 3rem;
@@ -167,3 +180,14 @@ button {
     background-color: #ddd; }
   button:disabled, button[disabled] {
     background-color: red; }
+
+input {
+  padding: 1rem;
+  display: block;
+  width: 100%; }
+
+.event-form {
+  background-color: #fff;
+  padding: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 2px; }

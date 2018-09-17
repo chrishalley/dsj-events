@@ -1,9 +1,8 @@
 <template>
   <div>
     <section class="row">
-      <!-- <EventForm></EventForm> -->
       <div class="col-1-of-2 offset-3">
-        <LogInForm></LogInForm>
+        <login-card></login-card>
       </div>
     </section>
     <!-- <section class="grid-test">
@@ -41,13 +40,11 @@
 </template>
 
 <script>
-import EventForm from '~/components/EventForm.vue'
-import LogInForm from '~/components/LogInForm.vue'
+import LoginCard from '~/components/Login/LoginCard.vue'
 
 export default {
   components: {
-    EventForm,
-    LogInForm
+    LoginCard
   },
   layout: 'default'
 }

@@ -20,12 +20,19 @@
 
   }
 
+  &__tile-list {
+    list-style: none;
+    display: flex;
+  }
+
   &__tile-info {
     display: inline-block;
+    text-align: center;
+    flex-grow: 1;
 
-    &:not(:last-child) {
-      margin-right: $space-medium;
-    }
+    // &:not(:last-child) {
+    //   margin-right: $space-medium;
+    // }
 
     &--name {
       font-style: italic;
@@ -40,20 +47,36 @@
     margin-right: $space-medium;
     border-radius: 50%;
     transition: background-color 0.4s;
+
+    &--pending {
+      background-color: orange;
+    }
+
+    &--approved {
+      background-color: green;
+    }
+
+    &--suspended {
+      background-color: orange;
+    }
+
+    &--deleted {
+      background-color: orangered;
+    }
   }
 
-  &__status-chip--pending {
-    background-color: orange;
+  &__header-list {
+    list-style: none;
+    display: flex;
+    padding: 1rem;
+
+    &-item {
+      flex-grow: 1;
+      text-align: center;
+
+      &--status-chip {
+        flex-grow: .5;
+      }
+    }
   }
-
-  &__status-chip--approved {
-    background-color: green;
-  }
-
-  &__status-chip--suspended {
-    background-color: orangered;
-  }
-
-
-
 }
