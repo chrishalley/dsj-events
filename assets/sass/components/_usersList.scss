@@ -1,22 +1,7 @@
 .users-list {
 
   &__tile {
-    background-color: $color-white;
-    padding: $space-medium;
-    border-radius: 2px;
-    box-shadow: 0 .5rem 1rem rgba($color-black, 0.1);
-    transition: box-shadow 0.2s, transform 0.2s;
-    backface-visibility: hidden;
-
-    &:not(:last-child) {
-      margin-bottom: $space-small;
-    }
-
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.01);
-      box-shadow: 0 1rem 1rem rgba($color-black, 0.1);
-    }
+    @include card
 
   }
 

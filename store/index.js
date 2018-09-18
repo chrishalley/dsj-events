@@ -31,7 +31,7 @@ const createStore = () => {
       },
       addEvent(state, dsjEvent) {
         state.dsjEvents.push({...dsjEvent})
-        console.log('event pushed')
+        console.log('event pushed into Vuex state')
       }
     },
     getters: {
@@ -272,6 +272,30 @@ const createStore = () => {
       saveEvent(vuexContext, dsjEvent) {
         console.log('action')
         vuexContext.commit('addEvent', dsjEvent)
+        return new Promise((resolve, reject) => {
+          firebase.database().ref('/events/').push({
+            title: dsjEvent.title,
+            description: dsjEvent.description,
+            date: dsjEvent.date
+          })
+          .then(() => {
+            resolve()
+          })
+          .catch(() => {
+            reject()
+          })
+        })
+      },
+      getEventData() {
+        return new Promise((resolve, reject) => {
+          return this.$axios.get(process.env.baseURL + '/events.json')
+          .then((res) => {
+            resolve(res)
+          })
+          .catch(() => {
+            reject(e)
+          })
+        })
       }
     }
   })

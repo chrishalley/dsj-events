@@ -3,10 +3,11 @@
     <section class="row">
       <div class="col-1-of-2">
         <h1>Events</h1>
-        <event-form @submitEvent="saveEvent"></event-form>
+        <event-form @submitEvent="saveEvent" :toast="toast"></event-form>
       </div>
       <div class="col-1-of-2">
-        <event-list :dsjEvents="this.dsjEvents"></event-list>
+        <h2>Events List</h2>
+        <event-list :events="this.events"></event-list>
       </div>
     </section>
   </div>
@@ -15,17 +16,50 @@
 <script>
 import EventForm from '~/components/Events/EventForm.vue'
 import EventList from '~/components/Events/EventList.vue'
+
   export default {
-    // layout: 'admin',
+    data() {
+      return {
+        toast: {
+          status: 'warning',
+          message: null
+        },
+        events: []
+      }
+    },
+    asyncData(context) {
+      return context.store.dispatch('getEventData')
+      .then(res => {
+        return {
+          events: Object.keys(res.data).map((current) => {
+            return res.data[current]
+          })
+        }
+      })
+      .catch(e => {
+        console.log(e)
+      })
+    },
+    layout: 'admin',
     components: {
       EventForm,
       EventList
     },
     methods: {
       saveEvent(singleEvent) {
-        console.log('saveEvent()')
-        console.log('Single Event: ', singleEvent)
+        this.events.push(singleEvent)
         this.$store.dispatch('saveEvent', singleEvent)
+        .then(() => {
+          console.log('Successful event push')
+          this.toast.status = 'good'
+          this.toast.message = 'Event successfully saved!'
+        })
+        .catch((e) => {
+          console.log('event push error')
+          console.log(e)
+          this.toast.status = 'error'
+          this.toast.message = 'Something went wrong!'
+        })
       }
     },
     computed: {
