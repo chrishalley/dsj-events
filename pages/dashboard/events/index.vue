@@ -3,7 +3,7 @@
     <section class="row">
       <div class="col-1-of-2">
         <h1>Events</h1>
-        <event-form @submitEvent="saveEvent" :toast="toast"></event-form>
+        <event-form :toast="toast" @addEvent="addEvent"></event-form>
       </div>
       <div class="col-1-of-2">
         <h2>Events List</h2>
@@ -45,26 +45,14 @@ import EventList from '~/components/Events/EventList.vue'
       EventForm,
       EventList
     },
-    methods: {
-      saveEvent(singleEvent) {
-        this.$store.dispatch('saveEvent', singleEvent)
-        .then(() => {
-          this.events.push(singleEvent)
-          console.log('Successful event push')
-          this.toast.status = 'good'
-          this.toast.message = 'Event successfully saved!'
-        })
-        .catch((e) => {
-          console.log('event push error')
-          console.log(e)
-          this.toast.status = 'error'
-          this.toast.message = 'Something went wrong!'
-        })
-      },
-    },
     computed: {
       dsjEvents() {
         return this.$store.getters.getDsjEvents
+      }
+    },
+    methods: {
+      addEvent(singleEvent) { // Adds newly created event to array of events
+        this.events.push(singleEvent)
       }
     }
   }

@@ -270,7 +270,6 @@ const createStore = () => {
         })
       },
       saveEvent(vuexContext, dsjEvent) {
-        console.log(dsjEvent)
         vuexContext.commit('addEvent', dsjEvent)
         return new Promise((resolve, reject) => {
           firebase.database().ref('/events/').push({
