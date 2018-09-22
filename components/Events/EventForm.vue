@@ -4,14 +4,11 @@
       <label class="event-form__label" for="event-title">Title</label>
       <input class="event-form__input" v-model="singleEvent.title" id="event-title" type="text" placeholder="Event title">
       <label class="event-form__label" for="event-description">Description</label>
-      <p>{{ singleEvent.title }}</p>
       <textarea class="event-form__input" v-model="singleEvent.description" id="event-description" placeholder="Event description" rows=10></textarea>
-      <p>{{ singleEvent.description }}</p>
       <label class="event-form__label" for="event-date">Date</label>
       <input class="event-form__input" v-model="formDate" id="event-date" type="date" placeholder="Event date">
       <label class="event-form__label" for="event-time">Time</label>
       <input class="event-form__input" v-model="formTime" id="event-time" type="time" placeholder="Event time">
-      <p>{{ unixTime }}</p>
       <button @click.prevent="saveEvent(singleEvent, unixTime)">Create Event</button>
     </form>
     <toast :toast="toast"></toast>
