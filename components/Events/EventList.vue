@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul class="event-list">
-            <li v-for="(dsjEvent, i) in events" :key="i" class="event-list__item">
+            <li v-for="(dsjEvent) in events" :key="dsjEvent.id" :id="dsjEvent.id" class="event-list__item">
                 <event-card :dsjEvent="dsjEvent"></event-card>
             </li>
         </ul>
