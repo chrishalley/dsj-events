@@ -30,7 +30,7 @@ const createStore = () => {
         state.currentUser.username = ''
       },
       addEvent(state, dsjEvent) {
-        state.dsjEvents.push({...dsjEvent})
+        state.dsjEvents.push({dsjEvent})
         console.log('event pushed into Vuex state')
       }
     },
@@ -270,13 +270,13 @@ const createStore = () => {
         })
       },
       saveEvent(vuexContext, dsjEvent) {
-        console.log('action')
+        console.log(dsjEvent)
         vuexContext.commit('addEvent', dsjEvent)
         return new Promise((resolve, reject) => {
           firebase.database().ref('/events/').push({
             title: dsjEvent.title,
             description: dsjEvent.description,
-            date: dsjEvent.date
+            dateTime: dsjEvent.dateTime
           })
           .then(() => {
             resolve()

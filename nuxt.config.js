@@ -35,7 +35,8 @@ module.exports = {
   */
   plugins: [
     '~plugins/firebase.js',
-    '~plugins/vuelidate.js'
+    '~plugins/vuelidate.js',
+    '~plugins/filters.js'
   ],
 
   /*

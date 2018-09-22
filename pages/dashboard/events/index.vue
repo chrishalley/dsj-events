@@ -47,9 +47,9 @@ import EventList from '~/components/Events/EventList.vue'
     },
     methods: {
       saveEvent(singleEvent) {
-        this.events.push(singleEvent)
         this.$store.dispatch('saveEvent', singleEvent)
         .then(() => {
+          this.events.push(singleEvent)
           console.log('Successful event push')
           this.toast.status = 'good'
           this.toast.message = 'Event successfully saved!'
@@ -60,7 +60,7 @@ import EventList from '~/components/Events/EventList.vue'
           this.toast.status = 'error'
           this.toast.message = 'Something went wrong!'
         })
-      }
+      },
     },
     computed: {
       dsjEvents() {

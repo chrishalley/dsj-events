@@ -180,7 +180,7 @@ button {
   button:disabled, button[disabled] {
     background-color: red; }
 
-input {
+input, textarea {
   padding: 1rem;
   display: block;
   width: 100%; }
@@ -190,6 +190,11 @@ input {
   padding: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   border-radius: 2px; }
+  .event-form__label {
+    display: block;
+    margin-bottom: 3px; }
+  .event-form__input {
+    margin-bottom: 1rem; }
 
 .event-list {
   list-style: none; }
