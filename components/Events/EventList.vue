@@ -2,17 +2,14 @@
     <div>
         <ul class="event-list">
             <li v-for="(dsjEvent, i) in events" :key="i" class="event-list__item">
-                <p class="event-list__item-title">{{ dsjEvent.title }}</p>
-                <p class="event-list__item-date mb-sm">{{ dsjEvent.dateTime | unixToDate() }} | {{ dsjEvent.dateTime | unixToTime() }}</p>
-                <hr>
-                <p class="event-list__item-unix mb-sm">{{ dsjEvent.dateTime }}</p>
-                <p class="event-list__item-description">{{ dsjEvent.description }}</p>
+                <event-card :dsjEvent="dsjEvent"></event-card>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import EventCard from '~/components/events/EventCard.vue'
 export default {
     props: ['events'],
     created() {       
@@ -24,6 +21,9 @@ export default {
             <h3>Monthtober</h3>
             `
         }
+    },
+    components: {
+        EventCard
     }
 }
 </script>
