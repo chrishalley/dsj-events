@@ -293,11 +293,11 @@ const createStore = () => {
       },
       getEventData() {
         return new Promise((resolve, reject) => {
-          return this.$axios.get(process.env.baseURL + '/events.json')
+          return this.$axios.get(process.env.baseURL + 'events.json')
           .then((res) => {
             resolve(res)
           })
-          .catch(() => {
+          .catch((e) => {
             reject(e)
           })
         })

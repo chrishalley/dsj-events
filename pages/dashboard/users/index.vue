@@ -6,14 +6,24 @@
 </template>
 
 <script>
-  import UsersList from '~/components/UsersList'
+  import UsersList from '~/components/Users/UsersList'
   export default {
     components: {
       UsersList
     },
     data() {
       return {
-        users: []
+        users: [
+          {
+            applicationDate: 'Tuesday',
+            approvedDate: 'Wednesday',
+            email: 'email@email.com',
+            firstName: 'John',
+            lastName: 'Smith',
+            userId: '1',
+            userStatus: 'Approved'
+          }
+        ]
       }
     },
     asyncData() {
@@ -33,6 +43,6 @@
           console.log(e)
         })
     },
-    layout: 'admin'
+    // layout: 'admin'
   }
 </script>

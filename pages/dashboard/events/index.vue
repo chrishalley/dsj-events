@@ -40,7 +40,7 @@ import EventList from '~/components/Events/EventList.vue'
         console.log(e)
       })
     },
-    layout: 'admin',
+    // layout: 'admin',
     components: {
       EventForm,
       EventList
