@@ -44,32 +44,39 @@ export default {
                     dateTime: 1528799000000,
                     id: 5
                 },
+                {
+                    title: 'Test Event Six',
+                    description: 'Lorem ipsum dolor si amet',
+                    dateTime: 1514999000000,
+                    id: 6
+                }
             ]
         }
     },
     // props: ['events'],
-    created() {       
+    mounted() {       
         this.eventListMonths() // Add month headers on created()
     },
     methods: {
         eventListMonths() { // Iterate through array of loaded events and add monthly headers
             let prevEventMonth, eventMonth, months, markup
             months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-            prevEventMonth = months[0]
+            prevEventMonth = ''
             this.events.forEach((event) => {
-                let id = event.id
                 eventMonth = months[new Date(event.dateTime).getMonth()]
                 if (eventMonth !== prevEventMonth) {
-                    this.renderMonthBanner(eventMonth, id)
+                    console.log(eventMonth)
+                    this.renderMonthBanner(eventMonth, event.id)
                 }
+
+                prevEventMonth = eventMonth
             })
         },
         renderMonthBanner(month, id) {
-            let markup, element
-            markup = `<h3>${month}</h3>`
-            // element = this.$refs.id
-            console.log('Element: ', element)
-            // element.insertAdjacentHTML('beforebegin', markup)
+            let markup, newMonthEvent
+            markup = `<h3 class="event-list__month-banner">${month}</h3>`
+            newMonthEvent = document.getElementById(id)
+            newMonthEvent.insertAdjacentHTML('beforebegin', markup)
         }
     },
     components: {
