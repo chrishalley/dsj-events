@@ -69,9 +69,8 @@ export default {
             months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
             prevEventMonth = ''
             this.events.forEach((event) => {
-                eventMonth = months[new Date(event.dateTime).getMonth()]
+                eventMonth = months[new Date(event.startDateTime).getMonth()]
                 if (eventMonth !== prevEventMonth) {
-                    console.log(eventMonth)
                     this.renderMonthBanner(eventMonth, event.id)
                 }
 
