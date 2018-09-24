@@ -17,37 +17,43 @@ export default {
                 {
                     title: 'Test Event One',
                     description: 'Lorem ipsum dolor si amet',
-                    dateTime: 1514799000000,
+                    startDateTime: 1514799000000,
+                    endDateTime: 15148000000,
                     id: 1
                 },
                 {
                     title: 'Test Event Two',
                     description: 'Lorem ipsum dolor si amet',
-                    dateTime: 1520800000000,
+                    startDateTime: 1520800000000,
+                    endDateTime: 1520900000000,
                     id: 2
                 },
                 {
                     title: 'Test Event Three',
                     description: 'Lorem ipsum dolor si amet',
-                    dateTime: 1520799000000,
+                    startDateTime: 1520799000000,
+                    endDateTime: 1521500000000,
                     id: 3
                 },
                 {
                     title: 'Test Event Four',
                     description: 'Lorem ipsum dolor si amet',
-                    dateTime: 1524799000000,
+                    startDateTime: 1524799000000,
+                    endDateTime: 1524850000000,
                     id: 4
                 },
                 {
                     title: 'Test Event Five',
                     description: 'Lorem ipsum dolor si amet',
-                    dateTime: 1528799000000,
+                    startDateTime: 1528799000000,
+                    endDateTime: 1528900000000,
                     id: 5
                 },
                 {
                     title: 'Test Event Six',
                     description: 'Lorem ipsum dolor si amet',
-                    dateTime: 1514999000000,
+                    startDateTime: 1514999000000,
+                    endDateTime: 1515500000000,
                     id: 6
                 }
             ]

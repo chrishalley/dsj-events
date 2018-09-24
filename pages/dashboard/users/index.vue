@@ -29,9 +29,6 @@
     asyncData() {
       console.log('Async data!')
     },
-    methods: {
-
-    },
     beforeCreate() {
       this.$axios.$get(process.env.baseURL + 'users.json')
         .then(res => {

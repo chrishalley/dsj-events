@@ -11,7 +11,7 @@ const createStore = () => {
         token: null
       },
       dsjEvents: [],
-      items: []
+      editEvent: null
     },
     mutations: {
       setCurrentUser(state, payload) {
@@ -32,6 +32,10 @@ const createStore = () => {
       addEvent(state, dsjEvent) {
         state.dsjEvents.push({dsjEvent})
         console.log('event pushed into Vuex state')
+      },
+      setEditEvent(state, dsjEvent) {
+        console.log('setEditEvent() mutation')
+        state.editEvent = {...dsjEvent}
       }
     },
     getters: {
@@ -46,6 +50,10 @@ const createStore = () => {
       },
       getDsjEvents(state) {
         return state.dsjEvents
+      },
+      getEditEvent(state) {
+        console.log('getEditEvent() getter')
+        return state.editEvent
       }
     },
     actions: {
@@ -291,6 +299,19 @@ const createStore = () => {
           })
         })
       },
+      checkEventAvailability(vuexContext, eventTimes) {
+        // Check if there is any event at all between the start and end dates
+
+        // If not, return a pass
+
+        // If there is, check whether the requested event clashes with the booked event 
+        // a clash is when: 
+        // (requestedEventStartTime > bookedEventStartTime && requestedEventStartTime < bookedEventEndTime) || (requestedEventEndTime > bookedEventStartTime && requestedEventEndTime < bookedEventEndTime)
+        // If there is a clash, do not take the booking and notify the user
+        // If there is not a clash, check for sufficient time before or after the requested event for a change-over of hall
+        // If there is sufficient time, take the booking
+        // If not, inform the user of the minimum time required and offer to change start or end time
+      },
       getEventData() {
         return new Promise((resolve, reject) => {
           return this.$axios.get(process.env.baseURL + 'events.json')
@@ -301,6 +322,10 @@ const createStore = () => {
             reject(e)
           })
         })
+      },
+      setEditEvent(vuexContext, dsjEvent) {
+        console.log('setEditEvent() action')
+        vuexContext.commit('setEditEvent', dsjEvent)
       }
     }
   })

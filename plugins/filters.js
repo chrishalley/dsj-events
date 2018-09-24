@@ -10,7 +10,7 @@ Vue.filter('unixToDate', val => {
     year = date.getFullYear()
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     
-    return `Date: ${days[day]}, ${appendDateNumber(dateNumber)} ${months[month]} ${year}`
+    return `${days[day]}, ${appendDateNumber(dateNumber)} ${months[month]} ${year}`
 })
 
 Vue.filter('unixToTime', val => {
@@ -18,8 +18,8 @@ Vue.filter('unixToTime', val => {
     time = new Date(val)
     hours = time.getHours() < 13 ? time.getHours() : time.getHours() - 12
     suffix = time.getHours() > 11 ? 'pm' : 'am'
-    minutes = time.getMinutes() > 0 ? time.getMinutes() : '00'
-    return `Time: ${hours}:${minutes}${suffix}`
+    minutes = time.getMinutes() > 9 ? time.getMinutes() : `0${time.getMinutes()}`
+    return `${hours}:${minutes}${suffix}`
 })
 
 export function appendDateNumber(date) {

@@ -10,12 +10,18 @@
         <event-list :events="this.events"></event-list>
       </div>
     </section>
+    <section class="row">
+      <div class="col-1-of-2">
+        <event-detailed-card v-if="editEvent" :editEvent="editEvent"></event-detailed-card>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
 import EventForm from '~/components/Events/EventForm.vue'
 import EventList from '~/components/Events/EventList.vue'
+import EventDetailedCard from '~/components/Events/EventDetailedCard.vue'
 
   export default {
     data() {
@@ -43,16 +49,25 @@ import EventList from '~/components/Events/EventList.vue'
     // layout: 'admin',
     components: {
       EventForm,
-      EventList
+      EventList,
+      EventDetailedCard
     },
     computed: {
       dsjEvents() {
         return this.$store.getters.getDsjEvents
+      },
+      editEvent() {
+        return this.$store.getters.getEditEvent
       }
     },
     methods: {
       addEvent(singleEvent) { // Adds newly created event to array of events
         this.events.push(singleEvent)
+      },
+      setEditEvent(dsjEvent) {
+        console.log('setEditEvent()')
+        // this.editEvent = {...dsjEvent}
+        // console.log('Event: ', this.editEvent)
       }
     }
   }
