@@ -285,7 +285,8 @@ const createStore = () => {
           firebase.database().ref('/events/').push({
             title: dsjEvent.title,
             description: dsjEvent.description,
-            dateTime: dsjEvent.dateTime
+            startDateTime: dsjEvent.startDateTime,
+            endDateTime: dsjEvent.endDateTime
           })
           .then((res) => {
             let key = res.key
