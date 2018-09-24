@@ -36,6 +36,9 @@ const createStore = () => {
       setEditEvent(state, dsjEvent) {
         console.log('setEditEvent() mutation')
         state.editEvent = {...dsjEvent}
+      },
+      clearEditEvent(state) {
+        state.editEvent = null
       }
     },
     getters: {
@@ -326,6 +329,10 @@ const createStore = () => {
       setEditEvent(vuexContext, dsjEvent) {
         console.log('setEditEvent() action')
         vuexContext.commit('setEditEvent', dsjEvent)
+      },
+      clearEditEvent(vuexContext) {
+        console.log('clearEditEvent()')
+        vuexContext.commit('clearEditEvent')
       }
     }
   })

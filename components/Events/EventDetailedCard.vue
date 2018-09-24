@@ -10,7 +10,7 @@
         <input class="event-form__input" v-model="formStartTime" id="editEvent-start-time" type="time" placeholder="Event start time">
         <label class="event-form__label" for="editEvent-end-time">End time</label>
         <input class="event-form__input" v-model="formEndTime" id="editEvent-end-time" type="time" placeholder="Event end time">
-        <button @click.prevent="updateEvent(editEvent)">Update Event</button>
+        <button @click.prevent="updateEvent(updateEvent)">Update Event</button>
     </div>
 </template>
 
@@ -48,6 +48,20 @@ export default {
 					minutes = endTime.getMinutes() > 9 ? endTime.getMinutes() : `0${endTime.getMinutes()}`
         	return `${hours.toString()}:${minutes.toString()}`
       }
-    }
+		},
+		methods: {
+			updateEvent() {
+				// Update event in Firebase
+
+				// Update event in Vuex
+
+				// Update event in component
+
+				// Change editEvent to null
+				console.log(this.editEvent)
+				this.$store.dispatch('clearEditEvent')
+				console.log(this.editEvent)
+			}
+		}
 }
 </script>
