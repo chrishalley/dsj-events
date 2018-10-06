@@ -13,6 +13,15 @@
             <div class="input-group">
                 <button class="login-form__button" @click.prevent="submitLogin" :disabled="$v.$invalid">{{mode.toUpperCase()}}</button>
             </div>
+            <div class="input-group">
+                <button class="login-form__button" @click.prevent="signOut">Sign Out</button>
+            </div>
+            <div class="input-group">
+                <button class="login-form__button" @click.prevent="checkUser">Check User</button>
+            </div>
+            <div class="input-group">
+                <button class="login-form__button" @click.prevent="addCookie">Add Cookie</button>
+            </div>
             <toast :toast="toast"></toast>
         </form>
     </div>
@@ -21,6 +30,7 @@
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators'
 import Toast from '~/components/Base/Toast.vue'
+import firebase from 'firebase'
 
 export default {
     data() {
@@ -43,6 +53,15 @@ export default {
     methods: {
         submitLogin() {
                 this.$emit('submitLogin', this.user)
+        },
+        signOut() {
+            this.$store.dispatch('logUserOut')
+        },
+        checkUser() {
+            console.log(firebase.auth().currentUser)
+        },
+        addCookie() {
+            this.$store.dispatch('addCookie', 'kjdkhassadiasoijoijijowqoij')
         }
     },
     validations: {

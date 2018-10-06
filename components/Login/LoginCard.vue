@@ -47,7 +47,7 @@
                   status: 'warning',
                   message: null
                 }
-                this.$router.push('/dashboard/users') // Push user into dashboard
+                // this.$router.push('/dashboard/users') // Push user into dashboard
               }, 2000)
             })
             .catch((e) => {

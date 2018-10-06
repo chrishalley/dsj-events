@@ -1,9 +1,8 @@
 <template>
   <header class="header">
     <h1>Logo</h1>
-    <p>Welcome: {{currentUser.username}}</p>
+    <p v-if="currentUser !== null">Welcome: {{currentUser.email}}</p>
     <p>Status: {{status}}</p>
-    <p>Token valid until:</p>
     <ul class="header__nav">
       <li class="header__nav-item">
         <nuxt-link to="/">Home</nuxt-link>

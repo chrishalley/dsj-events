@@ -1,34 +1,28 @@
 import Vuex from 'vuex'
 import Cookie from 'js-cookie'
 import firebase from '~/plugins/firebase'
-import { resolve } from 'url';
+import { auth } from '~/plugins/firebase'
 
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      currentUser: {
-        username: '',
-        token: null
-      },
+      currentUser: null,
       dsjEvents: [],
       editEvent: null
     },
     mutations: {
       setCurrentUser(state, payload) {
-        state.currentUser.username = payload.email
+        state.currentUser = payload
       },
-      setToken(state, token) {
-          state.currentUser.token = token
-      },
-      setTokenServer(state, token) {
-          state.currentUser.token = token
-      },
-      clearToken(state) {
-        state.currentUser.token = null
-      },
-      unsetCurrentUser(state) {
-        state.currentUser.username = ''
-      },
+      // setToken(state, token) {
+      //     state.currentUser.token = token
+      // },
+      // setTokenServer(state, token) {
+      //     state.currentUser.token = token
+      // },
+      // clearToken(state) {
+      //   state.currentUser.token = null
+      // },
       addEvent(state, dsjEvent) {
         state.dsjEvents.push({dsjEvent})
         console.log('event pushed into Vuex state')
@@ -46,11 +40,11 @@ const createStore = () => {
         return state.currentUser
       },
       isUserAuthenticated(state) {
-        return state.currentUser.token != null
+        return state.currentUser != null
       },
-      vuexToken(state) {
-        return state.currentUser.token
-      },
+      // vuexToken(state) {
+      //   return state.currentUser.token
+      // },
       getDsjEvents(state) {
         return state.dsjEvents
       },
@@ -68,6 +62,7 @@ const createStore = () => {
                 return Object(res.data[key])
               })
               if (matchArray.length > 1) {
+                console.log('Error: More than one email match')
               } else if (matchArray.length === 1) {
                 if (matchArray[0].userStatus.toLowerCase() === "suspended") {
                   reject('This user is suspended!')
@@ -88,26 +83,39 @@ const createStore = () => {
       },
       authenticateUser(vuexContext, authData) {
         return new Promise((resolve, reject) => {
-          return this.$axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${process.env.fbAPIKey}`, {
-            email: authData.email,
-            password: authData.password,
-            returnSecureToken: true
-          })
-          .then(res => {
-            let token, tokenExpirationDate
-            token = res.data.idToken
-            tokenExpirationDate = new Date().getTime() + (Number.parseInt(res.data.expiresIn) * 1000)
-            localStorage.setItem('token', token)
-            localStorage.setItem('tokenExpirationDate', tokenExpirationDate)
-            Cookie.set('token', token)
-            Cookie.set('tokenExpirationDate', tokenExpirationDate)
-            vuexContext.commit('setToken', token)
+          return auth.signInWithEmailAndPassword(authData.email, authData.password)
+          .then((res) => {
+            Cookie.set('dsj_uid', auth.currentUser.uid)
+            vuexContext.commit('setCurrentUser', res.user)
             resolve()
           })
-          .catch(e => {
-            reject(e)
+          .catch((e) => {
+            console.log(e)
+            reject()
           })
         })
+        // return new Promise((resolve, reject) => {
+        //   return this.$axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${process.env.fbAPIKey}`, {
+        //     email: authData.email,
+        //     password: authData.password,
+        //     returnSecureToken: true
+        //   })
+        //   .then(res => {
+        //     let token, tokenExpirationDate, currentUser
+        //     token = res.data.idToken
+        //     tokenExpirationDate = new Date().getTime() + (Number.parseInt(res.data.expiresIn) * 1000)
+        //     localStorage.setItem('token', token)
+        //     localStorage.setItem('tokenExpirationDate', tokenExpirationDate)
+        //     Cookie.set('token', token)
+        //     Cookie.set('tokenExpirationDate', tokenExpirationDate)
+        //     vuexContext.commit('setToken', token)
+        //     vuexContext.dispatch('setCurrentUser')
+        //     resolve()
+        //   })
+        //   .catch(e => {
+        //     reject(e)
+        //   })
+        // })
       },
       initAuth(vuexContext, req) { // Runs between admin route changes to check validity of token and tokenExpiryDate
         // Set variables
@@ -261,18 +269,25 @@ const createStore = () => {
         }, duration * 1000)
       },
       logUserOut(vuexContext) {
-        // Remove local storage token and expiry
-        localStorage.removeItem('token')
-        localStorage.removeItem('tokenExpirationDate')
-        // Remove Cookie token and expiry
-        Cookie.remove('token')
-        Cookie.remove('tokenExpirationDate')
-        // Change state of user
-        vuexContext.commit('unsetCurrentUser')
-        vuexContext.commit('clearToken')
-
-        // Push to home
-        this.$router.push('/login/')
+        // // Remove local storage token and expiry
+        // localStorage.removeItem('token')
+        // localStorage.removeItem('tokenExpirationDate')
+        // // Remove Cookie token and expiry
+        // Cookie.remove('token')
+        // Cookie.remove('tokenExpirationDate')
+        // // Change state of user
+        // vuexContext.commit('unsetCurrentUser')
+        // vuexContext.commit('clearToken')
+        auth.signOut()
+          .then(() => {
+            // Push to home
+            Cookie.remove('dsj_uid')
+            vuexContext.commit('setCurrentUser', null)
+            this.$router.push('/login/')
+          })
+          .catch((e) => {
+            console.log(e)
+          })
       },
       getUserByEmail(vuexContext, user) {
         return firebase.auth().fetchSignInMethodsForEmail(user.email)
@@ -334,9 +349,47 @@ const createStore = () => {
       clearEditEvent(vuexContext) {
         console.log('clearEditEvent()')
         vuexContext.commit('clearEditEvent')
+      },
+      async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
+        let uidCookie
+        if (context.req) {
+          if (!context.req.headers.cookie) {
+            return
+          } else {
+            uidCookie = parseCookie(context, 'dsj_uid')
+            await context.app.$axios.get(process.env.baseURL + 'users/' + uidCookie + '.json')
+            .then((res) => {
+              vuexContext.commit('setCurrentUser', res.data)
+            })
+            .catch((e) => {
+              console.log('Error: ', e)
+            })
+          }
+        } else {
+          return
+        }
+      },
+      addCookie(context, payload) {
+        Cookie.set('random', payload)
       }
     }
   })
+}
+
+function parseCookie(context, targetCookie) {
+  let cookies, cookiesArray, cookie 
+    cookies = context.req.headers.cookie
+    cookiesArray = cookies.split(';').map((curr) => {
+      return curr.trim()
+    })
+    cookie = cookiesArray.find((curr) => {
+      return curr.startsWith(targetCookie)
+    })
+    if (cookie) {
+      return cookie.split('=')[1]
+    } else {
+      return 
+    }
 }
 
 export default createStore

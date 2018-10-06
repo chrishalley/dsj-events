@@ -18,6 +18,6 @@
         this.$router.push('/login/')
       }
     },
-    layout: 'admin'
+    // layout: 'admin'
   }
 </script>

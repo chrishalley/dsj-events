@@ -35,9 +35,17 @@ module.exports = {
   */
   plugins: [
     '~plugins/firebase.js',
+    '~plugins/fireauth.js',
     '~plugins/vuelidate.js',
     '~plugins/filters.js'
   ],
+
+  /*
+  ** Middleware to run between routes
+  */
+ router: {
+   middleware: ['router-auth']
+ },
 
   /*
   ** Nuxt.js modules
