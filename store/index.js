@@ -2,6 +2,8 @@ import Vuex from 'vuex'
 import Cookie from 'js-cookie'
 import firebase from '~/plugins/firebase'
 import { auth } from '~/plugins/firebase'
+import cloudinary from 'cloudinary-core'
+import crypto from 'crypto-js'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -349,6 +351,19 @@ const createStore = () => {
       clearEditEvent(vuexContext) {
         console.log('clearEditEvent()')
         vuexContext.commit('clearEditEvent')
+      },
+      saveImageToCloudinary(vuexContext, imageUrl) {
+        console.log(crypto.SHA1)
+        // this.$axios.post('https://api.cloudinary.com/v1_1/dtn26lvux/image/upload', {
+        //   file: imageUrl,
+        //   api_key: '451276742949277',
+        //   timestamp: new Date().getTime(),
+        //   signature: ''
+        // })
+        // .then((res) => {
+        //   console.log(res)
+        // })
+        // .catch(e => console.log(e))
       },
       async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
         let uidCookie

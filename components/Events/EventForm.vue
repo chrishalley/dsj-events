@@ -5,6 +5,8 @@
       <input class="event-form__input" v-model="singleEvent.title" id="event-title" type="text" placeholder="Event title">
       <label class="event-form__label" for="event-description">Description</label>
       <textarea class="event-form__input" v-model="singleEvent.description" id="event-description" placeholder="Event description" rows=10></textarea>
+      <label>Featured image</label>
+      <image-upload></image-upload>
       <label class="event-form__label" for="event-start-date">Date</label>
       <input class="event-form__input" v-model="formStartDate" id="event-start-date" type="date" placeholder="Event start date">
       <label class="event-form__label" for="event-start-time">Start time</label>
@@ -20,6 +22,7 @@
 
 <script>
 import Toast from '~/components/Base/Toast.vue'
+import ImageUpload from '~/components/Base/ImageUpload.vue'
 
   export default {
     name: 'eventForm',
@@ -35,7 +38,8 @@ import Toast from '~/components/Base/Toast.vue'
       }
     },
     components: {
-      Toast
+      Toast,
+      ImageUpload
     },
     props: ['toast'],
     methods: {

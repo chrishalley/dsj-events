@@ -1,0 +1,9 @@
+.image-upload {
+    border: solid 1px $color-grey-light-2;
+    text-align: center;
+    padding: 3rem;
+
+    img {
+        max-width: 100%;
+    }
+}
