@@ -15,6 +15,7 @@
       </li>
     </ul>
     <button @click="logUserOut">Log Out</button>
+    <button @click="postToAPI"></button>
   </header>
 </template>
 
@@ -24,6 +25,18 @@
     methods: {
       logUserOut() {
         this.$store.dispatch('logUserOut')
+      },
+      postToAPI() {
+        this.$axios.post('http://localhost:3030/users', {
+          email: "yaz@yaz.com",
+          password: "password5678"
+        })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(e => {
+          console.log(e)
+        })
       }
     },
     computed: {
