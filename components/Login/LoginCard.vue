@@ -62,10 +62,11 @@
                 this.toast.status = 'warning'
               }, 2000)
             })
-        } else {
-          // Run method to start user registration
-          this.$store.dispatch('applyUser', user)
-        }
+        } 
+        // else {
+        //   // Run method to start user registration
+        //   this.$store.dispatch('applyUser', user)
+        // }
       }
     }
   }

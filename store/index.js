@@ -57,31 +57,43 @@ const createStore = () => {
     },
     actions: {
       checkUserStatus(vuexContext, authData) { // Check status of existing user account before allowing login
+
         return new Promise((resolve, reject) => {
-          return this.$axios.get(`${process.env.baseURL}users.json?orderBy="email"&equalTo="${authData.email}"`)
-            .then(res => {
-              const matchArray = Object.keys(res.data).map((key) => {
-                return Object(res.data[key])
-              })
-              if (matchArray.length > 1) {
-                console.log('Error: More than one email match')
-              } else if (matchArray.length === 1) {
-                if (matchArray[0].userStatus.toLowerCase() === "suspended") {
-                  reject('This user is suspended!')
-                } else if (matchArray[0].userStatus.toLowerCase() === "pending") {
-                  reject('This user is pending...')
-                }else {
-                  console.log('This user is approved')
-                  resolve()
-                }
-              } else {
-                reject('No account found')
-              }
-            })
-            .catch(e => {
-              console.log(e)
-            })
+          this.$axios.post('http://localhost:3030/users/login', authData)
+          .then(res => {
+            console.log('RES: ', res)
+            resolve(res)
+          })
+          .catch(e => {
+            console.log(e)
+            reject(e)
+          })
         })
+        // return new Promise((resolve, reject) => {
+        //   return this.$axios.get(`${process.env.baseURL}users.json?orderBy="email"&equalTo="${authData.email}"`)
+        //     .then(res => {
+        //       const matchArray = Object.keys(res.data).map((key) => {
+        //         return Object(res.data[key])
+        //       })
+        //       if (matchArray.length > 1) {
+        //         console.log('Error: More than one email match')
+        //       } else if (matchArray.length === 1) {
+        //         if (matchArray[0].userStatus.toLowerCase() === "suspended") {
+        //           reject('This user is suspended!')
+        //         } else if (matchArray[0].userStatus.toLowerCase() === "pending") {
+        //           reject('This user is pending...')
+        //         }else {
+        //           console.log('This user is approved')
+        //           resolve()
+        //         }
+        //       } else {
+        //         reject('No account found')
+        //       }
+        //     })
+        //     .catch(e => {
+        //       console.log(e)
+        //     })
+        // })
       },
       authenticateUser(vuexContext, authData) {
         return new Promise((resolve, reject) => {
@@ -152,27 +164,14 @@ const createStore = () => {
         vuexContext.commit('setToken', token)
       },
       applyUser(vuexContext, userData) {
-        // ! Need to run checks to see if user has applied before
-
-        // Create an empty entry in the users node so that we can store the reference in the temporary user's data
-        let newUserKey = firebase.database().ref('users').push().key
-        console.log(newUserKey)
-
-        // UPDATE that empty entry with the user's information, including the reference key
         return new Promise((resolve, reject) => {
-          firebase.database().ref('/users/' + newUserKey).update({
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            email: userData.email,
-            userStatus: 'Pending',
-            applicationDate: (new Date()).toString(),
-            userId: newUserKey
-          })
+          this.$axios.post('http://localhost:3030/users/register', userData)
           .then(res => {
-            resolve(res)
+            console.log(res)
+            resolve()
           })
           .catch(e => {
-            reject(e)
+            reject(e);
           })
         })
       },
@@ -384,9 +383,9 @@ const createStore = () => {
           return
         }
       },
-      addCookie(context, payload) {
-        Cookie.set('random', payload)
-      }
+      // addCookie(context, payload) {
+      //   Cookie.set('random', payload)
+      // }
     }
   })
 }

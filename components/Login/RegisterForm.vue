@@ -18,7 +18,6 @@
       <div class="input-group">
         <button class="login-form__button" @click.prevent="submitRegistration" :disabled="$v.$invalid">{{mode.toUpperCase()}}</button>
       </div>
-      <p>{{ $v.user.email }}</p>
     </form>
     <toast :toast="toast"></toast>
     </div>
@@ -28,16 +27,16 @@
 import { required, email } from 'vuelidate/lib/validators'
 import Toast from '~/components/Base/Toast.vue'
 
-export function emailCheck(value, parentVm) {
-    if (value === '') {
-        return true
-    }
-    return this.$axios.get(`${process.env.baseURL}users.json?orderBy="email"&equalTo="${value}"`)
-        .then(res => {
-            return Object.keys(res.data).length === 0
-        })
-        .catch(e => console.log(e))
-}
+// export function emailCheck(value, parentVm) {
+//     if (value === '') {
+//         return true
+//     }
+//     return this.$axios.get(`${process.env.baseURL}users.json?orderBy="email"&equalTo="${value}"`)
+//         .then(res => {
+//             return Object.keys(res.data).length === 0
+//         })
+//         .catch(e => console.log(e))
+// }
 
 export default {
     data() {
@@ -55,10 +54,23 @@ export default {
     },
     methods: {
         submitRegistration() {
-            // Check for existing user
-            console.log(this.user)
-            this.$emit('submitRegistration', this.user)
-            this.clearForm()
+            this.$store.dispatch('applyUser', this.user)
+                .then((res) => {
+                    this.toast.status = 'good'
+                    this.toast.message = 'User applied'
+                    this.clearForm()
+                    setTimeout(() => {
+                        this.toast = {}
+                    }, 2000)
+                })
+                .catch(e => {
+                    console.log('Error: ', e)
+                    this.toast.status = 'error'
+                    this.toast.message = e.message 
+                    setTimeout(() => {
+                        this.toast = {}
+                    }, 2000)
+                })
         },
         clearForm() {
             this.user = {
@@ -81,8 +93,8 @@ export default {
             },
             email: {
                 required: required,
-                email,
-                emailCheck: emailCheck
+                email
+                // emailCheck: emailCheck
             }
         }
     }

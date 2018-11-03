@@ -13,7 +13,7 @@
             <div class="input-group">
                 <button class="login-form__button" @click.prevent="submitLogin" :disabled="$v.$invalid">{{mode.toUpperCase()}}</button>
             </div>
-            <div class="input-group">
+            <!-- <div class="input-group">
                 <button class="login-form__button" @click.prevent="signOut">Sign Out</button>
             </div>
             <div class="input-group">
@@ -21,7 +21,7 @@
             </div>
             <div class="input-group">
                 <button class="login-form__button" @click.prevent="addCookie">Add Cookie</button>
-            </div>
+            </div> -->
             <toast :toast="toast"></toast>
         </form>
     </div>
@@ -52,17 +52,29 @@ export default {
     props: ['mode', 'toast'],
     methods: {
         submitLogin() {
-                this.$emit('submitLogin', this.user)
+                // Check whether user exists
+                this.$store.dispatch('checkUserStatus', this.user)
+                    .then(res => {
+                        this.$router.push('/')
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+                // Check whether user is permitted
+
+                // Check password matches
+
+                // Push to dashboard
         },
-        signOut() {
-            this.$store.dispatch('logUserOut')
-        },
-        checkUser() {
-            console.log(firebase.auth().currentUser)
-        },
-        addCookie() {
-            this.$store.dispatch('addCookie', 'kjdkhassadiasoijoijijowqoij')
-        }
+        // signOut() {
+        //     this.$store.dispatch('logUserOut')
+        // },
+        // checkUser() {
+        //     console.log(firebase.auth().currentUser)
+        // },
+        // addCookie() {
+        //     this.$store.dispatch('addCookie', 'kjdkhassadiasoijoijijowqoij')
+        // }
     },
     validations: {
         user: {
