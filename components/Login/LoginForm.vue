@@ -38,6 +38,10 @@ export default {
             user: {
                 email: '',
                 password: ''
+            },
+            toast: {
+                status: null,
+                message: null
             }
         }
     },
@@ -49,16 +53,27 @@ export default {
     components: {
         toast: Toast
     },
-    props: ['mode', 'toast'],
+    props: ['mode'],
     methods: {
         submitLogin() {
                 // Check whether user exists
-                this.$store.dispatch('checkUserStatus', this.user)
-                    .then(res => {
+                this.$store.dispatch('login', this.user)
+                    .then(user => {
+                        console.log('Successful login!')
                         this.$router.push('/')
                     })
                     .catch(e => {
                         console.log(e)
+                        this.toast = {
+                            status: 'error',
+                            message: 'Login details incorrect'
+                        }
+                        setTimeout(() => {
+                            this.toast = {
+                                status: null,
+                                message: null
+                            }
+                        }, 2000)
                     })
                 // Check whether user is permitted
 

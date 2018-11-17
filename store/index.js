@@ -1,5 +1,9 @@
 import Vuex from 'vuex'
 import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
+
+import utils from '../utils/utils'
+
 import firebase from '~/plugins/firebase'
 import { auth } from '~/plugins/firebase'
 import cloudinary from 'cloudinary-core'
@@ -13,8 +17,9 @@ const createStore = () => {
       editEvent: null
     },
     mutations: {
-      setCurrentUser(state, payload) {
-        state.currentUser = payload
+      setCurrentUser(state, userData) {
+        console.log('setCurrentUser() ', userData)
+        state.currentUser = userData
       },
       // setToken(state, token) {
       //     state.currentUser.token = token
@@ -56,58 +61,142 @@ const createStore = () => {
       }
     },
     actions: {
-      checkUserStatus(vuexContext, authData) { // Check status of existing user account before allowing login
-
+      login(vuexContext, authData) { // Check status of existing user account before allowing login
         return new Promise((resolve, reject) => {
           this.$axios.post('http://localhost:3030/users/login', authData)
           .then(res => {
-            console.log('RES: ', res)
-            resolve(res)
-          })
-          .catch(e => {
-            console.log(e)
-            reject(e)
-          })
-        })
-        // return new Promise((resolve, reject) => {
-        //   return this.$axios.get(`${process.env.baseURL}users.json?orderBy="email"&equalTo="${authData.email}"`)
-        //     .then(res => {
-        //       const matchArray = Object.keys(res.data).map((key) => {
-        //         return Object(res.data[key])
-        //       })
-        //       if (matchArray.length > 1) {
-        //         console.log('Error: More than one email match')
-        //       } else if (matchArray.length === 1) {
-        //         if (matchArray[0].userStatus.toLowerCase() === "suspended") {
-        //           reject('This user is suspended!')
-        //         } else if (matchArray[0].userStatus.toLowerCase() === "pending") {
-        //           reject('This user is pending...')
-        //         }else {
-        //           console.log('This user is approved')
-        //           resolve()
-        //         }
-        //       } else {
-        //         reject('No account found')
-        //       }
-        //     })
-        //     .catch(e => {
-        //       console.log(e)
-        //     })
-        // })
-      },
-      authenticateUser(vuexContext, authData) {
-        return new Promise((resolve, reject) => {
-          return auth.signInWithEmailAndPassword(authData.email, authData.password)
-          .then((res) => {
-            Cookie.set('dsj_uid', auth.currentUser.uid)
-            vuexContext.commit('setCurrentUser', res.user)
+            vuexContext.dispatch('setCurrentUser', res.data)
+            const token = res.data.tokens.find(cur => {
+              return cur.access = "auth"
+            }).token
+            Cookie.set('dsj_access', token);
             resolve()
           })
           .catch((e) => {
-            console.log(e)
-            reject()
+            reject(e)
           })
         })
+      },
+      setCurrentUser(vuexContext, userData) { // Commit mutation to set current user data in Vuex store
+        console.log('setCurrentUser action', userData)
+        vuexContext.commit('setCurrentUser', userData)
+      },
+      resetPassword(vuexContext, payload) {
+        this.$axios.post('http://localhost:3030/users/:id/set-password', payload)
+          .then(() => console.log(success))
+          .catch((e) => console.log(e))
+      },
+      initAuth(vuexContext, req) { // Runs between admin route changes to check validity of token and tokenExpiryDate
+        let token
+        console.log('initAuth() started');
+        
+        // If process is running on server
+        if (req) {
+          console.log('Server process');
+          // Check for existence of Cookie
+          if (req.headers.cookie) {
+            token = jwt.decode((utils.tokenFromCookie('dsj_access', req.headers.cookie)).value)
+          }
+        }  
+        // If process is running on client
+        else {
+          console.log('Client process');
+          token = jwt.decode(Cookie.get('dsj_access'))
+        }
+
+        // Check we have a valid access token
+        console.log('token: ', token);
+        if (new Date().getTime() > parseInt(token.expiresAt) || !token) {
+          // token is expired
+          console.log('token is expired')
+          vuexContext.dispatch('logUserOut')
+          return
+        } else {
+          console.log('token is valid');
+          return vuexContext.dispatch('getUserById', token.id)
+            .then(user => {
+              vuexContext.commit('setCurrentUser', user)
+            })
+            .catch(e => {
+              console.log(e)
+            })
+        }
+        // if (req) { // If process is running on server
+        //   if (!req.headers.cookie) {
+        //     return
+        //   }
+        //   token = req.headers.cookie.split(';').find(c => c.trim().startsWith('token=')).split('=')[1]
+        //   if (!token) {
+        //     return
+        //   }
+        //   tokenExpirationDate = req.headers.cookie.split(';').find(c => c.trim().startsWith('tokenExpirationDate=')).split('=')[1]
+        // } else {
+        //   token = Cookie.get('dsj_access')
+        //   decoded = jwt.decode(token)
+        //   console.log('DECODED: ', decoded)
+        //   tokenExpiration = decoded.iat * 1000
+        //   console.log(new Date().getTime())
+        // }       
+        // // If token has expired or there is no token, then return
+        // if (new Date().getTime() > Number.parseInt(tokenExpiration) || !token) {
+        //   console.log('Token expired or no token')
+        //   return
+        // }
+        // // If process is running in browser, set localStorage token and expiry
+        // if (process.client) {
+        //   localStorage.setItem('token', token)
+        //   localStorage.setItem('tokenExpirationDate', tokenExpirationDate)
+        // } else {
+        //   // If process is running on server, set Cookie token and expiry
+        //   Cookie.set('token', token)
+        //   Cookie.set('tokenExpirationDate', tokenExpirationDate)
+        // }
+        // vuexContext.commit('setToken', token)
+      },
+      getUserById(vuexContext, id) {
+        return new Promise((resolve, reject) => {
+          this.$axios.get(`http://localhost:3030/users/${id}`)
+            .then(res => {
+              console.log('res.data: ', res.data);
+              resolve(res.data)
+            })
+            .catch(e => {
+              reject(e);
+            })
+        })
+      },
+      getEventData() {
+        return new Promise((resolve, reject) => {
+          return this.$axios.get(process.env.baseURL + 'events.json')
+          .then((res) => {
+            resolve(res)
+          })
+          .catch((e) => {
+            reject(e)
+          })
+        })
+      },
+      logUserOut(vuexContext) {
+        // Clear Cookie
+        Cookie.remove('dsj_access')
+        // Unset Current User 
+        vuexContext.commit('setCurrentUser', null)
+        // Push to login
+        this.$router.push('/login/')
+      },
+      // authenticateUser(vuexContext, authData) {
+      //   return new Promise((resolve, reject) => {
+      //     return auth.signInWithEmailAndPassword(authData.email, authData.password)
+      //     .then((res) => {
+      //       Cookie.set('dsj_uid', auth.currentUser.uid)
+      //       vuexContext.commit('setCurrentUser', res.user)
+      //       resolve()
+      //     })
+      //     .catch((e) => {
+      //       console.log(e)
+      //       reject()
+      //     })
+      //   })
         // return new Promise((resolve, reject) => {
         //   return this.$axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${process.env.fbAPIKey}`, {
         //     email: authData.email,
@@ -131,38 +220,8 @@ const createStore = () => {
         //   })
         // })
       },
-      initAuth(vuexContext, req) { // Runs between admin route changes to check validity of token and tokenExpiryDate
-        // Set variables
-        let token, tokenExpirationDate, uid
-        if (req) {
-          if (!req.headers.cookie) {
-            return
-          }
-          token = req.headers.cookie.split(';').find(c => c.trim().startsWith('token=')).split('=')[1]
-          if (!token) {
-            return
-          }
-          tokenExpirationDate = req.headers.cookie.split(';').find(c => c.trim().startsWith('tokenExpirationDate=')).split('=')[1]
-        } else {
-          token = localStorage.getItem('token')
-          tokenExpirationDate = localStorage.getItem('tokenExpirationDate')
-        }       
-        // If token has expired or there is no token, then return
-        if (new Date().getTime() > Number.parseInt(tokenExpirationDate) || !token) {
-          console.log('Token expired or no token')
-          return
-        }
-        // If process is running in browser, set localStorage token and expiry
-        if (process.client) {
-          localStorage.setItem('token', token)
-          localStorage.setItem('tokenExpirationDate', tokenExpirationDate)
-        } else {
-          // If process is running on server, set Cookie token and expiry
-          Cookie.set('token', token)
-          Cookie.set('tokenExpirationDate', tokenExpirationDate)
-        }
-        vuexContext.commit('setToken', token)
-      },
+      
+      
       applyUser(vuexContext, userData) {
         return new Promise((resolve, reject) => {
           this.$axios.post('http://localhost:3030/users/register', userData)
@@ -269,27 +328,7 @@ const createStore = () => {
           vuexContext.commit('clearToken')
         }, duration * 1000)
       },
-      logUserOut(vuexContext) {
-        // // Remove local storage token and expiry
-        // localStorage.removeItem('token')
-        // localStorage.removeItem('tokenExpirationDate')
-        // // Remove Cookie token and expiry
-        // Cookie.remove('token')
-        // Cookie.remove('tokenExpirationDate')
-        // // Change state of user
-        // vuexContext.commit('unsetCurrentUser')
-        // vuexContext.commit('clearToken')
-        auth.signOut()
-          .then(() => {
-            // Push to home
-            Cookie.remove('dsj_uid')
-            vuexContext.commit('setCurrentUser', null)
-            this.$router.push('/login/')
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-      },
+      
       getUserByEmail(vuexContext, user) {
         return firebase.auth().fetchSignInMethodsForEmail(user.email)
         .then((res) => {
@@ -332,17 +371,7 @@ const createStore = () => {
         // If there is sufficient time, take the booking
         // If not, inform the user of the minimum time required and offer to change start or end time
       },
-      getEventData() {
-        return new Promise((resolve, reject) => {
-          return this.$axios.get(process.env.baseURL + 'events.json')
-          .then((res) => {
-            resolve(res)
-          })
-          .catch((e) => {
-            reject(e)
-          })
-        })
-      },
+      
       setEditEvent(vuexContext, dsjEvent) {
         console.log('setEditEvent() action')
         vuexContext.commit('setEditEvent', dsjEvent)
@@ -367,10 +396,11 @@ const createStore = () => {
       async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
         let uidCookie
         if (context.req) {
+          console.log('REQ*** ', context.req)
           if (!context.req.headers.cookie) {
             return
           } else {
-            uidCookie = parseCookie(context, 'dsj_uid')
+            uidCookie = parseCookie(context, 'dsj_access')
             await context.app.$axios.get(process.env.baseURL + 'users/' + uidCookie + '.json')
             .then((res) => {
               vuexContext.commit('setCurrentUser', res.data)
@@ -382,11 +412,10 @@ const createStore = () => {
         } else {
           return
         }
-      },
+      }
       // addCookie(context, payload) {
       //   Cookie.set('random', payload)
       // }
-    }
   })
 }
 

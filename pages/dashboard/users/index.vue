@@ -40,6 +40,6 @@
           console.log(e)
         })
     },
-    // layout: 'admin'
+    layout: 'admin'
   }
 </script>

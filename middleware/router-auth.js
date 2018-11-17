@@ -1,6 +1,6 @@
 export default function({store, redirect, route}) { // Route guards
     // store.state.currentUser != null && route.name == 'login' ? redirect('/dashboard') : ''
-    store.state.currentUser == null && isAdminRoute(route) ? redirect('/login') : ''
+    // store.state.currentUser == null && isAdminRoute(route) ? redirect('/login') : ''
 }
 
 function isAdminRoute(route) {
