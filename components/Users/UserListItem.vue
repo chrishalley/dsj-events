@@ -7,9 +7,9 @@
         <li class="users-list__tile-info"><a href="mailto:${user.email}">{{user.email}}</a></li>
         <li class="users-list__tile-info">{{user.dateApplied | DDMMYY}}</li>
         <li class="users-list__tile-info">{{user.userStatus}}</li>
-        <li style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.userStatus !== 'Approved'">Approve</li>
-        <li style="color: orange" class="users-list__tile-info" @click="userSuspend(user)" v-if="user.userStatus === 'Approved'">Suspend</li>
-        <li style="color: red" class="users-list__tile-info" @click="userRemove(user)" v-if="user.userStatus !== 'Deleted'">Delete</li>
+        <li style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.status !== 'approved'">Approve</li>
+        <li style="color: orange" class="users-list__tile-info" @click="userSuspend(user)" v-if="user.status === 'approved'">Suspend</li>
+        <li style="color: red" class="users-list__tile-info" @click="userRemove(user)" v-if="user.status !== 'deleted'">Delete</li>
     </ul>
 </template>
 
@@ -53,17 +53,25 @@ export default {
       },
       userRemove(user) { // Delete user from user node
       const id = user._id
-        console.log('userRemove()', id)
         this.$store.dispatch('deleteUser', id)
           .then(() => {
-            console.log('user deleted***')
             this.$emit('userDeleted', id)
           })
           .catch(e => console.log(e))
       },
       userSuspend(user) { // Add 'Suspended' flag to user's data, preventing access in future but not deleting their account
-        user.userStatus = 'Suspended'
-        this.$store.dispatch('suspendUser', user)
+        const payload = {
+          id: user._id,
+          update: {
+            status: 'suspended'
+          }
+        }
+        this.$store.dispatch('updateUser', payload)
+          .then(res => {
+            console.log(res)
+            user.status = 'suspended'
+          })
+          .catch(e => console.log(e))
       }
     },
     filters: {
