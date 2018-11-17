@@ -5,7 +5,7 @@
         </li>
         <li class="users-list__tile-info users-list__tile-info--name">{{user.firstName}} {{user.lastName}}</li>
         <li class="users-list__tile-info"><a href="mailto:${user.email}">{{user.email}}</a></li>
-        <li class="users-list__tile-info">{{user.applicationDate | DDMMYY}}</li>
+        <li class="users-list__tile-info">{{user.dateApplied | DDMMYY}}</li>
         <li class="users-list__tile-info">{{user.userStatus}}</li>
         <li style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.userStatus !== 'Approved'">Approve</li>
         <li style="color: orange" class="users-list__tile-info" @click="userSuspend(user)" v-if="user.userStatus === 'Approved'">Suspend</li>
@@ -19,18 +19,17 @@ export default {
     methods: {
         statusClass(user) {
         let statusClass = {}
-        let userStatus = user.userStatus
-        switch(userStatus) {
-          case 'Approved':
+        switch(user.status) {
+          case 'approved':
             statusClass = {'users-list__status-chip--approved': true}
             break;
-          case 'Pending':
+          case 'pending':
             statusClass = {'users-list__status-chip--pending': true}
             break;
-          case 'Suspended':
+          case 'suspended':
             statusClass = {'users-list__status-chip--suspended': true}
             break;
-          case 'Deleted':
+          case 'deleted':
             statusClass = {'users-list__status-chip--deleted': true}
             break;
           default:
@@ -39,35 +38,28 @@ export default {
         return statusClass
       },
       userApprove(user) { // Dispatch action to approve user application
-        this.$store.dispatch('getUserByEmail', user)
-        .then((value) => {
-          if (!value) { // In the case that an account for that email does not already exist
-            this.$store.dispatch('approveUser', user)
-            .then(res => {
-              user.userStatus = 'Approved'
-            })
-            .catch(e => {
-              console.log(e)
-            })
-          } else { // An account already exists
-            console.log('An account already exists')
-            this.$store.dispatch('reinstateUser', user) // Reinstate user in the database
-            .then(res => {
-              user.userStatus = 'Approved' // Change user's local status
-            })
-            .catch(e => {
-              console.log(e)
-            })
+        const payload = {
+          id: user._id,
+          update: {
+            status: 'approved'
           }
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+        }
+        this.$store.dispatch('updateUser', payload)
+          .then(res => {
+            console.log(res)
+            user.status = 'approved'
+          })
+          .catch(e => console.log(e))
       },
       userRemove(user) { // Delete user from user node
-        console.log('userRemove()')
-        this.$store.dispatch('deleteUser', user)
-        user.userStatus = 'Deleted'
+      const id = user._id
+        console.log('userRemove()', id)
+        this.$store.dispatch('deleteUser', id)
+          .then(() => {
+            console.log('user deleted***')
+            this.$emit('userDeleted', id)
+          })
+          .catch(e => console.log(e))
       },
       userSuspend(user) { // Add 'Suspended' flag to user's data, preventing access in future but not deleting their account
         user.userStatus = 'Suspended'

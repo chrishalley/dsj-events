@@ -85,7 +85,7 @@ module.exports = {
     ]
   },
   env: {
-    baseURL: 'https://dsj-events-app.firebaseio.com/',
+    baseURL: 'http://localhost:3030',
     fbAPIKey: 'AIzaSyAtV5Wa4T0r3b7iQDUDd4nTLjiK3E3JywA'
   }
 }

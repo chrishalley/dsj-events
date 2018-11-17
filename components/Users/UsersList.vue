@@ -12,7 +12,7 @@
         </ul>
       </div>
       <div v-for="(user, i) in users" :key="i" class="users-list__tile">
-        <user-list-item :user="user"></user-list-item>
+        <user-list-item :user="user" @userDeleted="removeUser" ></user-list-item>
         <!-- <div class="users-list__tile-info users-list__status-chip" :class="statusClass(user)"></div>
         <p class="users-list__tile-info users-list__tile-info--name">{{user.firstName}} {{user.lastName}}</p>
         <p class="users-list__tile-info"><a href="mailto:${user.email}">{{user.email}}</a></p>
@@ -52,6 +52,9 @@ import UserListItem from '~/components/Users/UserListItem.vue'
           return (nameA > nameB) ? -1 : (nameA < nameB) ? -1 : 0
         })
         console.log(this.users)
+      },
+      removeUser(id) {
+        this.$emit('removeUser', id)
       }
     }
   }
