@@ -4,7 +4,7 @@
         <div class="users-list__status-chip" :class="statusClass(user)"></div>
         </li>
         <li class="users-list__tile-info users-list__tile-info--name">{{user.firstName}} {{user.lastName}}</li>
-        <li class="users-list__tile-info"><a href="mailto:${user.email}">{{user.email}}</a></li>
+        <li class="users-list__tile-info"><a :href="mailto">{{user.email}}</a></li>
         <li class="users-list__tile-info">{{user.dateApplied | DDMMYY}}</li>
         <li class="users-list__tile-info">{{user.userStatus}}</li>
         <li style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.status !== 'approved'">Approve</li>
@@ -46,7 +46,6 @@ export default {
         }
         this.$store.dispatch('updateUser', payload)
           .then(res => {
-            console.log(res)
             user.status = 'approved'
           })
           .catch(e => console.log(e))
@@ -68,7 +67,6 @@ export default {
         }
         this.$store.dispatch('updateUser', payload)
           .then(res => {
-            console.log(res)
             user.status = 'suspended'
           })
           .catch(e => console.log(e))
@@ -81,6 +79,11 @@ export default {
         let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
         let year = date.getFullYear()
         return day + '/' + month + '/' + year
+      }
+    },
+    computed: {
+      mailto() {
+        return `mailto:${this.user.email}`
       }
     }
 }
