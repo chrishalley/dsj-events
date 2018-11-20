@@ -6,7 +6,7 @@
         <li class="users-list__tile-info users-list__tile-info--name">{{user.firstName}} {{user.lastName}}</li>
         <li class="users-list__tile-info"><a :href="mailto">{{user.email}}</a></li>
         <li class="users-list__tile-info">{{user.dateApplied | DDMMYY}}</li>
-        <li class="users-list__tile-info">{{user.userStatus}}</li>
+        <li class="users-list__tile-info">{{user.role}}</li>
         <li style="color: green" class="users-list__tile-info" @click="userApprove(user)" v-if="user.status !== 'approved'">Approve</li>
         <li style="color: orange" class="users-list__tile-info" @click="userSuspend(user)" v-if="user.status === 'approved'">Suspend</li>
         <li style="color: red" class="users-list__tile-info" @click="userRemove(user)" v-if="user.status !== 'deleted'">Delete</li>

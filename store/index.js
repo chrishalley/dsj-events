@@ -142,10 +142,11 @@ const createStore = () => {
           })
         })
       },
-      updateUser(vuexContext, payload) {
-        this.$axios.put(`${process.env.baseURL}/users/${payload.id}`, payload.update)
+      updateUser(vuexContext, user) {
+        console.log(user._id)
+        return this.$axios.put(`${process.env.baseURL}/users/${user._id}`, user)
           .then(res => {
-            return
+            return res
           })
           .catch(e => console.log(e))
       },

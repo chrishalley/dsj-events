@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <h1>Logo</h1>
-    <p v-if="currentUser !== null">Welcome: {{currentUser.email}}</p>
+    <p v-if="currentUser !== null">Welcome: {{currentUser.firstName}} ({{currentUser.email}})</p>
     <p>Status: {{status}}</p>
     <ul class="header__nav">
       <li class="header__nav-item">

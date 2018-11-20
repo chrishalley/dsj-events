@@ -30,7 +30,6 @@
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators'
 import Toast from '~/components/Base/Toast.vue'
-import firebase from 'firebase'
 
 export default {
     data() {

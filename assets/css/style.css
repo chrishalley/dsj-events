@@ -21,6 +21,23 @@ body {
 .mb-sm {
   margin-bottom: 1em; }
 
+.mt-sm {
+  margin-top: 1em; }
+
+.card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+  backface-visibility: hidden; }
+  .card:not(:last-child) {
+    margin-bottom: 1rem; }
+  .card:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
+
 .row {
   max-width: 1000px;
   margin: 0 auto;

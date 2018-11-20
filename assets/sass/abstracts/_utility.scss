@@ -5,3 +5,11 @@
 .mb-sm {
   margin-bottom: 1em;
 }
+
+.mt-sm {
+  margin-top: 1em;
+}
+
+.card {
+  @include card;
+}

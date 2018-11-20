@@ -1,6 +1,6 @@
 <template>
-    <div class="new-user-card">
-        <form class="add-user-form text-center">
+  <div class="new-user-card">
+    <form class="add-user-form text-center">
       <h3>Add user</h3>
       <div class="add-user-form__input-group" :class="{invalid: $v.user.firstName.$error}">
         <label class="add-user-form__label" for="firstName">First Name</label>
@@ -29,7 +29,7 @@
         <button class="add-user-form__button" @click.prevent="cancel">Cancel</button>
       </div>
     </form>
-    </div>
+  </div>
 </template>
 
 <script>

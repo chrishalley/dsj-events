@@ -1,5 +1,6 @@
 <template>
   <div>
+    <UserDetailsCard :user='currentUser'></UserDetailsCard>
     <h1>Users</h1>
     <button @click="addFlag = !addFlag">Add new user</button>
     <AddUserCard v-if="addFlag" @close="addFlag = false"></AddUserCard> 
@@ -10,10 +11,13 @@
 <script>
   import UsersList from '~/components/Users/UsersList'
   import AddUserCard from '~/components/Users/AddUserCard'
+  import UserDetailsCard from '~/components/Users/UserDetailsCard'
+
   export default {
     components: {
       UsersList,
-      AddUserCard
+      AddUserCard,
+      UserDetailsCard
     },
     data() {
       return {
@@ -35,6 +39,11 @@
         this.users = this.users.filter(cur => {
           return cur._id !== id
         })
+      }
+    },
+    computed: {
+      currentUser() {
+        return this.$store.getters.currentUser
       }
     },
     beforeCreate() {
