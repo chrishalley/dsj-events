@@ -15,13 +15,19 @@
         <input class="add-user-form__input" id="email" type="text" v-model.lazy="user.email" placeholder="eg. username@gmail.com" @blur="$v.user.email.$touch()">
         <p v-if="!$v.user.email.emailCheck">An account with this email already exists</p>
       </div>
+      <div class="add-user-form__input-group" :class="{invalid: $v.user.email.$error}">
+        <label class="add-user-form__label" for="role">Role</label>
+        <select name="role" v-model="user.role">
+          <option value="admin">Admin</option>
+          <option value="super-admin">Super Admin</option>
+        </select>
+      </div>
       <div class="input-group">
         <button class="add-user-form__button" @click.prevent="addUser" :disabled="$v.$invalid">Save</button>
       </div>
       <div class="input-group">
         <button class="add-user-form__button" @click.prevent="cancel">Cancel</button>
       </div>
-      <div>{{this.user}}</div>
     </form>
     </div>
 </template>
@@ -47,6 +53,7 @@ export default {
           firstName: '',
           lastName: '',
           email: '',
+          role: 'admin'
         }
       }
     },
@@ -55,6 +62,7 @@ export default {
         this.$store.dispatch('addUser', this.user)
           .then((data) => {
             console.log(data)
+            this.$emit('newUserAdded', data)
             this.clearForm()
           })
           .catch(e => {
