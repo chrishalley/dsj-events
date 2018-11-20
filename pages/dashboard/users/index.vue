@@ -1,33 +1,27 @@
 <template>
   <div>
     <h1>Users</h1>
+    <button @click="addFlag = !addFlag">Add new user</button>
+    <AddUserCard v-if="addFlag" @close="addFlag = false"></AddUserCard> 
     <UsersList :users='users' @removeUser="removeUser"></UsersList>
   </div>
 </template>
 
 <script>
   import UsersList from '~/components/Users/UsersList'
+  import AddUserCard from '~/components/Users/AddUserCard'
   export default {
     components: {
-      UsersList
+      UsersList,
+      AddUserCard
     },
     data() {
       return {
-        users: [
-          // {
-          //   applicationDate: 'Tuesday',
-          //   approvedDate: 'Wednesday',
-          //   email: 'email@email.com',
-          //   firstName: 'John',
-          //   lastName: 'Smith',
-          //   userId: '1',
-          //   userStatus: 'Approved'
-          // }
-        ]
+        users: [],
+        addFlag: false
       }
     },
     asyncData(context) {
-      console.log('Async data!')
       return context.$axios.get(`${process.env.baseURL}/users`)
         .then(res => {
           return {users: res.data}

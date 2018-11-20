@@ -226,3 +226,18 @@ input, textarea {
   padding: 3rem; }
   .image-upload img {
     max-width: 100%; }
+
+.new-user-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+  backface-visibility: hidden;
+  max-width: 600px; }
+  .new-user-card:not(:last-child) {
+    margin-bottom: 1rem; }
+  .new-user-card:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }

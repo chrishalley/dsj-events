@@ -1,0 +1,6 @@
+.new-user-card {
+  @include card;
+  // @include centered;
+  // position: fixed;
+  max-width: 600px;
+}

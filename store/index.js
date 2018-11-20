@@ -131,11 +131,11 @@ const createStore = () => {
         // Push to login
         this.$router.push('/login/')
       },
-      applyUser(vuexContext, userData) {
+      addUser(vuexContext, userData) {
         return new Promise((resolve, reject) => {
-          this.$axios.post(`${process.env.baseURL}/users/register`, userData)
-          .then(res => {
-            resolve()
+          this.$axios.post(`${process.env.baseURL}/users`, userData)
+          .then((res)=> {
+            resolve(res.data)
           })
           .catch(e => {
             reject(e);
