@@ -51,6 +51,7 @@ module.exports = {
   modules: [
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/axios-module#usage
+    'nuxt-babel'
   ],
   /*
   ** Axios module configuration
