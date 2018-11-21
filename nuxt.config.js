@@ -21,7 +21,11 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
+<<<<<<< HEAD
   loading: { color: '#fff' },
+=======
+  loading: { color: '#FFFFFF' },
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
 
   /*
   ** Global CSS
@@ -34,6 +38,11 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+<<<<<<< HEAD
+=======
+    '~plugins/firebase.js',
+    '~plugins/fireauth.js',
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
     '~plugins/vuelidate.js',
     '~plugins/filters.js'
   ],
@@ -42,15 +51,25 @@ module.exports = {
   ** Middleware to run between routes
   */
  router: {
+<<<<<<< HEAD
   middleware: ['router-auth']
 },
+=======
+   middleware: ['router-auth']
+ },
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
 
   /*
   ** Nuxt.js modules
   */
   modules: [
+<<<<<<< HEAD
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios'
+=======
+    '@nuxtjs/axios',
+    // Doc: https://github.com/nuxt-community/axios-module#usage
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
   ],
   /*
   ** Axios module configuration
@@ -78,10 +97,19 @@ module.exports = {
       }
     },
     vendor: [
+<<<<<<< HEAD
+=======
+      'firebase',
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
       'vuelidate'
     ]
   },
   env: {
+<<<<<<< HEAD
     baseURL: 'http://localhost:3030',
+=======
+    baseURL: 'https://dsj-events-app.firebaseio.com/',
+    fbAPIKey: 'AIzaSyAtV5Wa4T0r3b7iQDUDd4nTLjiK3E3JywA'
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
   }
 }

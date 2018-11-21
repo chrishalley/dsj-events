@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
@@ -66,10 +67,20 @@ typings/
 .next
 
 # nuxt.js build output
+=======
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+
+# Nuxt build
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
 .nuxt
 
 # Nuxt generate
 dist
+<<<<<<< HEAD
 
 # vuepress build output
 .vuepress/dist
@@ -79,3 +90,5 @@ dist
 
 # IDE
 .idea
+=======
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253

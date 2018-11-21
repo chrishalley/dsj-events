@@ -46,7 +46,11 @@ import EventDetailedCard from '~/components/Events/EventDetailedCard.vue'
         console.log(e)
       })
     },
+<<<<<<< HEAD
     layout: 'admin',
+=======
+    // layout: 'admin',
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
     components: {
       EventForm,
       EventList,

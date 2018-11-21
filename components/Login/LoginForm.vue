@@ -30,6 +30,10 @@
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators'
 import Toast from '~/components/Base/Toast.vue'
+<<<<<<< HEAD
+=======
+import firebase from 'firebase'
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
 
 export default {
     data() {
@@ -37,10 +41,13 @@ export default {
             user: {
                 email: '',
                 password: ''
+<<<<<<< HEAD
             },
             toast: {
                 status: null,
                 message: null
+=======
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
             }
         }
     },
@@ -52,6 +59,7 @@ export default {
     components: {
         toast: Toast
     },
+<<<<<<< HEAD
     props: ['mode'],
     methods: {
         submitLogin() {
@@ -59,10 +67,19 @@ export default {
                 this.$store.dispatch('login', this.user)
                     .then(user => {
                         console.log('Successful login!')
+=======
+    props: ['mode', 'toast'],
+    methods: {
+        submitLogin() {
+                // Check whether user exists
+                this.$store.dispatch('checkUserStatus', this.user)
+                    .then(res => {
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
                         this.$router.push('/')
                     })
                     .catch(e => {
                         console.log(e)
+<<<<<<< HEAD
                         this.toast = {
                             status: 'error',
                             message: 'Login details incorrect'
@@ -73,6 +90,8 @@ export default {
                                 message: null
                             }
                         }, 2000)
+=======
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
                     })
                 // Check whether user is permitted
 

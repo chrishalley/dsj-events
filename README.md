@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # dsj_events
 
 > My superb Nuxt.js project
+=======
+# dsj-events
+
+> My impressive Nuxt.js project
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
 
 ## Build Setup
 

@@ -1,7 +1,11 @@
 <template>
   <header class="header">
     <h1>Logo</h1>
+<<<<<<< HEAD
     <p v-if="currentUser !== null">Welcome: {{currentUser.firstName}} ({{currentUser.email}})</p>
+=======
+    <p v-if="currentUser !== null">Welcome: {{currentUser.email}}</p>
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
     <p>Status: {{status}}</p>
     <ul class="header__nav">
       <li class="header__nav-item">

@@ -21,6 +21,7 @@ body {
 .mb-sm {
   margin-bottom: 1em; }
 
+<<<<<<< HEAD
 .mt-sm {
   margin-top: 1em; }
 
@@ -38,6 +39,8 @@ body {
     transform: scale(1.01);
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
 
+=======
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
 .row {
   max-width: 1000px;
   margin: 0 auto;
@@ -243,6 +246,7 @@ input, textarea {
   padding: 3rem; }
   .image-upload img {
     max-width: 100%; }
+<<<<<<< HEAD
 
 .new-user-card {
   background-color: #fff;
@@ -258,3 +262,5 @@ input, textarea {
     cursor: pointer;
     transform: scale(1.01);
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
+=======
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
