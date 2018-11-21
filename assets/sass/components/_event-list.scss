@@ -1,0 +1,22 @@
+.event-list {
+    list-style: none;
+
+    &__item {
+        @include card
+    }
+
+    &__item-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: $color-primary;
+    }
+
+    &__item-date {
+        font-size: 1rem;
+        font-style: italic;
+    }
+    
+    &__item-description {
+
+    }
+}

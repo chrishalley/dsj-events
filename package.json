@@ -1,0 +1,32 @@
+{
+  "name": "dsj_events",
+  "version": "1.0.0",
+  "description": "My superb Nuxt.js project",
+  "author": "Chris Halley",
+  "private": true,
+  "scripts": {
+    "watch-sass": "nodemon -e scss -x \"npm run build-sass\"",
+    "build-sass": "node-sass --include-path scss assets/sass/main.scss assets/css/style.css",
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.0.0",
+    "cross-env": "^5.2.0",
+    "js-cookie": "^2.2.0",
+    "jsonwebtoken": "^8.4.0",
+    "nuxt": "^2.0.0",
+    "vuelidate": "^0.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "babel-eslint": "^8.2.1",
+    "eslint": "^5.0.1",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-vue": "^4.0.0"
+  }
+}
