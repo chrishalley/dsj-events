@@ -72,16 +72,22 @@ const createStore = () => {
         
         // If process is running on server
         if (req) {
-
           // Check for existence of Cookie
           if (req.headers.cookie) {
-            token = jwt.decode((utils.tokenFromCookie('dsj_access', req.headers.cookie)).value)
+            const rawToken = utils.tokenFromCookie('dsj_access', req.headers.cookie)
+            if (!rawToken) {
+              return
+            }
+            token = jwt.decode(rawToken.value);
           }
         }  
         // If process is running on client
         else {
-
+          console.log('process client');
           token = jwt.decode(Cookie.get('dsj_access'))
+          if (!token) {
+            return
+          }
         }
 
         // Check we have a valid access token
