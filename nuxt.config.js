@@ -21,7 +21,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#FFFFFF' },
+  loading: { color: '#fff' },
 
   /*
   ** Global CSS
@@ -42,15 +42,15 @@ module.exports = {
   ** Middleware to run between routes
   */
  router: {
-   middleware: ['router-auth']
- },
+  middleware: ['router-auth']
+},
 
   /*
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/axios-module#usage
+    '@nuxtjs/axios'
   ],
   /*
   ** Axios module configuration

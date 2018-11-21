@@ -1,11 +1,7 @@
 import Vuex from 'vuex'
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
-
 import utils from '../utils/utils'
-
-import cloudinary from 'cloudinary-core'
-
 
 const createStore = () => {
   return new Vuex.Store({
@@ -45,6 +41,7 @@ const createStore = () => {
     actions: {
       login(vuexContext, authData) { // Check status of existing user account before allowing login
         return new Promise((resolve, reject) => {
+          console.log(process.env.baseURL);
           this.$axios.post(`${process.env.baseURL}/users/login`, authData)
           .then(res => {
             vuexContext.dispatch('setCurrentUser', res.data)

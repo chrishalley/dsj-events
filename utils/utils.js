@@ -12,6 +12,6 @@ const tokenFromCookie = function(token, cookie) {
   })
 }
 
-module.exports = {
+export default {
   tokenFromCookie
 }

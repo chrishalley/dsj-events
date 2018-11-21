@@ -1,6 +1,6 @@
-# dsj-events
+# dsj_events
 
-> My impressive Nuxt.js project
+> My superb Nuxt.js project
 
 ## Build Setup
 
