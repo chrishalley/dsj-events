@@ -34,8 +34,6 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~plugins/firebase.js',
-    '~plugins/fireauth.js',
     '~plugins/vuelidate.js',
     '~plugins/filters.js'
   ],
@@ -80,12 +78,10 @@ module.exports = {
       }
     },
     vendor: [
-      'firebase',
       'vuelidate'
     ]
   },
   env: {
     baseURL: 'http://localhost:3030',
-    fbAPIKey: 'AIzaSyAtV5Wa4T0r3b7iQDUDd4nTLjiK3E3JywA'
   }
 }
