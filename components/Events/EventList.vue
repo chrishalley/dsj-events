@@ -35,5 +35,6 @@ export default {
       newMonthEvent = document.getElementById(id)
       newMonthEvent.insertAdjacentHTML('beforebegin', markup)
     }
+  }
 }
 </script>

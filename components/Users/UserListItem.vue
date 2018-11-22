@@ -72,35 +72,6 @@ export default {
             user.status = 'suspended'
           })
           .catch(e => console.log(e))
-
-          }
-        }
-        this.$store.dispatch('updateUser', payload)
-          .then(res => {
-            user.status = 'approved'
-          })
-          .catch(e => console.log(e))
-      },
-      userRemove(user) { // Delete user from user node
-      const id = user._id
-        this.$store.dispatch('deleteUser', id)
-          .then(() => {
-            this.$emit('userDeleted', id)
-          })
-          .catch(e => console.log(e))
-      },
-      userSuspend(user) { // Add 'Suspended' flag to user's data, preventing access in future but not deleting their account
-        const payload = {
-          id: user._id,
-          update: {
-            status: 'suspended'
-          }
-        }
-        this.$store.dispatch('updateUser', payload)
-          .then(res => {
-            user.status = 'suspended'
-          })
-          .catch(e => console.log(e))
       }
     },
     filters: {
