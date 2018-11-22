@@ -3,13 +3,13 @@
     <h1>Click here to log in:</h1>
     <button @click="goToLogin">Log in</button>
 
-    <reset-password></reset-password>
+    <change-password></change-password>
   </div>
 </template>
 
 <script>
 
-  import resetPassword from '~/components/Login/ResetPassword.vue'
+  import changePassword from '~/components/Login/ChangePassword.vue'
 
   export default {
     data() {
@@ -24,7 +24,7 @@
 
     // layout: 'admin',
     components: {
-      resetPassword
+      changePassword
     }
 
   }

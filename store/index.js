@@ -53,6 +53,18 @@ const createStore = () => {
           .then(() => console.log(success))
           .catch((e) => console.log(e))
       },
+      changePassword(vuexContext, payload) {
+        return new Promise((resolve, reject) => {
+          payload._id = vuexContext.state.currentUser._id
+          this.$axios.post(`${process.env.baseURL}/users/${payload._id}/set-password`, payload)
+            .then((res) => {
+              resolve(res)
+            })
+            .catch(e => {
+              reject(e)
+            })
+        })
+      },
       initAuth(vuexContext, req) { // Runs between admin route changes to check validity of token and tokenExpiryDate
         let token
         
