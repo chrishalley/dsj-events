@@ -11,6 +11,8 @@
 
       }
     },
+
     layout: 'admin'
+
   }
 </script>

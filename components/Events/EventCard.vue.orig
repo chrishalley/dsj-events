@@ -1,0 +1,59 @@
+<template>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 66aed667bb976c3351d8ae052ea47ac1795a1d62
+  <div>
+    <p class="event-list__item-title">{{ dsjEvent.title }}</p>
+    <p class="event-list__item-date mb-sm">{{ dsjEvent.startDateTime | unixToDate() }}, {{ dsjEvent.startDateTime | unixToTime() }} - {{ dsjEvent.endDateTime | unixToTime() }}</p>
+    <hr>
+    <p class="event-list__item-description">{{ dsjEvent.description }}</p>
+    <button @click="editEvent">Edit</button>
+  </div>
+<<<<<<< HEAD
+=======
+=======
+    <div>
+        <p class="event-list__item-title">{{ dsjEvent.title }}</p>
+        <p class="event-list__item-date mb-sm">{{ dsjEvent.startDateTime | unixToDate() }}, {{ dsjEvent.startDateTime | unixToTime() }} - {{ dsjEvent.endDateTime | unixToTime() }}</p>
+        <hr>
+        <p class="event-list__item-description">{{ dsjEvent.description }}</p>
+        <button @click="editEvent">Edit</button>
+    </div>
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
+>>>>>>> 66aed667bb976c3351d8ae052ea47ac1795a1d62
+</template>
+
+<script>
+export default {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 66aed667bb976c3351d8ae052ea47ac1795a1d62
+  props: ['dsjEvent'],
+  methods: {
+    editEvent() {
+      this.$store.dispatch('setEditEvent', this.dsjEvent)
+<<<<<<< HEAD
+=======
+    }
+  }
+}
+</script>
+=======
+    props: ['dsjEvent'],
+    methods: {
+        editEvent() {
+            this.$store.dispatch('setEditEvent', this.dsjEvent)
+        }
+>>>>>>> 66aed667bb976c3351d8ae052ea47ac1795a1d62
+    }
+  }
+}
+<<<<<<< HEAD
+</script>
+=======
+</script>
+
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
+>>>>>>> 66aed667bb976c3351d8ae052ea47ac1795a1d62

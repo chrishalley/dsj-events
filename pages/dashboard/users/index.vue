@@ -1,7 +1,9 @@
 <template>
   <div>
+
     <UserDetailsCard :user='currentUser'></UserDetailsCard>
     <h1>Users</h1>
+
     <button @click="addFlag = !addFlag">Add new user</button>
     <AddUserCard v-if="addFlag" @close="addFlag = false"></AddUserCard> 
     <UsersList :users='users' @removeUser="removeUser"></UsersList>
@@ -10,6 +12,7 @@
 
 <script>
   import UsersList from '~/components/Users/UsersList'
+
   import AddUserCard from '~/components/Users/AddUserCard'
   import UserDetailsCard from '~/components/Users/UserDetailsCard'
 
@@ -18,6 +21,7 @@
       UsersList,
       AddUserCard,
       UserDetailsCard
+
     },
     data() {
       return {
@@ -46,6 +50,7 @@
         return this.$store.getters.currentUser
       }
     },
+
     beforeCreate() {
       // this.$axios.$get(process.env.baseURL + 'users.json')
       //   .then(res => {

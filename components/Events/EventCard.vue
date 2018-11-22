@@ -10,6 +10,7 @@
 
 <script>
 export default {
+<<<<<<< HEAD
   props: ['dsjEvent'],
   methods: {
     editEvent() {
@@ -18,3 +19,9 @@ export default {
   }
 }
 </script>
+=======
+    }
+  }
+}
+</script>
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253

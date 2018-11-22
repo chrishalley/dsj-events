@@ -1,0 +1,24 @@
+<template>
+  <div>
+    <h1>Dashboard</h1>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+
+      }
+    },
+<<<<<<< HEAD
+    layout: 'admin'
+=======
+<<<<<<< HEAD
+    layout: 'admin'
+=======
+    // layout: 'admin'
+>>>>>>> af947747d0c74314b6292d20c0f5282a228dd253
+>>>>>>> 66aed667bb976c3351d8ae052ea47ac1795a1d62
+  }
+</script>

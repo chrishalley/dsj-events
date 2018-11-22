@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <ul class="event-list">
-      <li v-for="(dsjEvent) in events" :key="dsjEvent.id" :ref="dsjEvent.id" class="event-list__item" :id="dsjEvent.id">
-        <event-card :dsjEvent="dsjEvent"></event-card>
-      </li>
-    </ul>
-  </div>
+    <div>
+        <ul class="event-list">
+            <li v-for="(dsjEvent) in events" :key="dsjEvent.id" :ref="dsjEvent.id" class="event-list__item" :id="dsjEvent.id">
+                <event-card :dsjEvent="dsjEvent"></event-card>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
@@ -35,9 +35,5 @@ export default {
       newMonthEvent = document.getElementById(id)
       newMonthEvent.insertAdjacentHTML('beforebegin', markup)
     }
-  },
-  components: {
-    EventCard
-  }
 }
 </script>
