@@ -40,6 +40,7 @@ module.exports = {
 
   /*
   ** Middleware to run between routes
+  **
   */
  router: {
   middleware: ['router-auth']
