@@ -1,24 +1,29 @@
 <template>
-  <div>
-    <h3 class="login-form__title mb-sm"><span @click="isLogin = !isLogin">Login</span> / <span @click="isLogin = !isLogin">Register</span></h3>
-    <login-form :mode="mode" v-if="isLogin" @submitLogin="onSubmit" :toast="toast"></login-form>
-    <register-form :mode="mode" v-if="!isLogin" @submitRegistration="onSubmit" :toast="toast"></register-form>
+  <div class="card">
+    <!-- <h3 class="login-form__title mb-sm"><span @click="isLogin = !isLogin">Login</span> / <span @click="isLogin = !isLogin">Register</span></h3> -->
+    <login-form :mode="mode" v-if="!forgotPasswordFlag" @submitLogin="onSubmit" @forgotPassword="forgotPasswordFlag = true" :toast="toast"></login-form>
+    <!-- <register-form :mode="mode" v-if="!isLogin" @submitRegistration="onSubmit" :toast="toast"></register-form> -->
+    <ResetPassword v-if="forgotPasswordFlag" @cancelResetPassword="forgotPasswordFlag = false"></ResetPassword>
+
   </div>
 </template>
 
 <script>
   import LoginForm from '~/components/Login/LoginForm.vue'
   import RegisterForm from '~/components/Login/RegisterForm.vue'
+  import ResetPassword from '~/components/Login/ResetPassword.vue'
 
   export default {
     name: 'logInForm',
     components: {
       LoginForm,
-      RegisterForm
+      RegisterForm,
+      ResetPassword
     },
     data() {
       return {
         isLogin: true,
+        forgotPasswordFlag: false,
         toast: {
           status: 'warning',
           message: null

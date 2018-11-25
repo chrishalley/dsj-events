@@ -48,9 +48,10 @@ const createStore = () => {
       setCurrentUser(vuexContext, userData) { // Commit mutation to set current user data in Vuex store
         vuexContext.commit('setCurrentUser', userData)
       },
-      resetPassword(vuexContext, payload) {
-        this.$axios.post(`${process.env.baseURL}/users/:id/set-password`, payload)
-          .then(() => console.log(success))
+      resetPassword(vuexContext, email) {
+        console.log('EMAIL: ', email)
+        this.$axios.post(`${process.env.baseURL}/users/reset-password`, {email})
+          .then((res) => console.log('success: ', res))
           .catch((e) => console.log(e))
       },
       changePassword(vuexContext, payload) {
@@ -158,6 +159,19 @@ const createStore = () => {
             return
           })
           .catch(e => console.log(e))
+      },
+      resetPasswordById(vuexContext, payload) {
+        console.log('resetPasswordById()')
+        console.log(payload)
+        return new Promise((resolve, reject) => {
+          this.$axios.post(`${process.env.baseURL}/users/${payload.id}/resetPassword`, {newPassword: payload.newPassword})
+            .then(res => {
+              resolve(res)
+            })
+            .catch(e => {
+              reject(e)
+            })
+        })
       },
       saveImageToCloudinary(vuexContext, imageUrl) {
         // console.log(crypto.SHA1)
