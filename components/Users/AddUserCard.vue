@@ -61,7 +61,6 @@ export default {
       addUser() {
         this.$store.dispatch('addUser', this.user)
           .then((data) => {
-            console.log(data)
             this.$emit('newUserAdded', data)
             this.clearForm()
           })

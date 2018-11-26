@@ -1,0 +1,97 @@
+<template>
+  <div>
+    <h1>Set a password</h1>
+    <div class="card" v-if="idValid && tokenValid">
+      <form>
+        <fieldset :class="{invalid: $v.newPassword.$error}">
+          <label for="new-password">Choose a password</label>
+          <input type="text" id="new-password" v-model="newPassword" autofocus>
+        </fieldset>
+        <fieldset :class="{invalid: $v.confirmPassword.$error}">
+          <label for="confirm-password">Confirm password</label>
+          <input type="text" id="confirm-password" v-model="confirmPassword">
+        </fieldset>
+        <button :disabled="$v.$invalid" @click.prevent="resetPassword">Set password</button>
+      </form>
+    </div>
+    <div  class="card" v-if="(!idValid || !tokenValid) && !newLinkFlag">
+      <h2>Action denied</h2>
+      <p>Your single-use link has expired.</p>
+      <button @click="newLinkFlag = !newLinkFlag">Request a new link</button>
+    </div>
+    <div class="card" v-if="newLinkFlag">
+      <ResetPassword @cancelResetPassword="newLinkFlag = false"></ResetPassword>
+    </div>
+  </div>
+</template>
+
+<script>
+import ResetPassword from '~/components/Login/ResetPassword.vue'
+import {required, minLength, sameAs} from 'vuelidate/lib/validators'
+
+export default {
+  data() {
+    return {
+      idValid: false,
+      tokenValid: false,
+      newLinkFlag: false,
+      newPassword: null,
+      confirmPassword: null
+    }
+  },
+  layout: 'default',
+  components: {
+    ResetPassword
+  },
+  validations: {
+    newPassword: {
+      required,
+      minLength: minLength(6)
+    },
+    confirmPassword: {
+      required,
+      minLength: minLength(6),
+      confirmPassword: sameAs('newPassword')
+    }
+  },
+  methods: {
+    resetPassword() {
+      const id = this.$route.params.id;
+      console.log('resetPassword()')
+      this.$store.dispatch('resetPasswordById', {id, newPassword: this.newPassword})
+        .then(res => {
+          console.log(res)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  },
+  asyncData(context) {
+    const payload = {
+      _id: context.route.params.id,
+      token: context.route.query.token
+    }
+
+    return context.$axios.post(`${process.env.baseURL}/users/verify-password-reset-token`, payload)
+      .then(res => {
+        return {idValid: true, tokenValid: true}
+      })
+      .catch(e => {
+        console.log('API fail')
+        console.log(e)
+        return
+      }) 
+  }
+}
+</script>
+
+<style scoped>
+.invalid {
+    border: red solid 1px;
+}
+
+.invalid label{
+    color: red;
+}
+</style>
