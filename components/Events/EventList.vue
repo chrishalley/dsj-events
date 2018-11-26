@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import EventCard from '~/components/events/EventCard.vue'
+import EventCard from '~/components/Events/EventCard.vue'
 export default {
   props: ['events'],
   mounted() {       
