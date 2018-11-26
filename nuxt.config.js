@@ -89,8 +89,6 @@ module.exports = {
     ]
   },
   env: {
-
-    baseURL: 'http://localhost:3030',
-
+    baseURL: process.env.baseURL || 'http://localhost:3030'
   }
 }
