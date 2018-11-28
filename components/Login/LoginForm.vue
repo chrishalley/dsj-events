@@ -10,10 +10,10 @@
         <label class="login-form__label" for="password">Password</label>
         <input class="login-form__input" id="password" type="password" v-model="user.password" placeholder="Pssst... don't use 'password'" @blur="$v.user.password.$touch()">
       </div>
-      <button @click.prevent="$emit('forgotPassword')">I forgot my password!</button>
       <div class="input-group">
         <button class="login-form__button" @click.prevent="submitLogin" :disabled="$v.$invalid">Login</button>
       </div>
+      <button @click.prevent="$emit('forgotPassword')">I forgot my password!</button>
       <toast :toast="toast"></toast>
     </form>
   </div>
@@ -52,10 +52,16 @@ export default {
             this.$router.push('/')
           })
           .catch(e => {
-            console.log(e)
-            this.toast = {
-              status: 'error',
-              message: 'Login details incorrect'
+            if (!e.response) {
+              this.toast = {
+                status: 'error',
+                message: 'Cannot connect to server'
+              }
+            } else {
+              this.toast = {
+                status: 'error',
+                message: e.response.data.message
+              }
             }
             setTimeout(() => {
               this.toast = {

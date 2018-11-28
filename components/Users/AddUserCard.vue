@@ -28,12 +28,14 @@
       <div class="input-group">
         <button class="add-user-form__button" @click.prevent="cancel">Cancel</button>
       </div>
+      <toast :toast="toast"></toast>
     </form>
   </div>
 </template>
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import Toast from '~/components/Base/Toast.vue'
 
 // export function emailCheck(value, parentVm) {
 //     if (value === '') {
@@ -54,6 +56,10 @@ export default {
           lastName: '',
           email: '',
           role: 'admin'
+        },
+        toast: {
+          status: null,
+          message: null
         }
       }
     },
@@ -65,6 +71,16 @@ export default {
             this.clearForm()
           })
           .catch(e => {
+            this.toast = {
+              status: 'error',
+              message: e.message
+            }
+            setTimeout(() => {
+              this.toast = {
+                status: null,
+                message: null
+              }
+            }, 2000)
             console.log(e)
           })
       },
@@ -80,6 +96,9 @@ export default {
         this.clearForm()
         this.$emit('close')
       }
+    },
+    components: {
+      Toast
     },
     validations: {
       user: {
