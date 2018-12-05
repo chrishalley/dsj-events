@@ -6,7 +6,12 @@ import utils from '../utils/utils'
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      currentUser: null
+      currentUser: null,
+      globalToast: {
+        status: null,
+        heading: null,
+        message: null
+      }
     },
     mutations: {
       setCurrentUser(state, userData) {
@@ -14,6 +19,10 @@ const createStore = () => {
       },
       addEvent(state, dsjEvent) {
         state.dsjEvents.push({dsjEvent})
+      },
+      setGlobalToast(state, payload) {
+        state.globalToast.status = payload.status
+        state.globalToast.message = payload.message
       }
     },
     getters: {
@@ -25,6 +34,9 @@ const createStore = () => {
       },
       getDsjEvents(state) {
         return state.dsjEvents
+      },
+      getGlobalToast(state) {
+        return state.globalToast
       }
     },
     actions: {
@@ -36,10 +48,18 @@ const createStore = () => {
             const token = res.data.tokens.find(cur => {
               return cur.access = "auth"
             }).token
-            Cookie.set('dsj_access', token);
+            Cookie.set('dsj_access', token)
             resolve()
           })
           .catch((e) => {
+            if (!e.response) {
+              console.log('Connectivity error');
+              const error = {
+                status: 'error',
+                message: 'Cannot connect to server'
+              }
+              vuexContext.dispatch('setGlobalToast', error)
+            }
             reject(e)
           })
         })
@@ -171,6 +191,16 @@ const createStore = () => {
               reject(e)
             })
         })
+      },
+      setGlobalToast(vuexContext, payload) {
+        console.log('set global toast action')
+        vuexContext.commit('setGlobalToast', payload)
+        setTimeout(() => {
+          vuexContext.commit('setGlobalToast', {
+            status: null,
+            message: null
+          })
+        }, 4000)
       },
       saveImageToCloudinary(vuexContext, imageUrl) {
         // console.log(crypto.SHA1)

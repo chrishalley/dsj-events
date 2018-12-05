@@ -22,6 +22,12 @@ Vue.filter('unixToTime', val => {
     return `${hours}:${minutes}${suffix}`
 })
 
+Vue.filter('initialUpperCase', val => {
+    const array = val.split('')
+    array[0] = array[0].toUpperCase()
+    return array.join('')
+})
+
 export function appendDateNumber(date) {
     let lastDigit, suffix
     lastDigit = date.toString().slice(-1)

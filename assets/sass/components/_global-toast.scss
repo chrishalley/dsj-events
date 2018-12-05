@@ -1,0 +1,48 @@
+.global-toast {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin-left: 1.6rem;
+  margin-bottom: 1.6rem;
+  display: flex;
+  width: calc(100vw - 3.2rem);
+  background-color: $color-white;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 .5rem 1rem rgba($color-black, 0.1);
+  
+  &__status {
+    width: .8rem;
+    background-color: black;
+    // background-color: $color-primary;
+    align-self: stretch;
+  }
+  
+  &__message {
+    padding: $space-small;
+  }
+
+  &.success {
+    .global-toast__status {
+      background-color: $color-success;
+    }
+  }
+  
+  &.warning {
+    .global-toast__status {
+      background-color: $color-warning;
+    }
+  }
+  
+  &.error {
+    .global-toast__status {
+      background-color: $color-error;
+    }
+  }
+  
+  &.info {
+    .global-toast__status {
+      background-color: $color-info;
+    }
+  }
+}

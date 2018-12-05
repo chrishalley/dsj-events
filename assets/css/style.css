@@ -80,7 +80,7 @@ body {
     margin-left: calc(3 * (100% / 12)); }
 
 body {
-  padding: 1em;
+  padding: 1.6rem;
   background-color: #ECEFF1;
   color: #424242; }
 
@@ -256,3 +256,29 @@ input, textarea {
     cursor: pointer;
     transform: scale(1.01);
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
+
+.global-toast {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin-left: 1.6rem;
+  margin-bottom: 1.6rem;
+  display: flex;
+  width: calc(100vw - 3.2rem);
+  background-color: #fff;
+  border-radius: 2px;
+  overflow: hidden; }
+  .global-toast__status {
+    width: .8rem;
+    background-color: black;
+    align-self: stretch; }
+  .global-toast__message {
+    padding: 1rem; }
+  .global-toast.good .global-toast__status {
+    background-color: green; }
+  .global-toast.warning .global-toast__status {
+    background-color: orangered; }
+  .global-toast.error .global-toast__status {
+    background-color: red; }
+  .global-toast.info .global-toast__status {
+    background-color: blue; }
