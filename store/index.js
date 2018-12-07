@@ -42,13 +42,15 @@ const createStore = () => {
     actions: {
       login(vuexContext, authData) { // Check status of existing user account before allowing login
         return new Promise((resolve, reject) => {
-          this.$axios.post(`${process.env.baseURL}/users/login`, authData)
+          this.$axios.post(`${process.env.baseURL}/auth/login`, authData)
           .then(res => {
             vuexContext.dispatch('setCurrentUser', res.data)
             const token = res.data.tokens.find(cur => {
               return cur.access = "auth"
             }).token
-            Cookie.set('dsj_access', token)
+            Cookie.set('cibolo_access', token)
+            this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            console.log('Auth header: ', this.$axios.defaults.headers.common)
             resolve()
           })
           .catch((e) => {
@@ -87,40 +89,62 @@ const createStore = () => {
       },
       initAuth(vuexContext, req) { // Runs between admin route changes to check validity of token and tokenExpiryDate
         let token
+        let decoded
         
         // If process is running on server
         if (req) {
+          // console.log('initAuth() on server')
+        //   console.log(req.headers)
+        //   // Check for existence of authorization header
+        //   if (req.headers.authorization) {
+        //     console.log('authorization')
+        //     token = jwt.decode(req.headers.authorization.split(' ')[1])
+        //     if (!token) {
+        //       return
+        //     }
+        //   } else {
+        //     return
+        //   }
           // Check for existence of Cookie
           if (req.headers.cookie) {
-            const rawToken = utils.tokenFromCookie('dsj_access', req.headers.cookie)
-            if (!rawToken) {
-              return
-            }
-            token = jwt.decode(rawToken.value);
-          }
-        }  
-        // If process is running on client
-        else {
-          console.log('process client');
-          token = jwt.decode(Cookie.get('dsj_access'))
-          if (!token) {
+              token = (utils.tokenFromCookie('cibolo_access', req.headers.cookie)).value
+              // console.log('TTTOKEN: ', token)
+              if (!token) {
+                  return
+                }
+                decoded = jwt.decode(token)
+              }
+            }  
+            // If process is running on client
+            else {
+          // console.log('process client')
+          token = localStorage.getItem('cibolo_access')
+          decoded = jwt.decode(token)
+          if (!decoded) {
             return
           }
         }
-
+        // console.log(new Date().getTime())
+        // console.log(decoded.exp)
         // Check we have a valid access token
-        if (new Date().getTime() > parseInt(token.expiresAt) || !token) {
+        if (new Date().getTime() > parseInt(decoded.exp * 1000) || !decoded) {
           // token is expired
-
+          // console.log('token is expired')
           vuexContext.dispatch('logUserOut')
           return
         } else {
-
-          return vuexContext.dispatch('getUserById', token.id)
+          // console.log('Token: ', token)
+          this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          // console.log('axios headers: ', this.$axios.defaults.headers);
+          // console.log('token is valid')
+          // console.log(token)
+          return vuexContext.dispatch('getUserById', decoded.id)
             .then(user => {
+              // console.log('getUserById then')
               vuexContext.commit('setCurrentUser', user)
             })
             .catch(e => {
+              // console.log('errorrrr')
               console.log(e)
             })
         }
@@ -148,7 +172,7 @@ const createStore = () => {
         })
       },
       logUserOut(vuexContext) {
-        Cookie.remove('dsj_access')
+        localStorage.removeItem('cibolo_access')
         vuexContext.commit('setCurrentUser', null)
         this.$router.push('/login/')
       },
@@ -216,7 +240,25 @@ const createStore = () => {
         // .catch(e => console.log(e))
       },
       async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
-        let uidCookie
+        // console.log('nuxtServerInit()')
+        if (context.req) {
+          vuexContext.dispatch('initAuth', context.req)
+        }
+        // console.log('vuexContext: ', vuexContext)
+        // console.log('context: ', context)
+        // let uidCookie
+        // if (context.req) {
+        //   if (context.req.headers.cookie) {
+            
+        //   }
+        //   console.log(context.req)
+        //   console.log('nextServerInit() on server')
+        //   console.log('headers: ', context.req.headers)
+        //   // this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        //   console.log(this.$axios.defaults.headers.common)
+        // } else {
+        //   console.log('nuxtServerInit() on client')
+        // }
         // if (context.req) {
         //   console.log('REQ*** ', context.req)
         //   if (!context.req.headers.cookie) {
