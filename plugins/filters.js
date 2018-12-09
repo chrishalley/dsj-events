@@ -28,6 +28,14 @@ Vue.filter('initialUpperCase', val => {
     return array.join('')
 })
 
+Vue.filter('DDMMYYYY', val => {
+    let date = new Date(val)
+    let day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+    let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
+    let year = date.getFullYear()
+    return day + '/' + month + '/' + year
+})
+
 export function appendDateNumber(date) {
     let lastDigit, suffix
     lastDigit = date.toString().slice(-1)

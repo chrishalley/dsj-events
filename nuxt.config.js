@@ -39,7 +39,8 @@ module.exports = {
   plugins: [
 
     '~plugins/vuelidate.js',
-    '~plugins/filters.js'
+    '~plugins/filters.js',
+    '~plugins/axios.js'
   ],
 
   /*
