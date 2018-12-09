@@ -54,11 +54,9 @@ import UserDetailsCard from '~/components/Users/UserDetailsCard.vue'
         console.log('editUser bubble')
         this.$store.dispatch('getUserById', id)
           .then(user => {
-            console.log(user)
             this.editableUser = user
           })
           .catch(e => {
-            console.log(this.$axios.defaults.headers)
             console.log(e)
           })
       }

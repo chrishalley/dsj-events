@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <UserDetailsCard :user='currentUser'></UserDetailsCard>
+    <!-- <UserDetailsCard :user='currentUser'></UserDetailsCard> -->
     <h1>Users</h1>
 
     <button @click="addFlag = !addFlag">Add new user</button>
