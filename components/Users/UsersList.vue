@@ -51,7 +51,6 @@ import UserDetailsCard from '~/components/Users/UserDetailsCard.vue'
         this.$emit('removeUser', id)
       },
       editUser(id) {
-        console.log('editUser bubble')
         this.$store.dispatch('getUserById', id)
           .then(user => {
             this.editableUser = user

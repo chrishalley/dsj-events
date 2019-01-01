@@ -49,7 +49,7 @@ export default {
         this.$store.dispatch('login', this.user)
           .then(user => {
             console.log('Successful login!')
-            this.$router.push('/')
+            this.$router.push('/dashboard/events')
           })
           .catch(e => {
             if (!e.response) {

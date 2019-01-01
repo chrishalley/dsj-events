@@ -1,5 +1,13 @@
 body {
-  padding: 1.6rem;
   background-color: $color-background;
   color: $color-off-black;
+}
+
+.admin-body {
+  display: flex;
+  align-items: stretch;
+
+  main {
+    flex-grow: 1;
+  }
 }

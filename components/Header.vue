@@ -1,21 +1,19 @@
 <template>
   <header class="header">
-    <h1>Logo</h1>
-    <p v-if="currentUser !== null">Welcome: {{currentUser.firstName}} ({{currentUser.email}})</p>
-    <p>Status: {{status}}</p>
+    <h1 class="header__page-title">Page Title</h1>
+    <!-- <p v-if="currentUser !== null">Welcome: {{currentUser.firstName}} ({{currentUser.email}})</p>
+    <p>Status: {{status}}</p> -->
     <ul class="header__nav">
       <li class="header__nav-item">
-        <nuxt-link to="/">Home</nuxt-link>
+        <nuxt-link to="/">Events</nuxt-link>
       </li>
       <li class="header__nav-item">
-        <nuxt-link to="/dashboard/events/">Events</nuxt-link>
+        <nuxt-link to="/dashboard/users/">Profile</nuxt-link>
       </li>
       <li class="header__nav-item">
-        <nuxt-link to="/dashboard/users/">Users</nuxt-link>
+        <button @click="logUserOut">Log Out</button>
       </li>
     </ul>
-    <button @click="logUserOut">Log Out</button>
-    <button @click="postToAPI"></button>
   </header>
 </template>
 
@@ -25,18 +23,6 @@
     methods: {
       logUserOut() {
         this.$store.dispatch('logUserOut')
-      },
-      postToAPI() {
-        this.$axios.post('http://localhost:3030/users', {
-          email: "yaz@yaz.com",
-          password: "password5678"
-        })
-        .then(res => {
-          console.log(res)
-        })
-        .catch(e => {
-          console.log(e)
-        })
       }
     },
     computed: {

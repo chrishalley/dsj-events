@@ -11,7 +11,27 @@ const createStore = () => {
         status: null,
         heading: null,
         message: null
-      }
+      },
+      events: [
+        {
+          title: 'Event One',
+          description: 'Event one description',
+          time: 'Tuesday',
+          id: '1'
+        },
+        {
+          title: 'Event Two',
+          description: 'Event two description',
+          time: 'Wednesday',
+          id: '2'
+        },
+        {
+          title: 'Event Three',
+          description: 'Event two description',
+          time: 'Thursday',
+          id: '3'
+        },
+    ]
     },
     mutations: {
       setCurrentUser(state, userData) {
@@ -32,8 +52,8 @@ const createStore = () => {
       isUserAuthenticated(state) {
         return state.currentUser != null
       },
-      getDsjEvents(state) {
-        return state.dsjEvents
+      getEvents(state) {
+        return state.events
       },
       getGlobalToast(state) {
         return state.globalToast
@@ -131,16 +151,18 @@ const createStore = () => {
             })
         })
       },
-      getEventData() {
-        return new Promise((resolve, reject) => {
-          return this.$axios.get(`${process.env.baseURL}/events`)
-          .then((res) => {
-            resolve(res)
-          })
-          .catch((e) => {
-            reject(e)
-          })
-        })
+      getEvents(vuexContext) {
+        return vuexContext.getters.getEvents
+
+        // return new Promise((resolve, reject) => {
+        //   return this.$axios.get(`${process.env.baseURL}/events`)
+        //   .then((res) => {
+        //     resolve(res)
+        //   })
+        //   .catch((e) => {
+        //     reject(e)
+        //   })
+        // })
       },
       logUserOut(vuexContext) {
         Cookie.remove('cibolo_access')
@@ -204,6 +226,17 @@ const createStore = () => {
         //   console.log(res)
         // })
         // .catch(e => console.log(e))
+      },
+      createEvent(vuexContext, event) {
+        console.log('createEvent action')
+        console.log(event)
+        this.$axios.post(`${process.env.baseURL}/events`, event)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(e => {
+            console.log(e)
+          })
       },
       async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
         if (context.req) {

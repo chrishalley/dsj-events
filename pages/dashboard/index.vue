@@ -8,11 +8,14 @@
   export default {
     data() {
       return {
-
+        title: 'Home'
       }
     },
-
-    layout: 'admin'
-
+    layout: 'admin',
+    head() {
+      return {
+        title: this.title
+      }
+    }
   }
 </script>

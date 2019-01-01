@@ -43,9 +43,19 @@
 import LoginCard from '~/components/Login/LoginCard.vue'
 
 export default {
+  data() {
+    return {
+      title: 'Login'
+    }
+  },
   components: {
     LoginCard
   },
-  layout: 'default'
+  layout: 'default',
+  head() {
+    return {
+      title: this.title
+    }
+  }
 }
 </script>

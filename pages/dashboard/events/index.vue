@@ -7,12 +7,12 @@
       </div>
       <div class="col-1-of-2">
         <h2>Events List</h2>
-        <event-list :events="this.events"></event-list>
+        <event-list :events="events"></event-list>
       </div>
     </section>
     <section class="row">
       <div class="col-1-of-2">
-        <event-detailed-card v-if="editEvent" :editEvent="editEvent"></event-detailed-card>
+        <!-- <event-detailed-card v-if="editEvent" :editEvent="editEvent"></event-detailed-card> -->
       </div>
     </section>
   </div>
@@ -21,37 +21,40 @@
 <script>
 import EventForm from '~/components/Events/EventForm.vue'
 import EventList from '~/components/Events/EventList.vue'
-import EventDetailedCard from '~/components/Events/EventDetailedCard.vue'
+// import EventDetailedCard from '~/components/Events/EventDetailedCard.vue'
 
   export default {
     data() {
       return {
+        title: 'Events',
         toast: {
           status: 'warning',
           message: null
         },
-        events: []
+        events: null
       }
     },
     asyncData(context) {
-      return context.store.dispatch('getEventData')
-      .then(res => {
-        return {
-          events: Object.keys(res.data).map((current) => {
-            return res.data[current]
-          })
-        }
-      })
-      .catch(e => {
-        console.log(e)
-      })
+      return context.store.dispatch('getEvents')
+        .then(events => {
+          return {
+            events: events
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     layout: 'admin',
-
+    head() {
+      return {
+        title: this.title
+      }
+    },
     components: {
       EventForm,
       EventList,
-      EventDetailedCard
+      // EventDetailedCard
     },
     computed: {
       dsjEvents() {

@@ -3,6 +3,10 @@
   color: $color-white;
   padding: 1em;
   margin-bottom: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
 
   &__nav {
     list-style: none;
