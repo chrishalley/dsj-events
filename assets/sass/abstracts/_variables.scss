@@ -10,6 +10,7 @@ $color-background: #ECEFF1;
 
 $color-primary: #00BCD4;
 $color-primary-dark: darken($color-primary, 10%);
+$color-primary-accent: rgba($color-primary, 0.3);
 
 $space-small: 1rem;
 $space-medium: 2rem;

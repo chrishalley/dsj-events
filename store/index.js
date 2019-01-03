@@ -2,6 +2,8 @@ import Vuex from 'vuex'
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import utils from '../utils/utils'
+import format from 'date-fns/format'
+import {convertToTimeZone} from 'date-fns-timezone'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -152,7 +154,9 @@ const createStore = () => {
         })
       },
       getEvents(vuexContext) {
-        return vuexContext.getters.getEvents
+        return new Promise((resolve, reject) => {
+          resolve(vuexContext.getters.getEvents)
+        })
 
         // return new Promise((resolve, reject) => {
         //   return this.$axios.get(`${process.env.baseURL}/events`)
@@ -237,6 +241,56 @@ const createStore = () => {
           .catch(e => {
             console.log(e)
           })
+      },
+      getEventsByMonth(vuexContext, monthString) {
+        const date = new Date()
+        const utcDate = date.toUTCString();
+        console.log('utcDate: ', utcDate);
+        console.log('Format: ', format)
+        console.log(format(date, 'MMMM YYYY'))
+        const startMonth = monthString.split(' ')[0]
+        const startYear = monthString.split(' ')[1]
+        const monthStart = new Date(monthString)
+        const monthStartTime = monthStart.getTime()
+        const tzOffset = monthStart.getTimezoneOffset()
+        console.log('monthStart: ', monthStart)
+        console.log('monthStartTime: ', monthStartTime)
+        console.log('tzOffset: ', tzOffset)
+        console.log('GMT Time: ', monthStartTime - (tzOffset * 60 * 1000))
+        const startDateTime = monthStartTime - (tzOffset * 60 * 1000)
+        const endDateTime = startDateTime + 2628000000
+        this.$axios.get(`${process.env.baseURL}/events?startDateTime=${startDateTime}&endDateTime=${endDateTime}`)
+          .then(res => {
+            console.log('Vuex res: ', res)
+          })
+          .catch(e => {
+            console.log('Vuex e: ', e)
+          })
+      },
+      getTermsAndConditions(vuexContext) {
+        return new Promise((resolve, reject) => {
+          this.$axios.get(`${process.env.baseURL}/statics/termsAndConditions`)
+          .then((res) => {
+            resolve(res.data)
+          })
+          .catch(e => {
+            reject(e)
+          })
+        })
+      },
+      updateStandardConditions(vuexContext, payload) {
+        const update = {
+          update: payload
+        }
+        return new Promise((resolve, reject) => {
+          this.$axios.put(`${process.env.baseURL}/statics/termsAndConditions`, update)
+            .then(() => {
+              resolve()
+            })
+            .catch(e => {
+              reject(e)
+            })
+        })
       },
       async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
         if (context.req) {

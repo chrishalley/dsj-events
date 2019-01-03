@@ -1,0 +1,39 @@
+.upcoming-events {
+  flex-basis: 65%;
+  margin-right: 3rem;
+  display: flex;
+  flex-direction: column;
+
+  &__month-switcher {
+    display: flex;
+    // justify-content: space-between;
+    margin-bottom: 2rem;
+    align-items: center;
+
+    .prev, .next {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $color-primary;
+      margin: 0;
+      border-radius: 50px;
+      padding: 0;
+      height: 4rem;
+      width: 4rem;
+
+      & span {
+        font-size: 3rem;
+        color: $color-white;
+      }
+
+    }
+
+    .month {
+      margin: 0 2rem;
+    }
+    span {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+  }
+}

@@ -7,11 +7,14 @@
       <li class="header__nav-item">
         <nuxt-link to="/">Events</nuxt-link>
       </li>
-      <li class="header__nav-item">
+      <li class="header__nav-item" v-if="currentUser">
         <nuxt-link to="/dashboard/users/">Profile</nuxt-link>
       </li>
-      <li class="header__nav-item">
+      <li class="header__nav-item" v-if="currentUser">
         <button @click="logUserOut">Log Out</button>
+      </li>
+      <li class="header__nav-item" v-if="!currentUser">
+        <button @click="pushToLoginPage">Log In</button>
       </li>
     </ul>
   </header>
@@ -23,6 +26,9 @@
     methods: {
       logUserOut() {
         this.$store.dispatch('logUserOut')
+      },
+      pushToLoginPage() {
+        this.$router.push('/login');
       }
     },
     computed: {

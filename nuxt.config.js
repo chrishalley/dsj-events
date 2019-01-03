@@ -48,7 +48,7 @@ module.exports = {
   **
   */
  router: {
-  middleware: ['router-auth']
+  middleware: ['routeChange'],
 },
 
   /*

@@ -1,8 +1,8 @@
 .event-form {
-    background-color: $color-white;
-    padding: 2rem;
-    box-shadow: 0 .5rem 1rem rgba($color-black, 0.1);
-    border-radius: 2px;
+
+    max-width: 80rem;
+    width: 80vw;
+    min-width: 40rem;
 
     &__label {
         display: block;
@@ -10,6 +10,15 @@
     }
 
     &__input {
+        margin-bottom: 1rem;
+    }
+
+    & .terms-conditions {
+        max-height: 300px;
+        overflow-y: scroll;
+        white-space: pre-wrap;
+        background-color: $color-grey-light-1;
+        padding: 1rem;
         margin-bottom: 1rem;
     }
 }

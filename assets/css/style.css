@@ -15,6 +15,26 @@ body {
   font-family: 'Maven Pro', sans-serif;
   font-weight: 400; }
 
+p {
+  line-height: 2rem; }
+
+p:not(:last-child) {
+  margin-bottom: 2rem; }
+
+h1 {
+  font-size: 4rem; }
+
+h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem; }
+
+h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem; }
+
+.section-title {
+  margin-bottom: 2rem; }
+
 .text-center {
   text-align: center; }
 
@@ -28,15 +48,9 @@ body {
   background-color: #fff;
   padding: 2rem;
   border-radius: 2px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s, transform 0.2s;
-  backface-visibility: hidden; }
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); }
   .card:not(:last-child) {
     margin-bottom: 1rem; }
-  .card:hover {
-    cursor: pointer;
-    transform: scale(1.01);
-    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
 
 .row {
   max-width: 1000px;
@@ -82,6 +96,8 @@ body {
 body {
   background-color: #ECEFF1;
   color: #424242; }
+  body.noScroll {
+    overflow: hidden; }
 
 .admin-body {
   display: flex;
@@ -89,11 +105,48 @@ body {
   .admin-body main {
     flex-grow: 1; }
 
+.flex-section-row {
+  display: flex;
+  padding: 3rem; }
+
+form fieldset {
+  border: none; }
+  form fieldset:not(:last-child) {
+    margin-bottom: 1rem; }
+  form fieldset .radio-group input, form fieldset .checkbox-group input {
+    display: inline-block; }
+    form fieldset .radio-group input:not(:first-child), form fieldset .checkbox-group input:not(:first-child) {
+      margin-left: 2rem; }
+  form fieldset .radio-group p, form fieldset .checkbox-group p {
+    display: inline-block;
+    margin: 0 0 0 3px; }
+
+form hr {
+  border: none;
+  height: 2px;
+  background-color: #00BCD4;
+  margin-top: 2rem;
+  margin-bottom: 2rem; }
+
+form .section-heading {
+  color: #00BCD4; }
+  form .section-heading:not(:nth-of-type(1)) {
+    margin-top: 1rem; }
+
+input, textarea {
+  padding: 1rem;
+  display: block;
+  border: #ddd 1px solid;
+  width: 100%; }
+  input[type='radio'], textarea[type='radio'] {
+    width: auto; }
+  input[type='checkbox'], textarea[type='checkbox'] {
+    width: auto; }
+
 .header {
   background-color: #00BCD4;
   color: #fff;
   padding: 1em;
-  margin-bottom: 1em;
   display: flex;
   justify-content: space-between;
   align-items: center; }
@@ -186,15 +239,9 @@ body {
   background-color: #fff;
   padding: 2rem;
   border-radius: 2px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s, transform 0.2s;
-  backface-visibility: hidden; }
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); }
   .users-list__tile:not(:last-child) {
     margin-bottom: 1rem; }
-  .users-list__tile:hover {
-    cursor: pointer;
-    transform: scale(1.01);
-    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
 
 .users-list__tile-list {
   list-style: none;
@@ -246,21 +293,21 @@ button {
   button:disabled, button[disabled] {
     background-color: red; }
 
-input, textarea {
-  padding: 1rem;
-  display: block;
-  width: 100%;
-  border: #ddd 1px solid; }
-
 .event-form {
-  background-color: #fff;
-  padding: 2rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  border-radius: 2px; }
+  max-width: 80rem;
+  width: 80vw;
+  min-width: 40rem; }
   .event-form__label {
     display: block;
     margin-bottom: 3px; }
   .event-form__input {
+    margin-bottom: 1rem; }
+  .event-form .terms-conditions {
+    max-height: 300px;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    background-color: #eee;
+    padding: 1rem;
     margin-bottom: 1rem; }
 
 .event-list {
@@ -269,15 +316,9 @@ input, textarea {
     background-color: #fff;
     padding: 2rem;
     border-radius: 2px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s, transform 0.2s;
-    backface-visibility: hidden; }
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); }
     .event-list__item:not(:last-child) {
       margin-bottom: 1rem; }
-    .event-list__item:hover {
-      cursor: pointer;
-      transform: scale(1.01);
-      box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
   .event-list__item-title {
     font-size: 2rem;
     font-weight: bold;
@@ -298,15 +339,9 @@ input, textarea {
   padding: 2rem;
   border-radius: 2px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s, transform 0.2s;
-  backface-visibility: hidden;
   max-width: 600px; }
   .new-user-card:not(:last-child) {
     margin-bottom: 1rem; }
-  .new-user-card:hover {
-    cursor: pointer;
-    transform: scale(1.01);
-    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
 
 .global-toast {
   position: fixed;
@@ -334,3 +369,197 @@ input, textarea {
     background-color: red; }
   .global-toast.info .global-toast__status {
     background-color: blue; }
+
+.upcoming-events {
+  flex-basis: 65%;
+  margin-right: 3rem;
+  display: flex;
+  flex-direction: column; }
+  .upcoming-events__month-switcher {
+    display: flex;
+    margin-bottom: 2rem;
+    align-items: center; }
+    .upcoming-events__month-switcher .prev, .upcoming-events__month-switcher .next {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #00BCD4;
+      margin: 0;
+      border-radius: 50px;
+      padding: 0;
+      height: 4rem;
+      width: 4rem; }
+      .upcoming-events__month-switcher .prev span, .upcoming-events__month-switcher .next span {
+        font-size: 3rem;
+        color: #fff; }
+    .upcoming-events__month-switcher .month {
+      margin: 0 2rem; }
+    .upcoming-events__month-switcher span {
+      font-size: 2rem;
+      font-weight: 700; }
+
+.booking-pitch {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  flex-basis: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: flex-start; }
+  .booking-pitch:not(:last-child) {
+    margin-bottom: 1rem; }
+  .booking-pitch__title {
+    text-align: center; }
+  .booking-pitch__button {
+    margin: 0;
+    background-color: #00BCD4;
+    color: #fff;
+    border-radius: 100px;
+    font-size: 1.5rem;
+    font-weight: 700; }
+
+.public-event-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+  backface-visibility: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem !important;
+  background-color: #fff;
+  border-radius: 2px;
+  overflow: hidden; }
+  .public-event-card:not(:last-child) {
+    margin-bottom: 1rem; }
+  .public-event-card:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1); }
+  .public-event-card__header {
+    display: flex; }
+    .public-event-card__header img {
+      max-width: 200px;
+      align-self: center;
+      border-radius: 0 0 2px 0; }
+    .public-event-card__header-title {
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 100%; }
+      .public-event-card__header-title h3 {
+        font-size: 3rem;
+        color: #00BCD4; }
+      .public-event-card__header-title p {
+        margin-bottom: 0; }
+      .public-event-card__header-title hr {
+        background-color: #00BCD4;
+        height: 2px;
+        border: none;
+        margin-top: 1rem; }
+  .public-event-card__description {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem; }
+    .public-event-card__description .public-event-card__read-more-link {
+      align-self: flex-end;
+      color: #00BCD4;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 1rem 1.5rem;
+      border-radius: 20px;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; }
+  .public-event-card:hover .public-event-card__read-more-link {
+    background-color: #00BCD4;
+    color: #fff; }
+
+.booking-dialog {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  min-width: 100vw; }
+  .booking-dialog:not(:last-child) {
+    margin-bottom: 1rem; }
+
+.overlay-dialog {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center; }
+  .overlay-dialog-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 2px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin: 6rem 0; }
+    .overlay-dialog-card:not(:last-child) {
+      margin-bottom: 1rem; }
+    .overlay-dialog-card-header {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px #00BCD4 solid; }
+      .overlay-dialog-card-header__title {
+        align-self: flex-end;
+        margin: 0; }
+      .overlay-dialog-card-header__close {
+        margin: 0;
+        align-self: flex-end; }
+
+.date-picker {
+  max-width: 300px; }
+  .date-picker header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; }
+  .date-picker .weekdayHeader {
+    width: 100%; }
+    .date-picker .weekdayHeader tr {
+      display: flex;
+      justify-content: space-between; }
+    .date-picker .weekdayHeader__label {
+      position: relative;
+      background-color: #eee;
+      border: #ddd solid 1px;
+      flex-basis: calc(100% / 7);
+      text-align: center;
+      padding: 1rem 0; }
+  .date-picker .calendar {
+    display: flex;
+    flex-wrap: wrap; }
+    .date-picker .calendar__date-cell {
+      flex-basis: calc(100% / 7);
+      flex-shrink: 0; }
+  .date-picker__body {
+    width: 100%; }
+    .date-picker__body-row {
+      width: 100%;
+      display: flex; }
+    .date-picker__body-cell {
+      flex-basis: calc(100% / 7);
+      text-align: center;
+      padding: 1rem 0;
+      cursor: pointer; }
+      .date-picker__body-cell--selected {
+        background-color: #00BCD4;
+        color: #fff; }

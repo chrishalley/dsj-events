@@ -11,12 +11,16 @@
   padding: $space-medium;
   border-radius: 2px;
   box-shadow: 0 .5rem 1rem rgba($color-black, 0.1);
-  transition: box-shadow 0.2s, transform 0.2s;
-  backface-visibility: hidden;
 
   &:not(:last-child) {
     margin-bottom: $space-small;
   }
+}
+
+@mixin actionCard {
+  
+  transition: box-shadow 0.2s, transform 0.2s;
+  backface-visibility: hidden;
 
   &:hover {
     cursor: pointer;

@@ -1,31 +1,60 @@
 <template>
-  <div>
-    <h1>Click here to log in:</h1>
-    <button @click="goToLogin">Log in</button>
-
-    <change-password></change-password>
+  <div class="public-events-page">
+    <h2>Events page</h2>
+    <Carousel></Carousel>
+    <section class="flex-section-row">
+      <UpcomingEvents :events="events"/>
+      <BookingPitch @requestBooking="openBookingForm"/>
+    </section>
+    <OverlayDialog :component="dialog.component" v-if="dialog.open" @dialogClose="dialog.open=false"/>
   </div>
 </template>
 
 <script>
-
-  import changePassword from '~/components/Login/ChangePassword.vue'
+import Carousel from '~/components/Carousel.vue'
+import UpcomingEvents from '~/components/Public/Events/UpcomingEvents.vue'
+import BookingPitch from '~/components/Public/Events/BookingPitch.vue'
+import OverlayDialog from '~/components/Base/OverlayDialog.vue'
+import BookingForm from '~/components/Events/EventForm.vue'
 
   export default {
     data() {
-      return {}
-
-    },
-    methods: {
-      goToLogin() {
-        this.$router.push('/login/')
+      return {
+        title: 'Events',
+        dialog: {
+          open: false,
+          component: null
+        }
       }
     },
-
-    // layout: 'admin',
     components: {
-      changePassword
+      Carousel,
+      UpcomingEvents,
+      BookingPitch,
+      OverlayDialog,
+      BookingForm
+    },
+    methods: {
+      openBookingForm() {
+        this.dialog.component = BookingForm
+        this.dialog.open = true;
+      }
+    },
+    asyncData(context) {
+      return context.store.dispatch('getEvents')
+        .then(events => {
+          return {
+            events: events
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    head() {
+      return {
+        title: this.title
+      }
     }
-
   }
 </script>

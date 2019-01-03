@@ -7,6 +7,7 @@
 @import 'layout/grid';
 
 @import 'base/base';
+@import 'base/forms';
 
 @import 'components/header';
 @import 'components/sidebar';
@@ -18,3 +19,10 @@
 @import 'components/image-upload';
 @import 'components/add-user-form';
 @import 'components/global-toast';
+@import 'components/upcoming-events';
+@import 'components/booking-pitch';
+@import 'components/public-event-card';
+@import 'components/public-events-page';
+@import 'components/booking-dialog';
+@import 'components/overlay-dialog';
+@import 'components/date-picker';

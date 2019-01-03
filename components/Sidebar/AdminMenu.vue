@@ -29,6 +29,10 @@ export default {
         {
           label: 'Block-outs',
           to: '/dashboard/block-outs/'
+        },
+        {
+          label: 'Terms & Conditions',
+          to: '/dashboard/terms/'
         }
       ]
     }

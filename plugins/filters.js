@@ -22,6 +22,10 @@ Vue.filter('unixToTime', val => {
     return `${hours}:${minutes}${suffix}`
 })
 
+Vue.filter('initial', val => {
+    return val.split('')[0]
+})
+
 Vue.filter('initialUpperCase', val => {
     const array = val.split('')
     array[0] = array[0].toUpperCase()
@@ -34,6 +38,11 @@ Vue.filter('DDMMYYYY', val => {
     let month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0' + (date.getMonth() + 1)
     let year = date.getFullYear()
     return day + '/' + month + '/' + year
+})
+
+Vue.filter('monthArrayToString', val => {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    return months[val];
 })
 
 export function appendDateNumber(date) {

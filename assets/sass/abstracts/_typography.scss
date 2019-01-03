@@ -5,3 +5,29 @@ body {
   font-family: 'Maven Pro', sans-serif;
   font-weight: 400;
 }
+
+p {
+  line-height: 2rem;
+}
+
+p:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 3rem; 
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  margin-bottom: 2rem;
+}

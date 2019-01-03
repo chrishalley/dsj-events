@@ -1,0 +1,66 @@
+.date-picker {
+  max-width: 300px;
+
+  & header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+
+  & .weekdayHeader {
+
+    width: 100%;
+
+    & tr {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__label {
+      position: relative;
+      background-color: $color-grey-light-1;
+      border: $color-grey-light-2 solid 1px;
+      flex-basis: calc(100% / 7);
+      text-align: center;
+      padding: 1rem 0;
+
+      &-content {
+
+      }
+    }
+  }
+
+  & .calendar {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__date-cell {
+      flex-basis: calc(100% / 7);
+      flex-shrink: 0;
+    }
+  }
+
+  &__body {
+
+    width: 100%;
+
+    &-row {
+      width: 100%;
+      display: flex;
+      
+    }
+
+    &-cell {
+      flex-basis: calc(100% / 7);
+      text-align: center;
+      padding: 1rem 0;
+      cursor: pointer;
+
+      &--selected {
+        background-color: $color-primary;
+        color: $color-white;
+      }
+    }
+  }
+}
