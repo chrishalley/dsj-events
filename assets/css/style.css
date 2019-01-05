@@ -560,6 +560,8 @@ button {
       text-align: center;
       padding: 1rem 0;
       cursor: pointer; }
+      .date-picker__body-cell:not(.current-month) {
+        color: #ddd; }
       .date-picker__body-cell--selected {
         background-color: #00BCD4;
         color: #fff; }

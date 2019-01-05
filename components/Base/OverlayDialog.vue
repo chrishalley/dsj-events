@@ -38,13 +38,11 @@ export default {
   computed: {
     title() {
       if (this.childComponent.title) {
-        console.log(this.childComponent.title)
         return this.childComponent.title
       }
     }
   },
   created() {
-    console.log('overlay created')
     const body = document.querySelector('body')
     body.classList.add('noScroll')
   }

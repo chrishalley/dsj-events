@@ -1,27 +1,66 @@
 <template>
-  <td class="date-picker__body-cell" :class="{'date-picker__body-cell--selected': selected}" @click="clickHandler">
-    <p>{{data.date}}</p>
+  <td class="date-picker__body-cell" :class="cellClasses" @click="clickHandler" :id="data.id">
+    <p>{{dateNumber}}</p>
   </td>
 </template>
 
 <script>
-import DatePicker__DateTile from './DatePicker__DateTile.vue'
 export default {
   data() {
     return {
-      selected: false
+      startDate: null,
+      data: {}
     }
   },
-  props: ['data'],
+  computed: {
+    dateNumber() {
+      if (this.data.date === undefined) {
+        return null
+      }
+      if (this.data.date.getDate) {
+        return this.data.date.getDate()
+      } 
+        return this.data.date
+    },
+    cellClasses() {
+      return {
+        'date-picker__body-cell--selected': this.selected,
+        'current-month': this.data.currentMonth
+      }
+    },
+    selected() {
+      if (this.startDate) {
+        return new Date(this.data.date).getTime() === new Date(this.startDate.date).getTime()
+      }
+      return false
+    }
+  },
   methods: {
     clickHandler() {
-      if (!this.selected) {
-        this.$emit('dateSelect', this.data)
-      } else {
-        this.$emit('dateDeselect', this.data)
-      }
-      this.selected = !this.selected
+      this.$emit('click', this.data)
+    }
+  },
+  props: {
+    cellData: {
+      type: Object,
+      required: true
+    },
+    startDateProp: {
+      type: Object
+    }
+  },
+  mounted() {
+    this.data = this.cellData
+    this.startDate = this.startDateProp
+  },
+  watch: {
+    cellData: function(newData, oldData) {
+      this.data = newData
+    },
+    startDateProp: function(newData, oldData) {
+      this.startDate = this.startDateProp
     }
   }
 }
+
 </script>

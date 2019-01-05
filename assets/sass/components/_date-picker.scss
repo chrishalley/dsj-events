@@ -57,6 +57,10 @@
       padding: 1rem 0;
       cursor: pointer;
 
+      &:not(.current-month) {
+        color: $color-grey-light-2;
+      }
+
       &--selected {
         background-color: $color-primary;
         color: $color-white;
