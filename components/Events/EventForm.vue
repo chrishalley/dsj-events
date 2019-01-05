@@ -47,7 +47,8 @@
       <fieldset>
         <label class="event-form__label" for="event-start-time">Start time</label>
         <input class="event-form__input" v-model="formStartTime" id="event-start-time" type="time" placeholder="Event start time">
-        <DatePicker></DatePicker>
+        <DatePicker v-model="formStartDate"></DatePicker>
+        <p>{{formStartDate}}</p>
       </fieldset>
       <fieldset>
         <label class="event-form__label" for="event-end-time">End time</label>

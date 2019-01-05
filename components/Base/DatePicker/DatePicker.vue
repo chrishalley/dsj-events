@@ -114,6 +114,7 @@ export default {
     },
     clickHandler(date) {
       this.startDate = date
+      this.$emit('input', this.startDate)
     }
   },
   components: {
