@@ -23,7 +23,6 @@
     "date-fns-timezone": "^0.1.4",
     "js-cookie": "^2.2.0",
     "jsonwebtoken": "^8.4.0",
-    "lodash": "^4.17.11",
     "nuxt": "^2.0.0",
     "vuelidate": "^0.7.4"
   },

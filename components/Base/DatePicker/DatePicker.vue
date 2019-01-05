@@ -24,9 +24,6 @@
 
 <script>
 import DateCell from './DatePicker__DateCell.vue'
-import DateTile from './DatePicker__DateTile.vue'
-import uniqueID from 'lodash/uniqueID'
-console.log(uniqueID)
 
 // Set constants
 const _monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -120,8 +117,7 @@ export default {
     }
   },
   components: {
-    DateCell,
-    DateTile
+    DateCell
   },
 created() {
     const initDate = new Date()
