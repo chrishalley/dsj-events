@@ -1,6 +1,6 @@
 <template>
-  <td class="date-picker__body-cell" :class="cellClasses" @click="clickHandler" :id="data.id">
-    <p>{{dateNumber}}</p>
+  <td class="date-picker__body-cell">
+    <button @click.prevent="clickHandler" class="date-picker__body-cell-button" :class="cellClasses"><span>{{dateNumber}}</span></button>
   </td>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     },
     cellClasses() {
       return {
-        'date-picker__body-cell--selected': this.selected,
+        'date-picker__body-cell-button--selected': this.selected,
         'current-month': this.data.currentMonth
       }
     },

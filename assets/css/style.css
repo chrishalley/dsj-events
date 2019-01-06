@@ -577,6 +577,8 @@ button {
         color: #fff;
         font-weight: 700;
         font-size: 2rem; }
+      .date-picker__control-button:hover {
+        border: 1px solid #00BCD4; }
   .date-picker .weekdayHeader {
     width: 100%; }
     .date-picker .weekdayHeader tr {
@@ -601,14 +603,35 @@ button {
       display: flex; }
     .date-picker__body-cell {
       flex-basis: calc(100% / 7);
-      text-align: center;
-      padding: 1rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 4rem;
+      height: 4rem;
       cursor: pointer; }
       .date-picker__body-cell:not(.current-month) {
         color: #ddd; }
-      .date-picker__body-cell--selected {
-        background-color: #00BCD4;
-        color: #fff; }
+      .date-picker__body-cell-button {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        height: 40px;
+        width: 40px;
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center; }
+        .date-picker__body-cell-button:hover {
+          color: #424242;
+          border: 2px solid #00BCD4;
+          background-color: transparent; }
+        .date-picker__body-cell-button--selected, .date-picker__body-cell-button:focus {
+          background-color: #00BCD4;
+          color: #fff;
+          outline: none; }
+        .date-picker__body-cell-button span {
+          text-align: center; }
 
 .time-picker {
   display: flex;
