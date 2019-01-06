@@ -19,21 +19,26 @@
 
     &-button {
       @include button-reset;
+      @include flex-center;
+      border: $color-primary 2px solid;
+      color: $color-primary;
       height: 4rem;
       width: 4rem;
-      background-color: $color-primary;
-      padding: 1rem 2rem;
       border-radius: 50px;
       
       & span {
-        color: $color-white;
         font-weight: 700;
         font-size: 2rem;
         
       }
 
-      &:hover {
-        border: 1px solid $color-primary;
+      &:hover{
+        background-color: $color-primary;
+        color: $color-white;
+      }
+
+      &:focus {
+        outline: none;
       }
     }
 
@@ -90,31 +95,34 @@
       height: 4rem;
       cursor: pointer;
 
-      &:not(.current-month) {
-        color: $color-grey-light-2;
-      }
+      
 
       &-button {
         @include button-reset;
-        height: 40px;
-        width: 40px;
+        height: 4rem;
+        width: 4rem;
         border-radius: 50px;
         display: flex;
         justify-content: center;
         align-items: center;
 
 
-        &:hover {
+        &:hover,
+        &:focus {
           color: $color-off-black;
           border: 2px solid $color-primary;
           background-color: transparent;
+          outline: none;
         }
 
-        &--selected,
-        &:focus {
+        &--selected, &--selected:focus {
           background-color: $color-primary;
           color: $color-white;
           outline: none;
+        }
+
+        &:not(.current-month) {
+          color: $color-grey-light-2;
         }
 
         & span {

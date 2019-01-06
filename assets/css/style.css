@@ -568,17 +568,22 @@ button {
       background-color: transparent;
       padding: 0;
       margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: #00BCD4 2px solid;
+      color: #00BCD4;
       height: 4rem;
       width: 4rem;
-      background-color: #00BCD4;
-      padding: 1rem 2rem;
       border-radius: 50px; }
       .date-picker__control-button span {
-        color: #fff;
         font-weight: 700;
         font-size: 2rem; }
       .date-picker__control-button:hover {
-        border: 1px solid #00BCD4; }
+        background-color: #00BCD4;
+        color: #fff; }
+      .date-picker__control-button:focus {
+        outline: none; }
   .date-picker .weekdayHeader {
     width: 100%; }
     .date-picker .weekdayHeader tr {
@@ -609,27 +614,28 @@ button {
       width: 4rem;
       height: 4rem;
       cursor: pointer; }
-      .date-picker__body-cell:not(.current-month) {
-        color: #ddd; }
       .date-picker__body-cell-button {
         border: none;
         background-color: transparent;
         padding: 0;
         margin: 0;
-        height: 40px;
-        width: 40px;
+        height: 4rem;
+        width: 4rem;
         border-radius: 50px;
         display: flex;
         justify-content: center;
         align-items: center; }
-        .date-picker__body-cell-button:hover {
+        .date-picker__body-cell-button:hover, .date-picker__body-cell-button:focus {
           color: #424242;
           border: 2px solid #00BCD4;
-          background-color: transparent; }
-        .date-picker__body-cell-button--selected, .date-picker__body-cell-button:focus {
+          background-color: transparent;
+          outline: none; }
+        .date-picker__body-cell-button--selected, .date-picker__body-cell-button--selected:focus {
           background-color: #00BCD4;
           color: #fff;
           outline: none; }
+        .date-picker__body-cell-button:not(.current-month) {
+          color: #ddd; }
         .date-picker__body-cell-button span {
           text-align: center; }
 
