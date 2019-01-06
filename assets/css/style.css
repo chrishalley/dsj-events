@@ -327,11 +327,12 @@ button {
     background-color: red; }
 
 .event-form .terms-conditions {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
   max-height: 300px;
   overflow-y: scroll;
   white-space: pre-wrap;
   background-color: #eee;
-  padding: 1rem;
+  padding: 1.5rem;
   margin-bottom: 1rem; }
 
 .event-list {

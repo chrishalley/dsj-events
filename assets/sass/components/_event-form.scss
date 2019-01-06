@@ -1,11 +1,13 @@
 .event-form {
 
   & .terms-conditions {
+    @include inner-shadow;
+
     max-height: 300px;
     overflow-y: scroll;
     white-space: pre-wrap;
     background-color: $color-grey-light-1;
-    padding: 1rem;
+    padding: 1.5rem;
     margin-bottom: 1rem;
 
   }
