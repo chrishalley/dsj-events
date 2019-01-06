@@ -19,7 +19,6 @@
         </tr>
       </tbody>
     </table>
-    <p>{{visibleMonthDate}}</p>
     <p>{{prevMonthDays}}</p>
   </div>
 </template>
@@ -31,6 +30,8 @@ import DateCell from './DatePicker__DateCell.vue'
 // Set constants
 const _monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 const _monthLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+// Get local timezone offset from GMT in hours
+const _localOffsetFromGMT = new Date().getTimezoneOffset() / 60
 
 export default {
   data() {
@@ -71,7 +72,7 @@ export default {
       let dayOfMonth = 1
       let dayOfNextMonth = 1
       let dayOfPrevMonth = this.prevMonthDays - (this.visibleMonthStartDay - 1)
-      
+
       for (let w = 0; w < 6 ; w++) {
         let weekArray = []
         // d = day of week (column on calendar page, starting at 0) {
@@ -79,21 +80,43 @@ export default {
             let id = w.toString() + d.toString()
             let date = {
               id: id,
-              currentMonth: false
+              currentMonth: false,
+              bst: false
             }
 
             if (!monthStarted && !monthEnded) {
-              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth() - 1 , dayOfPrevMonth)
+              // Adjusted for GMT
+              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth() - 1 , dayOfPrevMonth, this.visibleMonthDate.getHours() - _localOffsetFromGMT)
+
+              // Check for BST
+              if (this.bst(date.date)) {
+                date.bst = true
+              }
+
               dayOfPrevMonth++
               if (d === this.visibleMonthStartDay) {
-                date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth(), dayOfMonth)
+                // Adjusted for GMT
+                date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth(), dayOfMonth, this.visibleMonthDate.getHours() - _localOffsetFromGMT)
+                
+                // Check for BST
+                if (this.bst(date.date)) {
+                  date.bst = true
+                }
+
                 date.currentMonth = true
                 monthStarted = true
                 dayOfMonth++
               } 
 
             } else if (monthStarted && !monthEnded) {
-              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth(), dayOfMonth)
+              // Adjusted for GMT
+              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth(), dayOfMonth, this.visibleMonthDate.getHours() - _localOffsetFromGMT)
+
+              // Check for BST
+              if (this.bst(date.date)) {
+                date.bst = true
+              }
+
               date.currentMonth = true
       
               if (dayOfMonth === this.visibleMonthDays) {
@@ -102,7 +125,14 @@ export default {
                 dayOfMonth++
               }
             } else if (monthStarted && monthEnded) {
-              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth() + 1, dayOfNextMonth)
+              // Adjusted for GMT
+              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth() + 1, dayOfNextMonth, this.visibleMonthDate.getHours() - _localOffsetFromGMT)
+
+              // Check for BST
+              if (this.bst(date.date)) {
+                date.bst = true
+              }
+
               dayOfNextMonth++
             } else {
               console.log('catch')
@@ -114,6 +144,7 @@ export default {
           weekArray: weekArray
         })
       }
+      console.log(JSON.stringify(calendarPageArray, null, 2))
       return calendarPageArray
     }
   },
@@ -125,9 +156,15 @@ export default {
       }
       this.visibleMonthDate = new Date(this.visibleMonthDate.setMonth(this.visibleMonthDate.getMonth() + increment))
     },
-    clickHandler(date) {
-      this.startDate = date
-      this.$emit('input', this.startDate)
+    clickHandler(data) {
+      this.startDate = data
+      console.log(this.startDate)
+      const year = this.startDate.date.getFullYear()
+      const month = this.startDate.date.getMonth() < 10 ? `0${this.startDate.date.getMonth()+1}` : this.startDate.date.getMonth()+1
+      const date = this.startDate.date.getDate() < 10 ? `0${this.startDate.date.getDate()}` : this.startDate.date.getDate()
+      const formattedDate = `${year}-${month}-${date}`
+      console.log(formattedDate)
+      this.$emit('input', formattedDate)
     },
     siblingMonthDays(direction) {
       let increment = 1;
@@ -140,6 +177,38 @@ export default {
         return 29
       }
       return _monthDays[month.getMonth()]
+    },
+    bstStart(year) {
+      // find the last day in March for date's year
+      let day = new Date(year, 2, 31)
+      // is this day a Sunday? If not, loop through preceding week until it is.
+      for (let i = 0; i < 7; i++) {
+        if (day.getDay() !== 0) {
+          day.setDate(day.getDate() - 1)
+        } else {
+          return day
+        }
+      }
+    },
+    bstEnd(year) {
+      // find the last day in October for date's year
+      let day = new Date(year, 9, 31)
+      // is this day a Sunday? If not, loop through preceding week until it is.
+      for (let i = 0; i < 7; i++) {
+        if (day.getDay() !== 0) {
+          day.setDate(day.getDate() - 1)
+        } else {
+          return day
+        }
+      }
+    },
+    bst(date) {
+      const bstStartTime = this.bstStart(date.getFullYear()).getTime()
+      const bstEndTime = this.bstEnd(date.getFullYear()).getTime()
+      const dateTime = date.getTime()
+
+      return dateTime >= bstStartTime && dateTime <= bstEndTime
+      
     }
   },
   components: {
@@ -148,10 +217,9 @@ export default {
 created() {
     // get local time now (timezone-relative)
     const localDate = new Date()
-    // get offset from GMT in hours
-    const offset = localDate.getTimezoneOffset() / 60
-    // construct new date object for current local time translated across to GMT timezone
-    this.visibleMonthDate = new Date (localDate.getFullYear(), localDate.getMonth(), 1, -offset)
+
+    // construct new date object for local time and set calendar to start of current month for current timezone
+    this.visibleMonthDate = new Date (localDate.getFullYear(), localDate.getMonth(), 1)
   }
 }
 </script>
