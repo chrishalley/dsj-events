@@ -89,7 +89,7 @@
         <div class="form-section__group form-section__group--row">
           <fieldset class="form__fieldset">
             <label class="form__fieldset-label" for="terms-and-conditions">Standard Conditions of Hire</label>
-            <div class="terms-conditions">{{termsAndConditions}}</div>
+            <div class="terms-conditions" v-html="parsedStandardConditions"></div>
             <div class="checkbox-group">
               <input type="checkbox" v-model="event.acceptedTerms">
               <p>I accept the Standard Conditions of Hire</p>
@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import marked from 'marked'
 import Toast from '~/components/Base/Toast.vue'
 import ImageUpload from '~/components/Base/ImageUpload.vue'
 import DatePicker from '~/components/Base/DatePicker/DatePicker.vue'
@@ -186,6 +187,11 @@ import TimePicker from '~/components/Base/TimePicker/TimePicker.vue'
       recurringEvent() {
 
         return this.formRecurringEvent === 'true'
+      },
+      parsedStandardConditions() {
+        if (this.termsAndConditions) {
+          return marked(this.termsAndConditions, {sanitized: true})
+        }
       }
     },
     created() {

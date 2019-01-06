@@ -1,6 +1,5 @@
 <template>
   <div class="public-events-page">
-    <h2>Events page</h2>
     <Carousel></Carousel>
     <section class="flex-section-row">
       <UpcomingEvents :events="events"/>
