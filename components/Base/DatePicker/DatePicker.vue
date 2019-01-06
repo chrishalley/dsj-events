@@ -19,10 +19,13 @@
         </tr>
       </tbody>
     </table>
+    <p>{{visibleMonthDate}}</p>
+    <p>{{prevMonthDays}}</p>
   </div>
 </template>
 
 <script>
+import spacetime from 'spacetime'
 import DateCell from './DatePicker__DateCell.vue'
 
 // Set constants
@@ -50,6 +53,12 @@ export default {
       }
       return _monthDays[month.getMonth()]
     },
+    nextMonthDays() {
+      return this.siblingMonthDays('next')
+    },
+    prevMonthDays() {
+      return this.siblingMonthDays('prev')
+    },
     visibleMonthString() {
       return _monthLabels[this.visibleMonthDate.getMonth()]
     },
@@ -60,6 +69,9 @@ export default {
       let monthEnded = false
   
       let dayOfMonth = 1
+      let dayOfNextMonth = 1
+      let dayOfPrevMonth = this.prevMonthDays - (this.visibleMonthStartDay - 1)
+      console.log('dayOfPrevMonth: ', dayOfPrevMonth)
       for (let w = 0; w < 6 ; w++) {
         let weekArray = []
         // d = day of week (column on calendar page, starting at 0) {
@@ -71,7 +83,8 @@ export default {
             }
 
             if (!monthStarted && !monthEnded) {
-              date.date = 'a'
+              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth() - 1 , dayOfPrevMonth)
+              dayOfPrevMonth++
               if (d === this.visibleMonthStartDay) {
                 date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth(), dayOfMonth)
                 date.currentMonth = true
@@ -89,8 +102,8 @@ export default {
                 dayOfMonth++
               }
             } else if (monthStarted && monthEnded) {
-                
-              date.date = 'z'
+              date.date = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth() + 1, dayOfNextMonth)
+              dayOfNextMonth++
             } else {
               console.log('catch')
             }
@@ -115,14 +128,30 @@ export default {
     clickHandler(date) {
       this.startDate = date
       this.$emit('input', this.startDate)
+    },
+    siblingMonthDays(direction) {
+      let increment = 1;
+      if (direction === 'prev') {
+        increment = -1
+      }
+      let month = new Date(this.visibleMonthDate.getFullYear(), this.visibleMonthDate.getMonth() + increment, 1)
+      if (month.getFullYear() % 4 === 0 && month.getMonth() === 1) {
+        // Case for February in a leap year
+        return 29
+      }
+      return _monthDays[month.getMonth()]
     }
   },
   components: {
     DateCell
   },
 created() {
-    const initDate = new Date()
-    this.visibleMonthDate = new Date(initDate.getFullYear(), initDate.getMonth(), 1)
+    // get local time now (timezone-relative)
+    const localDate = new Date()
+    // get offset from GMT in hours
+    const offset = localDate.getTimezoneOffset() / 60
+    // construct new date object for current local time translated across to GMT timezone
+    this.visibleMonthDate = new Date (localDate.getFullYear(), localDate.getMonth(), 1, -offset)
   }
 }
 </script>

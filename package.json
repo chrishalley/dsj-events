@@ -24,6 +24,7 @@
     "js-cookie": "^2.2.0",
     "jsonwebtoken": "^8.4.0",
     "nuxt": "^2.0.0",
+    "spacetime": "^5.1.0",
     "vuelidate": "^0.7.4"
   },
   "devDependencies": {
