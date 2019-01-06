@@ -71,7 +71,7 @@ export default {
       let dayOfMonth = 1
       let dayOfNextMonth = 1
       let dayOfPrevMonth = this.prevMonthDays - (this.visibleMonthStartDay - 1)
-      console.log('dayOfPrevMonth: ', dayOfPrevMonth)
+      
       for (let w = 0; w < 6 ; w++) {
         let weekArray = []
         // d = day of week (column on calendar page, starting at 0) {
