@@ -1,80 +1,111 @@
 <template>
   <div>
-    <form class="event-form">
-      <h3 class="section-heading">Your Details</h3>
-      <fieldset>
-        <label class="event-form__label" for="clientFirstName">First name</label>
-        <input class="event-form__input" v-model="event.title" id="clientFirstName" type="text" placeholder="John">
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="clientLastName">Last name</label>
-        <input class="event-form__input" v-model="client.firstName" id="clientLastName" type="text" placeholder="Smith">
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="clientEmailAddress">Email address</label>
-        <input class="event-form__input" v-model="client.emailAddress" id="clientEmail" type="text" placeholder="johnsmith@example.com">
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="clientPhoneNumber">Phone number</label>
-        <input class="event-form__input" v-model="client.phoneNumber" id="clientPhoneNumber" type="text" placeholder="0712345678">
-      </fieldset>
-      <h3 class="section-heading">Event Details</h3>
-      <fieldset>
-        <label class="event-form__label" for="event-title">Title</label>
-        <input class="event-form__input" v-model="client.lastName" id="event-title" type="text" placeholder="Event title">
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="event-description">Description</label>
-        <textarea class="event-form__input" v-model="event.description" id="event-description" placeholder="Event description" rows=10></textarea>
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label">Featured image</label>
-        <image-upload></image-upload>
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="event-type">Event type</label>
-        <div class="radio-group">
-          <input type="radio" v-model="event.recurring" name="event-type" :value="false" checked>
-          <p>Single</p>
-          <input type="radio" v-model="event.recurring" name="event-type" :value="true">
-          <p>Recurring</p>
+    <form class="form event-form">
+      <h3 class="form-section__heading">Your Details</h3>
+      <section class="form-section">
+        <div class="form-section__group form-section__group--row">
+          <div class="form-section__group form-section__group--column">
+            <fieldset class="form__fieldset">
+              <label class="form__fieldset-label" for="clientFirstName">First name</label>
+              <input class="form__fieldset-input" v-model="event.title" id="clientFirstName" type="text" placeholder="eg. John">
+            </fieldset>
+            <fieldset class="form__fieldset">
+              <label class="form__fieldset-label" for="clientLastName">Last name</label>
+              <input class="form__fieldset-input" v-model="client.firstName" id="clientLastName" type="text" placeholder="eg. Smith">
+            </fieldset>
+          </div>
+          <div class="form-section__group form-section__group--column">
+            <fieldset class="form__fieldset">
+              <label class="form__fieldset-label" for="clientEmailAddress">Email address</label>
+              <input class="form__fieldset-input" v-model="client.emailAddress" id="clientEmail" type="text" placeholder="eg. johnsmith@example.com">
+            </fieldset>
+            <fieldset class="form__fieldset">
+              <label class="form__fieldset-label" for="clientPhoneNumber">Phone number</label>
+              <input class="form__fieldset-input" v-model="client.phoneNumber" id="clientPhoneNumber" type="text" placeholder="eg. 0712345678">
+            </fieldset>
+          </div>
         </div>
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="event-start-date">Date</label>
-        <input class="event-form__input" v-model="formStartDate" id="event-start-date" type="date" placeholder="Event start date">
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="event-start-time">Start time</label>
-        <input class="event-form__input" v-model="formStartTime" id="event-start-time" type="time" placeholder="Event start time">
-        <DatePicker v-model="formStartDate"></DatePicker>
-        <p>{{formStartDate}}</p>
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="event-end-time">End time</label>
-        <input class="event-form__input" v-model="formEndTime" id="event-end-time" type="time" placeholder="Event end time">
-      </fieldset>
-      <fieldset>
-        <label class="event-form__label" for="private">Public / Private</label>
-        <div class="radio-group">
-          <input type="radio" v-model="event.private" name="event-type" :value="false" checked>
-          <p>Public</p>
-          <input type="radio" v-model="event.private" name="event-type" :value="true">
-          <p>Private</p>
+      </section>
+      <h3 class="form-section__heading">Event Details</h3>
+      <section class="form-section">
+        <div class="form-section__group form-section__group--row">
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label" for="event-title">Title</label>
+            <input class="form__fieldset-input" v-model="client.lastName" id="event-title" type="text" placeholder="eg. My Awesome Event">
+          </fieldset>
         </div>
-      </fieldset>
-      <h3 class="section-heading">Terms &amp; Conditions</h3>
-      <fieldset>
-        <label class="event-form__label" for="terms-and-conditions">Standard Conditions of Hire</label>
-        <div class="terms-conditions">{{termsAndConditions}}</div>
-        <div class="checkbox-group">
-          <input type="checkbox" v-model="event.acceptedTerms">
-          <p>I accept the Standard Conditions of Hire</p>
+        <div class="form-section__group form-section__group--row">
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label" for="event-description">Description</label>
+            <textarea class="form__fieldset-input" v-model="event.description" id="event-description" placeholder="Add a description to let people know what your event is about" rows=10></textarea>
+          </fieldset>
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label">Featured image</label>
+            <image-upload></image-upload>
+          </fieldset>
         </div>
-      </fieldset>
-      <button @click.prevent="saveEvent()">Create Event</button>
+        <div class="form-section__group form-section__group--row">
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label" for="private">Public / Private</label>
+            <div class="radio-group">
+              <input type="radio" v-model="event.private" name="event-private" :value="false" checked>
+              <p>Public</p>
+              <input type="radio" v-model="event.private" name="event-private" :value="true">
+              <p>Private</p>
+            </div>
+          </fieldset>
+        </div>
+      </section>
+      <h3 class="form-section__heading">Date &amp; Time</h3>
+      <section class="form-section">
+        <div class="form-section__group form-section__group--row">
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label" for="event-type">Event schedule</label>
+            <div class="radio-group">
+              <input type="radio" v-model="event.recurring" name="event-type" :value="false" checked>
+              <p>Single</p>
+              <input type="radio" v-model="event.recurring" name="event-type" :value="true">
+              <p>Recurring</p>
+            </div>
+          </fieldset>
+          <fieldset class="form__fieldset event-form__fieldset--date">
+            <label class="form__fieldset-label" for="event-start-date">Event Date</label>
+            <DatePicker v-model="formStartDate"></DatePicker>
+          </fieldset>
+        </div>
+        <div class="form-section__group form-section__group--row">
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label" for="event-start-time">Start time</label>
+            <TimePicker v-model="formStartTime" id="event-start-time"></TimePicker>
+          </fieldset>
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label" for="event-end-time">End time</label>
+            <TimePicker v-model="formEndTime" id="event-end-time"></TimePicker>
+          </fieldset>
+        </div>
+      </section>
+      <h3 class="form-section__heading">Terms &amp; Conditions</h3>
+      <section class="form-section">
+        <div class="form-section__group form-section__group--row">
+          <fieldset class="form__fieldset">
+            <label class="form__fieldset-label" for="terms-and-conditions">Standard Conditions of Hire</label>
+            <div class="terms-conditions">{{termsAndConditions}}</div>
+            <div class="checkbox-group">
+              <input type="checkbox" v-model="event.acceptedTerms">
+              <p>I accept the Standard Conditions of Hire</p>
+            </div>
+          </fieldset>
+        </div>
+      </section>
+      <section class="form-section">
+        <div class="form-section__group form-section__group--column">
+          <div class="form-section__group form-section__group--row">
+            <button @click.prevent="saveEvent()">Create Event</button>
+          </div>
+          <toast :toast="toast"></toast>
+        </div>
+      </section>
     </form>
-    <toast :toast="toast"></toast>
   </div>
 </template>
 
@@ -82,6 +113,7 @@
 import Toast from '~/components/Base/Toast.vue'
 import ImageUpload from '~/components/Base/ImageUpload.vue'
 import DatePicker from '~/components/Base/DatePicker/DatePicker.vue'
+import TimePicker from '~/components/Base/TimePicker/TimePicker.vue'
 
   export default {
     name: 'eventForm',
@@ -111,7 +143,8 @@ import DatePicker from '~/components/Base/DatePicker/DatePicker.vue'
     components: {
       Toast,
       ImageUpload,
-      DatePicker
+      DatePicker,
+      TimePicker
     },
     props: ['toast'],
     methods: {

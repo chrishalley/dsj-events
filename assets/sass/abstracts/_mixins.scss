@@ -45,3 +45,7 @@
 @mixin button-hover-reset {
   background-color: transparent;
 }
+
+@mixin inner-shadow {
+  box-shadow: inset 0 0 6px rgba($color-black, 0.2);
+}

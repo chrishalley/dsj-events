@@ -1,0 +1,36 @@
+.time-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+
+  & .divider {
+    margin: 0 1rem;
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  &__panel-display {
+    @include inner-shadow;
+
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 0;
+    background-color: $color-grey-light-1;
+    padding: 1rem 0;
+    border-radius: 2px;
+    min-width: 6rem;
+  }
+
+  & button {
+    @include button-reset;
+    background-color: $color-primary;
+    color: $color-white;
+    padding: 1rem
+  }
+}

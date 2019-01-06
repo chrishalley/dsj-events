@@ -1,9 +1,9 @@
 <template>
   <div class="date-picker">
     <header class="date-picker__control">
-      <button @click.prevent="changeMonth('prev')">Prev</button>
-      <p>{{visibleMonthString}}</p>
-      <button @click.prevent="changeMonth('next')">Next</button>
+      <button class="date-picker__control-button" @click.prevent="changeMonth('prev')"><span>&lsaquo;</span></button>
+      <h4 class="date-picker__control-header">{{visibleMonthString}}</h4>
+      <button class="date-picker__control-button" @click.prevent="changeMonth('next')"><span>&rsaquo;</span></button>
     </header>
     <table class="calendar">
       <thead class="weekdayHeader">
@@ -19,7 +19,6 @@
         </tr>
       </tbody>
     </table>
-    <p>{{prevMonthDays}}</p>
   </div>
 </template>
 
@@ -144,7 +143,6 @@ export default {
           weekArray: weekArray
         })
       }
-      console.log(JSON.stringify(calendarPageArray, null, 2))
       return calendarPageArray
     }
   },
@@ -158,12 +156,10 @@ export default {
     },
     clickHandler(data) {
       this.startDate = data
-      console.log(this.startDate)
       const year = this.startDate.date.getFullYear()
       const month = this.startDate.date.getMonth() < 10 ? `0${this.startDate.date.getMonth()+1}` : this.startDate.date.getMonth()+1
       const date = this.startDate.date.getDate() < 10 ? `0${this.startDate.date.getDate()}` : this.startDate.date.getDate()
       const formattedDate = `${year}-${month}-${date}`
-      console.log(formattedDate)
       this.$emit('input', formattedDate)
     },
     siblingMonthDays(direction) {

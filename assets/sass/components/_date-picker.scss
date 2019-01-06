@@ -1,10 +1,37 @@
 .date-picker {
   max-width: 300px;
+  // background-color: $color-off-white;
+  border-radius: 2px;
+  // @include inner-shadow;
+  padding: 1rem;
+  border: 1px solid $color-grey-light-2;
 
-  & header {
+  &__control {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 2px solid $color-primary;
+    padding-bottom: 1rem;
+
+    &-header {
+      color: $color-primary;
+    }
+
+    &-button {
+      @include button-reset;
+      height: 4rem;
+      width: 4rem;
+      background-color: $color-primary;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      
+      & span {
+        color: $color-white;
+        font-weight: 700;
+        font-size: 2rem;
+        
+      }
+    }
 
   }
 
@@ -19,8 +46,7 @@
 
     &__label {
       position: relative;
-      background-color: $color-grey-light-1;
-      border: $color-grey-light-2 solid 1px;
+      color: $color-off-black;
       flex-basis: calc(100% / 7);
       text-align: center;
       padding: 1rem 0;
