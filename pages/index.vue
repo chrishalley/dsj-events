@@ -15,6 +15,7 @@ import UpcomingEvents from '~/components/Public/Events/UpcomingEvents.vue'
 import BookingPitch from '~/components/Public/Events/BookingPitch.vue'
 import OverlayDialog from '~/components/Base/OverlayDialog.vue'
 import BookingForm from '~/components/Events/EventForm.vue'
+import BookingPrices from '~/components/Public/Events/BookingPrices.vue'
 
   export default {
     data() {
@@ -22,7 +23,7 @@ import BookingForm from '~/components/Events/EventForm.vue'
         title: 'Events',
         dialog: {
           open: false,
-          component: null
+          component: BookingForm
         }
       }
     },
@@ -34,6 +35,10 @@ import BookingForm from '~/components/Events/EventForm.vue'
       BookingForm
     },
     methods: {
+      openBookingPrices() {
+        this.dialog.component = BookingPrices
+        this.dialog.open = true;
+      },  
       openBookingForm() {
         this.dialog.component = BookingForm
         this.dialog.open = true;
