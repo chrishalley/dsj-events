@@ -196,7 +196,6 @@ import TimePicker from '~/components/Base/TimePicker/TimePicker.vue'
     },
     created() {
       this.$emit('created', {
-        name: 'chris',
         title: this.formTitle
       })
       this.$store.dispatch('getTermsAndConditions')
