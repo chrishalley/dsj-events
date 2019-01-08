@@ -83,9 +83,6 @@
             <TimePicker v-model="formEndTime" id="event-end-time"></TimePicker>
           </fieldset>
         </div>
-        <div class="form-section__group">
-          <TimeslotPicker></TimeslotPicker>
-        </div>
       </section>
       <h3 class="form-section__heading">Terms &amp; Conditions</h3>
       <section class="form-section">
@@ -118,7 +115,6 @@ import Toast from '~/components/Base/Toast.vue'
 import ImageUpload from '~/components/Base/ImageUpload.vue'
 import DatePicker from '~/components/Base/DatePicker/DatePicker.vue'
 import TimePicker from '~/components/Base/TimePicker/TimePicker.vue'
-import TimeslotPicker from '~/components/Base/TimeslotPicker/TimeslotPicker.vue'
 
   export default {
     name: 'eventForm',
@@ -149,8 +145,7 @@ import TimeslotPicker from '~/components/Base/TimeslotPicker/TimeslotPicker.vue'
       Toast,
       ImageUpload,
       DatePicker,
-      TimePicker,
-      TimeslotPicker
+      TimePicker
     },
     props: ['toast'],
     methods: {

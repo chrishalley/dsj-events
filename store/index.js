@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
-import {setAuthToken, resetAuthToken, tokenFromCookie} from '../utils/utils'
+import utils from '../utils/utils'
 import format from 'date-fns/format'
 import {convertToTimeZone} from 'date-fns-timezone'
 
@@ -70,7 +70,6 @@ const createStore = () => {
             const token = res.data.tokens.find(cur => {
               return cur.access === "admin" || cur.access === "super-admin"
             }).token
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             Cookie.set('cibolo_access', token)
             resolve()
           })
@@ -85,12 +84,6 @@ const createStore = () => {
             reject(e)
           })
         })
-      },
-      logUserOut(vuexContext) {
-        delete this.$axios.defaults.headers.common['Authorization']
-        Cookie.remove('cibolo_access')
-        vuexContext.commit('setCurrentUser', null)
-        this.$router.push('/login/')
       },
       setCurrentUser(vuexContext, userData) { // Commit mutation to set current user data in Vuex store
         vuexContext.commit('setCurrentUser', userData)
@@ -113,50 +106,40 @@ const createStore = () => {
             })
         })
       },
-      initAuth(vuexContext, req) { // Runs between route changes to check validity of token and tokenExpiryDate
+      initAuth(vuexContext, req) { // Runs between admin route changes to check validity of token and tokenExpiryDate
         let cookie, token, decoded
-        
-        if (req) { // Code to exec when process is running on server
-          console.log(req.headers)
-          if (req.headers.cookie) { // Check presence of cookie property on req object
-            cookie = tokenFromCookie('cibolo_access', req.headers.cookie) // Attempt to extract cibolo_access token object from cookie string
+
+        if (req) { // If process is running on server
+          if (req.headers.cookie) {
+            cookie = utils.tokenFromCookie('cibolo_access', req.headers.cookie)
             if (!cookie) {
               return
             }
-            token = cookie.value // Extract value property string from token object
+            token = cookie.value
             if (!token) {
               return
             }
-          } else {
+            decoded = jwt.decode(token)
+          }
+        } else { // If process is running on client
+          token = Cookie.get('cibolo_access')
+          decoded = jwt.decode(token)
+          if (!decoded) {
             return
           }
-
-        } else { // Code for when process is running on client
-          token = Cookie.get('cibolo_access')
         }
-
-        decoded = jwt.decode(token)
-        // console.log(decoded)
-        // Check for token expiry
         if (new Date().getTime() > parseInt(decoded.exp * 1000) || !decoded) { // if token is expired
-          console.log('token is expired')
-          // todo: clear token from req headers
-          if (req) {
-            console.log('token expired on server')
-            // console.log('ting: ', req.headers)
-          } else {
-            console.log('token expired on client')
-          }
           vuexContext.dispatch('logUserOut')
-        } else { // if token has not expired
-          // this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-          // return vuexContext.dispatch('getUserById', decoded.id)
-          // .then(user => {
-          //   vuexContext.commit('setCurrentUser', user)
-          // })
-          // .catch(e => {
-          //   console.log(e)
-          // })
+          return
+        } else { // if token is valid
+          this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          return vuexContext.dispatch('getUserById', decoded.id)
+            .then(user => {
+              vuexContext.commit('setCurrentUser', user)
+            })
+            .catch(e => {
+              console.log(e)
+            })
         }
       },
       getUserById(vuexContext, id) {
@@ -184,6 +167,11 @@ const createStore = () => {
         //     reject(e)
         //   })
         // })
+      },
+      logUserOut(vuexContext) {
+        Cookie.remove('cibolo_access')
+        vuexContext.commit('setCurrentUser', null)
+        this.$router.push('/login/')
       },
       addUser(vuexContext, userData) {
         return new Promise((resolve, reject) => {
@@ -254,7 +242,7 @@ const createStore = () => {
             console.log(e)
           })
       },
-      getEventsByMonth(vuexContext, monthString) { // ! Am i event using this any more???
+      getEventsByMonth(vuexContext, monthString) {
         const date = new Date()
         const utcDate = date.toUTCString();
         console.log('utcDate: ', utcDate);
@@ -307,10 +295,45 @@ const createStore = () => {
       async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
         if (context.req) {
           vuexContext.dispatch('initAuth', context.req)
-        } else {
-          console.log('nuxtServerInit() on client')
         }
+        // const token = Cookie.get('')
+        // this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        // console.log('vuexContext: ', vuexContext)
+        // console.log('context: ', context)
+        // let uidCookie
+        // if (context.req) {
+        //   if (context.req.headers.cookie) {
+            
+        //   }
+        //   console.log(context.req)
+        //   console.log('nextServerInit() on server')
+        //   console.log('headers: ', context.req.headers)
+        //   // this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        //   console.log(this.$axios.defaults.headers.common)
+        // } else {
+        //   console.log('nuxtServerInit() on client')
+        // }
+        // if (context.req) {
+        //   console.log('REQ*** ', context.req)
+        //   if (!context.req.headers.cookie) {
+        //     return
+        //   } else {
+        //     uidCookie = parseCookie(context, 'dsj_access')
+        //     await context.app.$axios.get(`${process.env.baseURL}/users/${uidCookie}.json`)
+        //     .then((res) => {
+        //       vuexContext.commit('setCurrentUser', res.data)
+        //     })
+        //     .catch((e) => {
+        //       console.log('Error: ', e)
+        //     })
+        //   }
+        // } else {
+        //   return
+        // }
       }
+      // addCookie(context, payload) {
+      //   Cookie.set('random', payload)
+      // }
     }
   })
 }

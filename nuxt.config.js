@@ -1,7 +1,5 @@
 const pkg = require('./package')
 
-import webpack from 'webpack'
-
 module.exports = {
   mode: 'universal',
 
@@ -39,12 +37,10 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-  }),
-    {src: '~plugins/vuelidate.js'},
-    {src: '~plugins/filters.js'},
-    {src: '~plugins/axios.js'}
+
+    '~plugins/vuelidate.js',
+    '~plugins/filters.js',
+    '~plugins/axios.js'
   ],
 
   /*

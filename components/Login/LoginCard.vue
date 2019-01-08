@@ -1,7 +1,10 @@
 <template>
   <div class="card">
+    <!-- <h3 class="login-form__title mb-sm"><span @click="isLogin = !isLogin">Login</span> / <span @click="isLogin = !isLogin">Register</span></h3> -->
     <login-form :mode="mode" v-if="!forgotPasswordFlag" @submitLogin="onSubmit" @forgotPassword="forgotPasswordFlag = true" :toast="toast"></login-form>
+    <!-- <register-form :mode="mode" v-if="!isLogin" @submitRegistration="onSubmit" :toast="toast"></register-form> -->
     <ResetPassword v-if="forgotPasswordFlag" @cancelResetPassword="forgotPasswordFlag = false"></ResetPassword>
+
   </div>
 </template>
 
