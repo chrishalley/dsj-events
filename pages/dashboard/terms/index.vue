@@ -22,7 +22,6 @@
 
 <script>
 import marked from 'marked'
-console.log(marked)
 
 export default {
   layout: 'admin',

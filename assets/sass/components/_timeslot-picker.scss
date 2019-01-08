@@ -1,0 +1,25 @@
+.timeslot-picker {
+  
+  &__table {
+    width: 100%;
+    border: 1px solid $color-grey-light-2;
+    border-collapse: collapse;
+
+    & th, td {
+      border: 1px solid $color-grey-light-2;
+      padding: 1rem;
+    }
+
+    &__controller {
+      
+    }
+
+    &-column--control-column {
+      width: 20px;
+    }
+
+    &-cell {
+      text-align: center;
+    }
+  }
+}

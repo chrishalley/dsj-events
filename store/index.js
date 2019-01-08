@@ -85,6 +85,11 @@ const createStore = () => {
           })
         })
       },
+      logUserOut(vuexContext) {
+        Cookie.remove('cibolo_access')
+        vuexContext.commit('setCurrentUser', null)
+        this.$router.push('/login/')
+      },
       setCurrentUser(vuexContext, userData) { // Commit mutation to set current user data in Vuex store
         vuexContext.commit('setCurrentUser', userData)
       },
@@ -167,11 +172,6 @@ const createStore = () => {
         //     reject(e)
         //   })
         // })
-      },
-      logUserOut(vuexContext) {
-        Cookie.remove('cibolo_access')
-        vuexContext.commit('setCurrentUser', null)
-        this.$router.push('/login/')
       },
       addUser(vuexContext, userData) {
         return new Promise((resolve, reject) => {
