@@ -39,8 +39,8 @@ const createStore = () => {
       setCurrentUser(state, userData) {
         state.currentUser = userData
       },
-      addEvent(state, dsjEvent) {
-        state.dsjEvents.push({dsjEvent})
+      addEvent(state, event) {
+        state.events.push({event})
       },
       setGlobalToast(state, payload) {
         state.globalToast.status = payload.status
@@ -137,6 +137,7 @@ const createStore = () => {
           vuexContext.dispatch('logUserOut')
           return
         } else { // if token is valid
+          console.log('working on server')
           this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
           return vuexContext.dispatch('getUserById', decoded.id)
             .then(user => {
@@ -294,7 +295,8 @@ const createStore = () => {
       },
       async nuxtServerInit(vuexContext, context) { // Loads current user data on initialisation
         if (context.req) {
-          vuexContext.dispatch('initAuth', context.req)
+          console.log('nuxtServerInit')
+          await vuexContext.dispatch('initAuth', context.req)
         }
         // const token = Cookie.get('')
         // this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
