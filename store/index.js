@@ -9,6 +9,7 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       currentUser: null,
+      authToken: null,
       globalToast: {
         status: null,
         heading: null,
@@ -37,7 +38,11 @@ const createStore = () => {
     },
     mutations: {
       setCurrentUser(state, userData) {
+        console.log('setCurrentUser mutation: ', userData)
         state.currentUser = userData
+      },
+      setAuthToken(state, token) {
+        state.authToken = token
       },
       addEvent(state, event) {
         state.events.push({event})
@@ -54,6 +59,9 @@ const createStore = () => {
       isUserAuthenticated(state) {
         return state.currentUser != null
       },
+      getAuthToken(state) {
+        return state.authToken
+      },
       getEvents(state) {
         return state.events
       },
@@ -67,10 +75,9 @@ const createStore = () => {
           this.$axios.post(`${process.env.baseURL}/auth/login`, authData)
           .then(res => {
             vuexContext.dispatch('setCurrentUser', res.data)
-            const token = res.data.tokens.find(cur => {
-              return cur.access === "admin" || cur.access === "super-admin"
-            }).token
-            Cookie.set('cibolo_access', token)
+            console.log('login then() :', res.headers)
+            const token = res.headers['x-token']
+            vuexContext.dispatch('setAuthToken', token)
             resolve()
           })
           .catch((e) => {
@@ -86,12 +93,18 @@ const createStore = () => {
         })
       },
       logUserOut(vuexContext) {
+        console.log('logUserOut() triggered')
         Cookie.remove('cibolo_access')
         vuexContext.commit('setCurrentUser', null)
         this.$router.push('/login/')
       },
       setCurrentUser(vuexContext, userData) { // Commit mutation to set current user data in Vuex store
+        console.log('setCurrentUser action: ', userData)
         vuexContext.commit('setCurrentUser', userData)
+      },
+      setAuthToken(vuexContext, token) {
+        vuexContext.commit('setAuthToken', token)
+        Cookie.set('cibolo_access', token)
       },
       resetPassword(vuexContext, email) {
         console.log('EMAIL: ', email)
@@ -138,10 +151,17 @@ const createStore = () => {
           return
         } else { // if token is valid
           console.log('working on server')
-          this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-          return vuexContext.dispatch('getUserById', decoded.id)
-            .then(user => {
-              vuexContext.commit('setCurrentUser', user)
+          // this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+          const setAuthToken = vuexContext.dispatch('setAuthToken', token)
+          const setUser = vuexContext.dispatch('getUserById', decoded.id)
+
+          return Promise.all([setAuthToken, setUser])
+            .then(result => {
+              const [token, user] = result
+
+              console.log(user)
+              vuexContext.dispatch('setCurrentUser', user)
             })
             .catch(e => {
               console.log(e)
@@ -297,6 +317,7 @@ const createStore = () => {
         if (context.req) {
           console.log('nuxtServerInit')
           await vuexContext.dispatch('initAuth', context.req)
+          console.log('initAuth finished')
         }
         // const token = Cookie.get('')
         // this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`

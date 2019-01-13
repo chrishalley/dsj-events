@@ -48,12 +48,15 @@
       currentUser() {
         return this.$store.getters.currentUser
       },
+      authToken() {
+        return this.$store.getters.getAuthToken
+      },
       status() {
         return this.$store.getters.isUserAuthenticated ? 'Logged in' : 'Logged out'
       },
       logoutTime() {
-        if (this.currentUser) {
-          return jwt.decode(this.currentUser.tokens[0].token).exp
+        if (this.authToken) {
+          return jwt.decode(this.authToken).exp
         }
       }
     },
