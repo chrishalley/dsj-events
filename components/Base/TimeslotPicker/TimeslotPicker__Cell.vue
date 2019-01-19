@@ -1,14 +1,28 @@
 <template>
-  <div class="timeslot-picker__cell">
-    <p>{{label}}</p>
-  </div>
+  <td class="timeslot-picker__table-cell">
+    <p>{{event}}</p>
+  </td>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      label: 'Cell'
+      event: null
+    }
+  },
+  props: {
+    eventProp: {
+      type: String
+    }
+  },
+  created() {
+    console.log(this.eventProp)
+    this.event = this.eventProp
+  },
+  watch: {
+    eventProp: function(newEvent, oldEvent) {
+      this.event = newEvent
     }
   }
 }
