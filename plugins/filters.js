@@ -42,7 +42,7 @@ Vue.filter('DDMMYYYY', val => {
 
 Vue.filter('monthArrayToString', val => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    return months[val];
+    return months[val % 12];
 })
 
 export function appendDateNumber(date) {

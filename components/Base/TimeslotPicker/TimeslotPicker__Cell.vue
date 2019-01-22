@@ -1,6 +1,6 @@
 <template>
-  <td class="timeslot-picker__table-cell">
-    <p>{{event}}</p>
+  <td class="timeslot-picker__table-cell timeslot-picker__table-cell input-cell">
+    <button @click.prevent="selectSlot" :disabled="this.cellData.bookings.length === 1" :class="computedClasses">{{buttonLabel}}</button>
   </td>
 </template>
 
@@ -8,21 +8,49 @@
 export default {
   data() {
     return {
-      event: null
+      cellData: null
     }
   },
   props: {
-    eventProp: {
-      type: String
+    cellProps: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    computedClasses() {
+      return {
+        booked: this.cellData.bookings.length > 0,
+        clash: this.cellData.bookings.length > 1,
+        available: this.cellData.bookings.length === 0
+      }
+    },
+    buttonLabel() {
+      if (this.cellData.bookings.length > 0) {
+        return 'N/A'
+      }
+      return 'Book'
+    },
+    clickable() {
+      return this.cellData.bookings.length !== 1
+    }
+  },
+  methods: {
+    selectSlot() {
+      if (this.selected === false) {
+        this.$emit('selectSlot', {
+          startDateTime: this.startDateTime,
+          endDateTime: this.endDateTime
+        })
+      }
     }
   },
   created() {
-    console.log(this.eventProp)
-    this.event = this.eventProp
+    this.cellData = {...this.cellProps}
   },
   watch: {
-    eventProp: function(newEvent, oldEvent) {
-      this.event = newEvent
+    cellProps: function(newProps, oldProps) {
+      this.cellData = {...newProps}
     }
   }
 }

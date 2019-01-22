@@ -1,7 +1,7 @@
 <template>
-  <th>
-    <p>{{weekday | initial}}</p>
-    <p>{{dateLabel}}</p>
+  <th class="date-label">
+    <p class="date-label__weekday">{{weekday.slice(0,3)}}</p>
+    <p class="date-label__date">{{dateLabel}}</p>
   </th>
 </template>
 
@@ -16,13 +16,13 @@ export default {
   },
   computed: {
     weekday() {
-      return _days[new Date(this.date.date).getDay()]
+      return _days[new Date(this.date).getDay()]
     },
     monthDay() {
-      return new Date(this.date.date).getDate()
+      return new Date(this.date).getDate()
     },
     month() {
-      return new Date(this.date.date).getMonth()
+      return new Date(this.date).getMonth()
     },
     dateLabel() {
       return `${this.monthDay}/${this.month + 1}`
@@ -30,7 +30,7 @@ export default {
   },
   props: {
     dateProp: {
-      type: Object,
+      type: Date,
       required: true
     }
   },

@@ -640,6 +640,38 @@ button {
         .date-picker__body-cell-button span {
           text-align: center; }
 
+.rolling-date-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px; }
+  .rolling-date-picker .divider {
+    margin: 0 1rem; }
+  .rolling-date-picker__panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch; }
+    .rolling-date-picker__panel:not(:last-child) {
+      margin-right: 2rem; }
+  .rolling-date-picker__panel-display {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 0;
+    background-color: #eee;
+    padding: 1rem 0;
+    border-radius: 2px;
+    min-width: 6rem; }
+  .rolling-date-picker button {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    background-color: #00BCD4;
+    color: #fff;
+    padding: 1rem; }
+
 .time-picker {
   display: flex;
   justify-content: center;
@@ -669,3 +701,66 @@ button {
     background-color: #00BCD4;
     color: #fff;
     padding: 1rem; }
+
+.timeslot-picker {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 1rem; }
+  .timeslot-picker__table {
+    width: 100%;
+    border-collapse: collapse; }
+    .timeslot-picker__table th, .timeslot-picker__table td {
+      padding: 1rem; }
+    .timeslot-picker__table-row--morning, .timeslot-picker__table-row--evening {
+      background-color: #eee; }
+    .timeslot-picker__table-row--afternoon {
+      background-color: #ddd; }
+    .timeslot-picker__table-column--control-column {
+      width: 20px; }
+      .timeslot-picker__table-column--control-column .control-column-name {
+        margin-bottom: .6rem; }
+      .timeslot-picker__table-column--control-column .control-column-time {
+        font-size: 1.2rem; }
+    .timeslot-picker__table-cell {
+      text-align: center; }
+      .timeslot-picker__table-cell.input-cell {
+        padding: .6rem; }
+        .timeslot-picker__table-cell.input-cell button {
+          margin: 0;
+          padding: 1rem 1.5rem; }
+          .timeslot-picker__table-cell.input-cell button.booked {
+            background-color: red;
+            color: #fff; }
+          .timeslot-picker__table-cell.input-cell button.available {
+            background-color: rgba(0, 188, 212, 0.3);
+            color: #fff; }
+  .timeslot-picker__controller {
+    color: #00BCD4; }
+    .timeslot-picker__controller--week {
+      border-bottom: 2px solid #00BCD4; }
+      .timeslot-picker__controller--week .date-label__weekday {
+        margin-bottom: .6rem; }
+      .timeslot-picker__controller--week .date-label__date {
+        font-weight: 400; }
+
+.button-circular {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: #00BCD4 2px solid;
+  color: #00BCD4;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50px; }
+  .button-circular span {
+    font-weight: 700;
+    font-size: 2rem; }
+  .button-circular:hover {
+    background-color: #00BCD4;
+    color: #fff; }
+  .button-circular:focus {
+    outline: none; }

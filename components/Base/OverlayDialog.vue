@@ -3,15 +3,16 @@
     <div @click.stop class="overlay-dialog-card">
       <header class="overlay-dialog-card-header">
         <h2 class="overlay-dialog-card-header__title">{{title}}</h2>
-        <button class="overlay-dialog-card-header__close" @click="dialogClose">Close</button>
+        <button class="overlay-dialog-card-header__close" @click.prevent="dialogClose">Close</button>
       </header>
-      <component @created="onChildCreated" :toast="toast" :is="component"></component>
+      <component :props="childComponentProps" @created="onChildCreated" @emitComponentData="emitDialogData" :toast="toast" :is="component"></component>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'OverlayDialog',
   data() {
     return {
       childComponent: {},
@@ -21,12 +22,16 @@ export default {
       }
     }
   },
-  props: ['component'],
+  props: ['component', 'childComponentProps'],
   methods: {
     dialogClose() {
       const body = document.querySelector('body')
       body.classList.remove('noScroll')
       this.$emit('dialogClose')
+    },
+    emitDialogData(data) {
+      this.$emit('emitDialogData', data)
+      this.dialogClose()
     },
     onChildCreated(data) {
       if (!data) {

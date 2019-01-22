@@ -1,0 +1,24 @@
+.button-circular {
+  @include button-reset;
+  @include flex-center;
+  border: $color-primary 2px solid;
+  color: $color-primary;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50px;
+  
+  & span {
+    font-weight: 700;
+    font-size: 2rem;
+    
+  }
+
+  &:hover{
+    background-color: $color-primary;
+    color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

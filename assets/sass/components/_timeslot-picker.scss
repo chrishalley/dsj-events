@@ -1,25 +1,81 @@
 .timeslot-picker {
+  border: 1px solid $color-grey-light-2;
+  border-radius: 2px;
+  padding: 1rem;
   
   &__table {
     width: 100%;
-    border: 1px solid $color-grey-light-2;
     border-collapse: collapse;
 
     & th, td {
-      border: 1px solid $color-grey-light-2;
       padding: 1rem;
     }
 
-    &__controller {
-      
+    &-row {
+
+      &--morning, &--evening {
+        background-color: $color-grey-light-1;
+      }
+
+      &--afternoon {
+        background-color: $color-grey-light-2;
+      }
+
     }
 
     &-column--control-column {
       width: 20px;
+
+      & .control-column-name {
+        margin-bottom: .6rem;
+      }
+
+      & .control-column-time {
+        font-size: 1.2rem;
+      }
     }
 
     &-cell {
       text-align: center;
+      
+      &.input-cell {
+        padding: .6rem;
+
+        & button {
+          margin: 0;
+          padding: 1rem 1.5rem;
+          
+          &.booked {
+            background-color: red;
+            color: $color-white;
+          }
+          
+          &.available {
+            background-color: $color-primary-accent;
+            color: $color-white;
+          }
+        }
+      }
+
+    }
+  }
+
+  &__controller {
+    color: $color-primary;
+
+    &--week {
+      border-bottom: 2px solid $color-primary;
+      
+      & .date-label {
+
+        &__weekday {
+          margin-bottom: .6rem;
+        }
+
+        &__date {
+          font-weight: 400;
+        }
+      }
     }
   }
 }

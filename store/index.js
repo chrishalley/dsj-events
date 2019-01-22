@@ -50,6 +50,9 @@ const createStore = () => {
       setGlobalToast(state, payload) {
         state.globalToast.status = payload.status
         state.globalToast.message = payload.message
+      },
+      setEvents(state, events) {
+        state.events = events
       }
     },
     getters: {
@@ -181,19 +184,21 @@ const createStore = () => {
       },
       getEvents(vuexContext) {
         return new Promise((resolve, reject) => {
-          resolve(vuexContext.getters.getEvents)
+          return this.$axios.get(`${process.env.baseURL}/events`)
+          .then((res) => {
+            vuexContext.commit('setEvents', res.data)
+            resolve(res.data)
+          })
+          .catch((e) => {
+            reject(e)
+          })
         })
-
-        // return new Promise((resolve, reject) => {
-        //   return this.$axios.get(`${process.env.baseURL}/events`)
-        //   .then((res) => {
-        //     resolve(res)
-        //   })
-        //   .catch((e) => {
-        //     reject(e)
-        //   })
-        // })
       },
+      // getEvents(vuexContext) {
+      //   return new Promise((resolve, reject) => {
+      //     resolve(vuexContext.getters.getEvents)
+      //   })
+      // },
       addUser(vuexContext, userData) {
         return new Promise((resolve, reject) => {
           this.$axios.post(`${process.env.baseURL}/users`, userData)

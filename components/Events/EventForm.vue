@@ -73,7 +73,7 @@
             <DatePicker v-model="formStartDate"></DatePicker>
           </fieldset>
         </div>
-        <div class="form-section__group form-section__group--row">
+        <!-- <div class="form-section__group form-section__group--row">
           <fieldset class="form__fieldset">
             <label class="form__fieldset-label" for="event-start-time">Start time</label>
             <TimePicker v-model="formStartTime" id="event-start-time"></TimePicker>
@@ -82,7 +82,7 @@
             <label class="form__fieldset-label" for="event-end-time">End time</label>
             <TimePicker v-model="formEndTime" id="event-end-time"></TimePicker>
           </fieldset>
-        </div>
+        </div> -->
         <div class="form-section__group form-section__group-column">
           <TimeslotPicker></TimeslotPicker>
         </div>

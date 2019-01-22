@@ -31,6 +31,11 @@ export default {
       }
     }
   },
+  props: {
+    timeStringProp: {
+      type: String
+    }
+  },
   computed: {
     hoursString() {
       if (this.time.hours < 10) {
@@ -74,8 +79,17 @@ export default {
       this.$emit('input', this.timeString)
     }
   },
+  watch: {
+    timeStringProp: function(newProp, oldProp) {
+      this.time.hours = parseInt(newProp.slice(0,2))
+      this.time.minutes = parseInt(newProp.slice(3,5))
+    }
+  },
   created() {
-
+    if (this.timeStringProp) {
+      this.time.hours = parseInt(this.timeStringProp.slice(0,2))
+      this.time.minutes = parseInt(this.timeStringProp.slice(3,5))
+    }
   }
 }
 </script>
