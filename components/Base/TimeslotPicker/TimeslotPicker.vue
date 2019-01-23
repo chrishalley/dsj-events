@@ -3,35 +3,35 @@
     <table class="timeslot-picker__table">
       <thead class="timeslot-picker__controller timeslot-picker__controller--year">
         <th class="timeslot-picker__table-column--control-column">
-          <!-- <ButtonCircular iconProp="A" @click.prevent="changeView('year', -1)"></ButtonCircular> -->
-          <button @click.prevent="changeView('year', -1)">Prev</button>
+          <ButtonCircular iconProp="A" @click.native.prevent="changeView('year', -1)"></ButtonCircular>
+          <!-- <button @click.prevent="changeView('year', -1)">Prev</button> -->
         </th>
         <th colspan="7">{{pageStartDate.getFullYear()}}</th>
         <th class="timeslot-picker__table-column--control-column">
-          <!-- <ButtonCircular iconProp="A" @click.prevent="changeView('year', 1)"></ButtonCircular> -->
-          <button @click.prevent="changeView('year', 1)">Next</button>
+          <ButtonCircular iconProp="A" @click.native.prevent="changeView('year', 1)"></ButtonCircular>
+          <!-- <button @click.prevent="changeView('year', 1)">Next</button> -->
         </th>
       </thead>
       <thead class="timeslot-picker__controller timeslot-picker__controller--month">
         <th class="timeslot-picker__table-column--control-column">
-          <!-- <ButtonCircular iconProp="A" @click.prevent="changeView('month', -1)"></ButtonCircular> -->
-          <button @click.prevent="changeView('month', -1)">Prev</button>
+          <ButtonCircular iconProp="A" @click.native.prevent="changeView('month', -1)"></ButtonCircular>
+          <!-- <button @click.prevent="changeView('month', -1)">Prev</button> -->
         </th>
         <th colspan="7">{{pageStartDate.getMonth() | monthArrayToString}}</th>
         <th class="timeslot-picker__table-column--control-column">
-          <!-- <ButtonCircular iconProp="A" @click.prevent="changeView('month', 1)"></ButtonCircular> -->
-          <button @click.prevent="changeView('month', 1)">Next</button>
+          <ButtonCircular iconProp="A" @click.native.prevent="changeView('month', 1)"></ButtonCircular>
+          <!-- <button @click.prevent="changeView('month', 1)">Next</button> -->
         </th>
       </thead>
       <thead class="timeslot-picker__controller timeslot-picker__controller--week">
         <th class="timeslot-picker__table-column--control-column">
-          <!-- <ButtonCircular iconProp="A" @click.prevent="changeView('week', -1)"></ButtonCircular> -->
-          <button @click.prevent="changeView('week', -1)">Prev</button>
+          <ButtonCircular iconProp="A" @click.native.prevent="changeView('week', -1)"></ButtonCircular>
+          <!-- <button @click.prevent="changeView('week', -1)">Prev</button> -->
         </th>
         <TimeslotPickerDateLabel :dateProp="day" v-for="day in pickerPage.labels" :key="day.getTime()"></TimeslotPickerDateLabel>
         <th class="timeslot-picker__table-column--control-column">
-          <!-- <ButtonCircular iconProp="A" @click.prevent="changeView('week', 1)"></ButtonCircular> -->
-          <button @click.prevent="changeView('week', 1)">Next</button>
+          <ButtonCircular iconProp="A" @click.native.prevent="changeView('week', 1)"></ButtonCircular>
+          <!-- <button @click.prevent="changeView('week', 1)">Next</button> -->
         </th>
       </thead>
       <tbody>
@@ -40,7 +40,7 @@
             <p class="control-column-name">Morning</p>
             <p class="control-column-time">8am - 1pm</p>
           </td>
-          <TimeslotPickerCell v-for="day in pickerPage.morningSessions" :cellProps="day" :key="day.morningStartDateTime" @selectSlot="chooseDateTime"></TimeslotPickerCell>
+          <TimeslotPickerCell v-for="day in pickerPage.morningSessions" :cellProps="day" :key="day.startDateTime" @selectSlot="chooseDateTime"></TimeslotPickerCell>
           <td class="timeslot-picker__table-column--control-column timeslot-picker__table-cell">
             <p class="control-column-name">Morning</p>
             <p class="control-column-time">8am - 1pm</p>
@@ -51,7 +51,7 @@
             <p class="control-column-name">Afternoon</p>
             <p class="control-column-time">1pm - 6pm</p>
           </td>
-          <TimeslotPickerCell v-for="day in pickerPage.afternoonSessions" :cellProps="day" :key="day.afternoonStartDateTime" @selectSlot="chooseDateTime"></TimeslotPickerCell>
+          <TimeslotPickerCell v-for="day in pickerPage.afternoonSessions" :cellProps="day" :key="day.startDateTime" @selectSlot="chooseDateTime"></TimeslotPickerCell>
           <td class="timeslot-picker__table-column--control-column timeslot-picker__table-cell">
             <p class="control-column-name">Afternoon</p>
             <p class="control-column-time">1pm - 6pm</p>
@@ -62,7 +62,7 @@
             <p class="control-column-name">Evening</p>
             <p class="control-column-time">6pm - 11pm</p>
           </td>
-          <TimeslotPickerCell v-for="day in pickerPage.eveningSessions" :cellProps="day" :key="day.eveningStartDateTime" @selectSlot="chooseDateTime"></TimeslotPickerCell>
+          <TimeslotPickerCell v-for="day in pickerPage.eveningSessions" :cellProps="day" :key="day.startDateTime" @selectSlot="chooseDateTime"></TimeslotPickerCell>
           <td class="timeslot-picker__table-column--control-column timeslot-picker__table-cell">
             <p class="control-column-name">Evening</p>
             <p class="control-column-time">6pm - 11pm</p>
@@ -108,21 +108,15 @@ export default {
       const oldDate = this.pageStartDate
       let newDate
       if (period === 'year') {
-        console.log('year', inc)
         newDate = new Date(oldDate.setFullYear(oldDate.getFullYear() + inc))
       } else if (period === 'month') {
-        console.log('month', inc)
-        newDate = new Date(oldDate.setMonth(oldDate.getMonth() + inc))
-        
+        newDate = new Date(oldDate.setMonth(oldDate.getMonth() + inc)) 
       } else if (period === 'week') {
-        console.log('week', inc)
         newDate = new Date(oldDate.setDate(oldDate.getDate() + (inc * 7)))
-
       } else {
         console.log('function broken')
       }
       this.setPageStartDate(newDate)
-      console.log(this.pageStartDate)
     },
     setPageStartDate(date) {
       let offset = new Date().getTimezoneOffset() / 60
@@ -158,14 +152,14 @@ export default {
         const sessionEndDateTime = new Date(date).setUTCHours([sessions[j].UTCEndHour])
         sessionArray.push({
           date: new Date(date),
-          [sessions[j].name + 'StartDateTime']: sessionStartDateTime,
-          [sessions[j].name + 'EndDateTime']: sessionEndDateTime,
+          session: sessions[j].name,
+          startDateTime: sessionStartDateTime,
+          endDateTime: sessionEndDateTime,
           bookings: this.checkBookings(sessionStartDateTime, sessionEndDateTime, this.bookedEvents)
           })
         }
         pickerPage[sessions[j].name + 'Sessions'] = sessionArray
       }
-      console.log('***Array*** ', pickerPage)
       return pickerPage;
     },
     chooseDateTime(props) {
@@ -174,19 +168,17 @@ export default {
       this.dialog.open = true
     },
     setDateTimeData(data) {
-      console.log('emitData() ', data)
       this.events.push({
         id: 'someUniqueID',
         ...data
       })
-      console.log(this.events)
     },
     checkBookings(startDateTime, endDateTime, bookedEvents) {
       // Checks start and end date times of slots against array of existing events to see if any overlap and returns array of matches
       let array = this.bookedEvents.filter(event => {
         if (
-          (event.startDateTime > startDateTime && event.startDateTime < endDateTime) ||
-          (event.endDateTime > startDateTime && event.endDateTime < endDateTime) ||
+          (event.startDateTime >= startDateTime && event.startDateTime < endDateTime) ||
+          (event.endDateTime >= startDateTime && event.endDateTime <= endDateTime) ||
           (event.startDateTime < startDateTime && event.endDateTime > endDateTime)
         ) {
           return event

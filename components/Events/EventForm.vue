@@ -68,10 +68,10 @@
               <p>Recurring</p>
             </div>
           </fieldset>
-          <fieldset class="form__fieldset event-form__fieldset--date">
+          <!-- <fieldset class="form__fieldset event-form__fieldset--date">
             <label class="form__fieldset-label" for="event-start-date">Event Date</label>
             <DatePicker v-model="formStartDate"></DatePicker>
-          </fieldset>
+          </fieldset> -->
         </div>
         <!-- <div class="form-section__group form-section__group--row">
           <fieldset class="form__fieldset">
@@ -159,7 +159,6 @@ import TimeslotPicker from '~/components/Base/TimeslotPicker/TimeslotPicker.vue'
           ...this.event,
           ...this.unixTime
         }
-        console.log('Event: ', event)
         this.$store.dispatch('createEvent', event)
           .then(res => {
             console.log(res)

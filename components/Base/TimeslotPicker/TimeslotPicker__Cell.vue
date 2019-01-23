@@ -37,12 +37,10 @@ export default {
   },
   methods: {
     selectSlot() {
-      if (this.selected === false) {
-        this.$emit('selectSlot', {
-          startDateTime: this.startDateTime,
-          endDateTime: this.endDateTime
+      this.$emit('selectSlot', {
+          startDateTime: this.cellData.startDateTime,
+          endDateTime: this.cellData.endDateTime
         })
-      }
     }
   },
   created() {

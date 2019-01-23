@@ -37,6 +37,7 @@
 
     &-cell {
       text-align: center;
+      border: 2px solid white;
       
       &.input-cell {
         padding: .6rem;
@@ -58,6 +59,7 @@
       }
 
     }
+
   }
 
   &__controller {

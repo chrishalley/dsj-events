@@ -8,7 +8,7 @@
             <RollingDatePicker :dateStringProp="this.startDateTime.startDate" v-model="startDateTime.startDate"></RollingDatePicker>
             <p>{{startDateTime.startDate}}</p>
             <h4>Start Time</h4>
-            <TimePicker :timeStringProp="this.startDateTime.startTime" v-model="startDateTime.startTime"></TimePicker>
+            <TimePicker minTime="08:00" maxTime="23:00" minuteStepProp="15" :timeStringProp="this.startDateTime.startTime" v-model="startDateTime.startTime"></TimePicker>
             <p>ISO: {{startDateTimeISOString}}</p>
           </div>
           <div class="form-section__group form-section__group--column">
@@ -16,7 +16,7 @@
             <RollingDatePicker :dateStringProp="this.endDateTime.endDate" v-model="endDateTime.endDate"></RollingDatePicker>
             <p>{{endDateTime.endDate}}</p>
             <h4>End Time</h4>
-            <TimePicker :timeStringProp="this.endDateTime.endTime" v-model="endDateTime.endTime"></TimePicker> 
+            <TimePicker minTime="08:00" maxTime="23:00" minuteStepProp="15" :timeStringProp="this.endDateTime.endTime" v-model="endDateTime.endTime"></TimePicker> 
             <p>ISO: {{endDateTimeISOString}}</p>
           </div>
         </div>
@@ -80,11 +80,13 @@ export default {
     this.$emit('created', {
       title: this.formTitle
     })
-    this.startDateTime.startDate = utils.dateStringFromISO(this.props.startDateTime.toISOString())
-    this.startDateTime.startTime = utils.timeStringFromISO(this.props.startDateTime.toISOString())
+    const startDateTime = new Date(this.props.startDateTime)
+    this.startDateTime.startDate = utils.dateStringFromISO(startDateTime.toISOString())
+    this.startDateTime.startTime = utils.timeStringFromISO(startDateTime.toISOString())
     
-    this.endDateTime.endDate = utils.dateStringFromISO(this.props.endDateTime.toISOString())
-    this.endDateTime.endTime = utils.timeStringFromISO(this.props.endDateTime.toISOString())
+    const endDateTime = new Date(this.props.endDateTime)
+    this.endDateTime.endDate = utils.dateStringFromISO(endDateTime.toISOString())
+    this.endDateTime.endTime = utils.timeStringFromISO(endDateTime.toISOString())
   }
 }
 </script>
