@@ -5,7 +5,7 @@
         <div class="form-section__group form-section__group--row">
           <div class="form-section__group form-section__group--column">
             <h4>Start Date</h4>
-            <RollingDatePicker :dateStringProp="this.startDateTime.startDate" v-model="startDateTime.startDate"></RollingDatePicker>
+            <RollingDatePicker allowPastDatesProp="false" :dateStringProp="this.startDateTime.startDate" v-model="startDateTime.startDate"></RollingDatePicker>
             <p>{{startDateTime.startDate}}</p>
             <h4>Start Time</h4>
             <TimePicker minTime="08:00" maxTime="23:00" minuteStepProp="15" :timeStringProp="this.startDateTime.startTime" v-model="startDateTime.startTime"></TimePicker>
@@ -13,7 +13,7 @@
           </div>
           <div class="form-section__group form-section__group--column">
             <h4>End Date</h4>
-            <RollingDatePicker :dateStringProp="this.endDateTime.endDate" v-model="endDateTime.endDate"></RollingDatePicker>
+            <RollingDatePicker allowPastDatesProp="false" :dateStringProp="this.endDateTime.endDate" v-model="endDateTime.endDate"></RollingDatePicker>
             <p>{{endDateTime.endDate}}</p>
             <h4>End Time</h4>
             <TimePicker minTime="08:00" maxTime="23:00" minuteStepProp="15" :timeStringProp="this.endDateTime.endTime" v-model="endDateTime.endTime"></TimePicker> 
