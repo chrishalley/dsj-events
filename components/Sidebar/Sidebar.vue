@@ -1,12 +1,17 @@
 <template>
   <div class="sidebar">
-    <button class="sidebar__toggle" @click="sidebarOpen = !sidebarOpen" v-html="sidebarLabel"></button>
+
+    <button class="sidebar__toggle" @click="sidebarOpen = !sidebarOpen">
+      <SVGIcon :iconProp="sidebarIcon"/>
+    </button>
     <AdminMenu v-if="sidebarOpen"></AdminMenu>
   </div>
 </template>
 
 <script>
 import AdminMenu from '~/components/Sidebar/AdminMenu.vue';
+import SVGIcon from '~/components/Base/SVGIcon.vue';
+
 export default {
   data() {
     return {
@@ -15,12 +20,13 @@ export default {
     }
   },
   computed: {
-    sidebarLabel() {
-      return this.sidebarOpen ? '&times;' : 'Menu'
+    sidebarIcon() {
+      return this.sidebarOpen ? 'close' : 'menu'
     }
   },
   components: {
-    AdminMenu
+    AdminMenu,
+    SVGIcon
   }
 }
 </script>

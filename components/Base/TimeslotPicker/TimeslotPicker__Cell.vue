@@ -1,6 +1,6 @@
 <template>
   <td class="timeslot-picker__table-cell timeslot-picker__table-cell input-cell">
-    <button @click.prevent="selectSlot" :disabled="this.cellData.bookings.length === 1" :class="computedClasses">{{buttonLabel}}</button>
+    <button @click.prevent="selectSlot" :disabled="this.buttonDisabled" :class="computedClasses">{{buttonLabel}}</button>
   </td>
 </template>
 
@@ -28,11 +28,19 @@ export default {
     buttonLabel() {
       if (this.cellData.bookings.length > 0) {
         return 'N/A'
+      } else if (this.sessionExpired) {
+        return 'Past'
       }
       return 'Book'
     },
+    buttonDisabled() {
+      return (this.cellData.bookings.length > 0) || (this.sessionExpired)
+    },
     clickable() {
       return this.cellData.bookings.length !== 1
+    },
+    sessionExpired() {
+      return new Date().getTime() > this.cellData.startDateTime
     }
   },
   methods: {

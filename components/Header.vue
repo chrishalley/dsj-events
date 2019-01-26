@@ -4,33 +4,20 @@
     <!-- <p v-if="currentUser !== null">Welcome: {{currentUser.firstName}} ({{currentUser.email}})</p>
     <p>Status: {{status}}</p> -->
     <ul class="header__nav">
-      <li class="header__nav-item">
-        <p>Time to logout: {{timeToLogout}}</p>
-      </li>
-      <li class="header__nav-item">
-        <nuxt-link to="/">Events</nuxt-link>
-      </li>
-      <li class="header__nav-item" v-if="currentUser">
-        <nuxt-link to="/dashboard/users/">Profile</nuxt-link>
-      </li>
-      <li class="header__nav-item" v-if="currentUser">
-        <button @click="logUserOut">Log Out</button>
-      </li>
-      <li class="header__nav-item" v-if="!currentUser">
-        <button @click="pushToLoginPage">Log In</button>
-      </li>
-      <button @click="calcTimeToLogout">Calc</button>
+      <AppNavLink :linkData="navLink" v-for="(navLink, i) in navLinks" :key=i></AppNavLink>
     </ul>
   </header>
 </template>
 
 <script>
   import jwt from 'jsonwebtoken'
+  import AppNavLink from '~/components/Base/AppNavLink.vue'
   export default {
     name: 'Header',
     data() {
       return {
-        timeToLogout: null
+        timeToLogout: null,
+        navLinks: []
       }
     },
     methods: {
@@ -38,16 +25,56 @@
         this.$store.dispatch('logUserOut')
       },
       pushToLoginPage() {
-        this.$router.push('/login');
+        if (this.$route.name !== 'login') {
+          console.log(this.$route.name)
+          this.$router.push('/login');
+        }
       },
       calcTimeToLogout() {
         this.timeToLogout = Math.floor(((this.logoutTime * 1000) - new Date().getTime()) / 1000)
+      },
+      setNavLinks() {
+        this.navLinks = [
+          {
+            text: 'Events',
+            route: '/',
+            icon: 'calendar',
+            type: 'nuxtLink'
+          },
+          {
+            text: 'Profile',
+            route: '/dashboard/users',
+            icon: 'person',
+            type: 'nuxtLink',
+            condition: this.currentUser !== null
+          },
+          {
+            text: 'Log In',
+            icon: 'login',
+            clickEvent: this.pushToLoginPage,
+            condition: this.currentUser === null
+          },
+          {
+            text: 'Log Out',
+            icon: 'login',
+            clickEvent: this.logUserOut,
+            condition: this.currentUser !== null
+          }
+        ]
       }
     },
     computed: {
-      currentUser() {
-        return this.$store.getters.currentUser
+      currentUser: {
+        get: function() {
+          return this.$store.getters.currentUser
+        },
+        set: function() {
+          this.setNavLinks()
+        }
       },
+      // currentUser() {
+      //   return this.$store.getters.currentUser
+      // },
       authToken() {
         return this.$store.getters.getAuthToken
       },
@@ -60,10 +87,14 @@
         }
       }
     },
+    components: {
+      AppNavLink
+    },
     created() {
       setInterval(() => {
         this.calcTimeToLogout()
       }, 1000)
+      this.setNavLinks()
     }
   }
 </script>

@@ -1,18 +1,20 @@
 <template>
-    <SVGIcon :iconProp="icon" class="button-circular"></SVGIcon>
-    <!-- <button class="button-circular"><span>{{icon}}</span></button> -->
+  <svg class="svg-icon" viewBox="0 0 100 100">
+    <use :xlink:href="iconString"></use>
+  </svg>
 </template>
 
 <script>
-import SVGIcon from '~/components/Base/SVGIcon.vue'
 export default {
   data() {
     return {
       icon: null
     }
   },
-  components: {
-    SVGIcon
+  computed: {
+    iconString() {
+      return `/svg/icons.svg#icon-${this.icon}`
+    }
   },
   props: {
     iconProp: {
@@ -24,7 +26,7 @@ export default {
     this.icon = this.iconProp
   },
   watch: {
-    iconProp: function (newIcon, oldIcon) {
+    iconProp: function(newIcon, oldIcon) {
       this.icon = newIcon
     }
   }

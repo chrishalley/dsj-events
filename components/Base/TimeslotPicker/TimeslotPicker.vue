@@ -3,34 +3,34 @@
     <table class="timeslot-picker__table">
       <thead class="timeslot-picker__controller timeslot-picker__controller--year">
         <th class="timeslot-picker__table-column--control-column">
-          <ButtonCircular iconProp="A" @click.native.prevent="changeView('year', -1)"></ButtonCircular>
+          <ButtonCircular iconProp="arrow-left" @click.native.prevent="changeView('year', -1)"></ButtonCircular>
           <!-- <button @click.prevent="changeView('year', -1)">Prev</button> -->
         </th>
         <th colspan="7">{{pageStartDate.getFullYear()}}</th>
         <th class="timeslot-picker__table-column--control-column">
-          <ButtonCircular iconProp="A" @click.native.prevent="changeView('year', 1)"></ButtonCircular>
+          <ButtonCircular iconProp="arrow-right" @click.native.prevent="changeView('year', 1)"></ButtonCircular>
           <!-- <button @click.prevent="changeView('year', 1)">Next</button> -->
         </th>
       </thead>
       <thead class="timeslot-picker__controller timeslot-picker__controller--month">
         <th class="timeslot-picker__table-column--control-column">
-          <ButtonCircular iconProp="A" @click.native.prevent="changeView('month', -1)"></ButtonCircular>
+          <ButtonCircular iconProp="arrow-left" @click.native.prevent="changeView('month', -1)"></ButtonCircular>
           <!-- <button @click.prevent="changeView('month', -1)">Prev</button> -->
         </th>
         <th colspan="7">{{pageStartDate.getMonth() | monthArrayToString}}</th>
         <th class="timeslot-picker__table-column--control-column">
-          <ButtonCircular iconProp="A" @click.native.prevent="changeView('month', 1)"></ButtonCircular>
+          <ButtonCircular iconProp="arrow-right" @click.native.prevent="changeView('month', 1)"></ButtonCircular>
           <!-- <button @click.prevent="changeView('month', 1)">Next</button> -->
         </th>
       </thead>
       <thead class="timeslot-picker__controller timeslot-picker__controller--week">
         <th class="timeslot-picker__table-column--control-column">
-          <ButtonCircular iconProp="A" @click.native.prevent="changeView('week', -1)"></ButtonCircular>
+          <ButtonCircular iconProp="arrow-left" @click.native.prevent="changeView('week', -1)"></ButtonCircular>
           <!-- <button @click.prevent="changeView('week', -1)">Prev</button> -->
         </th>
         <TimeslotPickerDateLabel :dateProp="day" v-for="day in pickerPage.labels" :key="day.getTime()"></TimeslotPickerDateLabel>
         <th class="timeslot-picker__table-column--control-column">
-          <ButtonCircular iconProp="A" @click.native.prevent="changeView('week', 1)"></ButtonCircular>
+          <ButtonCircular iconProp="arrow-right" @click.native.prevent="changeView('week', 1)"></ButtonCircular>
           <!-- <button @click.prevent="changeView('week', 1)">Next</button> -->
         </th>
       </thead>
@@ -71,6 +71,7 @@
       </tbody>
     </table>
     <OverlayDialog :childComponentProps="dialog.props" :component="dialog.component" v-if="dialog.open" @emitDialogData="setDateTimeData" @dialogClose="dialog.open=false"/>
+    <p>{{allowPastWeeks}}</p>
   </div>
 </template>
 
@@ -95,41 +96,59 @@ export default {
         open: false,
         component: null,
         props: null
-      }
+      },
+      allowPastWeeks: this.allowPastWeeksProp === "true"
+    }
+  },
+  props: {
+    allowPastWeeksProp: {
+      type: String,
+      default: "true"
     }
   },
   computed: {
     pickerPage() {
       return this.renderPickerPage(this.pageStartDate)
+    },
+    currentWeekInPast() {
+      return  this.pageStartDate.getTime() < this.weekStartDate(new Date())
     }
   },
   methods: {
     changeView(period, inc) {
       const oldDate = this.pageStartDate
+      const tempDate = new Date(oldDate)
       let newDate
       if (period === 'year') {
-        newDate = new Date(oldDate.setFullYear(oldDate.getFullYear() + inc))
+        newDate = new Date(tempDate.setFullYear(tempDate.getFullYear() + inc))
       } else if (period === 'month') {
-        newDate = new Date(oldDate.setMonth(oldDate.getMonth() + inc)) 
+        newDate = new Date(tempDate.setMonth(tempDate.getMonth() + inc)) 
       } else if (period === 'week') {
-        newDate = new Date(oldDate.setDate(oldDate.getDate() + (inc * 7)))
+        newDate = new Date(tempDate.setDate(tempDate.getDate() + (inc * 7)))
       } else {
         console.log('function broken')
       }
-      this.setPageStartDate(newDate)
+      
+      this.pageStartDate = this.weekStartDate(newDate)
+      if (!this.allowPastWeeks) {
+        console.log('allowPastWeeks: ', this.allowPastWeeks)
+        if (this.currentWeekInPast) {
+          this.pageStartDate = oldDate
+        }  
+      }
     },
-    setPageStartDate(date) {
+    weekStartDate(date) {
       let offset = new Date().getTimezoneOffset() / 60
       let tempDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), -offset)
-      for (let i = 0; i < 7 ;i++) {
+      for (let i = 0; i < 7; i++) {
         let weekday = tempDate.getUTCDay()
         if (weekday === 1) {
-          this.pageStartDate = tempDate
-          break
+          return tempDate
         } else {
           tempDate = new Date(tempDate.setUTCDate(tempDate.getUTCDate() - 1))
         }
       }
+
     },
     renderPickerPage(startDate) {
       let pickerPage = {}
@@ -196,7 +215,7 @@ export default {
   },
   created() {
     const date = new Date()
-    this.setPageStartDate(date)
+    this.pageStartDate = this.weekStartDate(date)
     this.$store.dispatch('getEvents')
       .then(events => {
         this.bookedEvents = events
@@ -207,3 +226,4 @@ export default {
   }
 }
 </script>
+

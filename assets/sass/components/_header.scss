@@ -1,28 +1,13 @@
 .header {
   background-color: $color-primary;
   color: $color-white;
-  padding: 1em;
+  padding: 1.5rem 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-
   &__nav {
     list-style: none;
-
-    &-item {
-      display: inline-block;
-
-      &:not(:last-child) {
-        margin-right: 1em;
-      }
-
-      &:hover,
-      &:active {
-        cursor: pointer;
-        font-weight: bold;
-      }
-    }
+    display: flex;
   }
-
 }

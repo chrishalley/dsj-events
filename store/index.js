@@ -99,7 +99,7 @@ const createStore = () => {
         console.log('logUserOut() triggered')
         Cookie.remove('cibolo_access')
         vuexContext.commit('setCurrentUser', null)
-        this.$router.push('/login/')
+        this.$router.push('/')
       },
       setCurrentUser(vuexContext, userData) { // Commit mutation to set current user data in Vuex store
         console.log('setCurrentUser action: ', userData)

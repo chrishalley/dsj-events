@@ -31,6 +31,16 @@
       &__close {
         margin: 0;
         align-self: flex-end;
+        padding: 1rem;
+        background-color: transparent;
+
+        &:hover, &:focus {
+          background-color: $color-grey-light-1;
+        }
+
+        & .svg-icon {
+          width: 2rem;
+        }
       }
     }
   }

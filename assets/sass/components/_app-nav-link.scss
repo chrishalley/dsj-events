@@ -1,0 +1,35 @@
+.app-nav-item {
+
+  color: $color-white;
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+
+    &-icon {
+      margin-bottom: .6rem;
+    }
+
+    &-text {
+      text-transform: uppercase;
+    }
+  }
+  
+  &:not(:last-child) {
+    margin-right: 3rem;
+  }
+
+  &:hover,
+  &:active {
+    cursor: pointer;
+  }
+
+  & button {
+    @include button-reset;
+    font-size: inherit;
+  }
+
+}

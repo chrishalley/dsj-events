@@ -10,6 +10,10 @@
     color: $color-white;
     padding: 2rem;
 
+    & .svg-icon {
+      width: 2rem;
+    }
+
     &:hover {
       @include button-hover-reset
     }

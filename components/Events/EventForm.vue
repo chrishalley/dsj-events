@@ -68,23 +68,9 @@
               <p>Recurring</p>
             </div>
           </fieldset>
-          <!-- <fieldset class="form__fieldset event-form__fieldset--date">
-            <label class="form__fieldset-label" for="event-start-date">Event Date</label>
-            <DatePicker v-model="formStartDate"></DatePicker>
-          </fieldset> -->
         </div>
-        <!-- <div class="form-section__group form-section__group--row">
-          <fieldset class="form__fieldset">
-            <label class="form__fieldset-label" for="event-start-time">Start time</label>
-            <TimePicker v-model="formStartTime" id="event-start-time"></TimePicker>
-          </fieldset>
-          <fieldset class="form__fieldset">
-            <label class="form__fieldset-label" for="event-end-time">End time</label>
-            <TimePicker v-model="formEndTime" id="event-end-time"></TimePicker>
-          </fieldset>
-        </div> -->
         <div class="form-section__group form-section__group-column">
-          <TimeslotPicker></TimeslotPicker>
+          <TimeslotPicker allowPastWeeksProp="false"></TimeslotPicker>
         </div>
       </section>
       <h3 class="form-section__heading">Terms &amp; Conditions</h3>
@@ -113,11 +99,11 @@
 </template>
 
 <script>
+import { required, email, minLength } from 'vuelidate/lib/validators'
+
 import marked from 'marked'
 import Toast from '~/components/Base/Toast.vue'
 import ImageUpload from '~/components/Base/ImageUpload.vue'
-import DatePicker from '~/components/Base/DatePicker/DatePicker.vue'
-import TimePicker from '~/components/Base/TimePicker/TimePicker.vue'
 import TimeslotPicker from '~/components/Base/TimeslotPicker/TimeslotPicker.vue'
 
   export default {
@@ -148,8 +134,6 @@ import TimeslotPicker from '~/components/Base/TimeslotPicker/TimeslotPicker.vue'
     components: {
       Toast,
       ImageUpload,
-      DatePicker,
-      TimePicker,
       TimeslotPicker
     },
     props: ['toast'],
