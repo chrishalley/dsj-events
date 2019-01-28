@@ -21,9 +21,9 @@
       </div>
       <button @click.prevent="changeYear('dec', 1)">Dec</button>
     </div>
-    <p>currentDateMidnightTime: {{currentDateMidnightTime}}</p>
+    <!-- <p>currentDateMidnightTime: {{currentDateMidnightTime}}</p>
     <p>selectedDateMidnightTime: {{selectedDateMidnightTime}}</p>
-    <p>in past? {{selectedDateInPast}}</p>
+    <p>in past? {{selectedDateInPast}}</p> -->
   </div>
 </template>
 

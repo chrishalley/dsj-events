@@ -109,6 +109,13 @@ body {
   display: flex;
   padding: 3rem; }
 
+.debug {
+  padding: 1rem;
+  line-height: 2rem;
+  background-color: orangered;
+  color: #fff;
+  white-space: pre; }
+
 .form {
   max-width: 80rem;
   width: 80vw;
@@ -142,8 +149,12 @@ body {
       display: block;
       margin-bottom: 3px;
       font-weight: 700; }
-    .form__fieldset-input {
-      margin-bottom: 1rem; }
+    .form__fieldset-error {
+      color: red;
+      font-size: 1.4rem;
+      min-height: 2rem; }
+      .form__fieldset-error p {
+        margin-bottom: 0; }
   .form .form-section {
     display: flex;
     flex-direction: column;
@@ -179,19 +190,13 @@ body {
 .header {
   background-color: #00BCD4;
   color: #fff;
-  padding: 1em;
+  padding: 1.5rem 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center; }
   .header__nav {
-    list-style: none; }
-    .header__nav-item {
-      display: inline-block; }
-      .header__nav-item:not(:last-child) {
-        margin-right: 1em; }
-      .header__nav-item:hover, .header__nav-item:active {
-        cursor: pointer;
-        font-weight: bold; }
+    list-style: none;
+    display: flex; }
 
 .sidebar {
   display: flex;
@@ -206,6 +211,8 @@ body {
     align-self: flex-end;
     color: #fff;
     padding: 2rem; }
+    .sidebar__toggle .svg-icon {
+      width: 2rem; }
     .sidebar__toggle:hover {
       background-color: transparent; }
   .sidebar .admin-menu {
@@ -549,7 +556,13 @@ button {
         margin: 0; }
       .overlay-dialog-card-header__close {
         margin: 0;
-        align-self: flex-end; }
+        align-self: flex-end;
+        padding: 1rem;
+        background-color: transparent; }
+        .overlay-dialog-card-header__close:hover, .overlay-dialog-card-header__close:focus {
+          background-color: #eee; }
+        .overlay-dialog-card-header__close .svg-icon {
+          width: 2rem; }
 
 .date-picker {
   max-width: 300px;
@@ -722,7 +735,8 @@ button {
       .timeslot-picker__table-column--control-column .control-column-time {
         font-size: 1.2rem; }
     .timeslot-picker__table-cell {
-      text-align: center; }
+      text-align: center;
+      border: 2px solid white; }
       .timeslot-picker__table-cell.input-cell {
         padding: .6rem; }
         .timeslot-picker__table-cell.input-cell button {
@@ -755,7 +769,9 @@ button {
   color: #00BCD4;
   height: 4rem;
   width: 4rem;
-  border-radius: 50px; }
+  border-radius: 50px;
+  cursor: pointer;
+  color: #00BCD4; }
   .button-circular span {
     font-weight: 700;
     font-size: 2rem; }
@@ -764,3 +780,30 @@ button {
     color: #fff; }
   .button-circular:focus {
     outline: none; }
+
+.svg-icon {
+  width: 4rem;
+  fill: currentColor; }
+
+.app-nav-item {
+  color: #fff; }
+  .app-nav-item__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit; }
+    .app-nav-item__link-icon {
+      margin-bottom: .6rem; }
+    .app-nav-item__link-text {
+      text-transform: uppercase; }
+  .app-nav-item:not(:last-child) {
+    margin-right: 3rem; }
+  .app-nav-item:hover, .app-nav-item:active {
+    cursor: pointer; }
+  .app-nav-item button {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: inherit; }

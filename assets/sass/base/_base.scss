@@ -20,3 +20,11 @@ body {
   display: flex;
   padding: 3rem;
 }
+
+.debug {
+  padding: 1rem;
+  line-height: 2rem;
+  background-color: orangered;
+  color: $color-white;
+  white-space: pre;
+}

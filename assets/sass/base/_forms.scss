@@ -52,8 +52,14 @@
         font-weight: 700;
       }
 
-      &-input {
-        margin-bottom: 1rem;
+      &-error {
+          color: red;
+          font-size: 1.4rem;
+          min-height: 2rem;
+
+          & p {
+              margin-bottom: 0;
+          }
       }
 
     }
