@@ -1,7 +1,8 @@
 <template>
   <fieldset class="form__fieldset">
-    <label class="form__fieldset-label" :for="dataId">{{dataLabel}}</label>
-    <FormFieldsetInput :props="inputProps"/>
+    <label class="form__fieldset-label" :for="inputProps.id">{{label}}</label>
+    <!-- <FormFieldsetInput :inputProps="inputProps"/> -->
+    <component :is="component" :inputProps="inputProps"/>
     <!-- <textarea v-if="dataType === 'textarea'" rows="10" class="form__fieldset-input" v-model="value" :id="dataId" :type="dataType" :placeholder="dataPlaceholder" @blur="blur"></textarea>
     <input v-else class="form__fieldset-input" v-model="value" :id="dataId" :type="dataType" :placeholder="dataPlaceholder" @blur="blur"> -->
     <div class="form__fieldset-error">
@@ -12,48 +13,32 @@
 
 <script>
 import FormFieldsetInput from './Inputs/FormFieldsetInput.vue'
+import FormFieldsetTextarea from './Inputs/FormFieldsetTextarea.vue'
 export default {
+  name: 'FormFieldset',
   data() {
     return {
       validate: false,
-      value,
+      value: null,
       errors: [],
+      label: null,
       inputProps: {
-        label: null,
         placeholder: null,
         type: null,
+        classes: null,
         id: null
       }
-      dataLabel: null,
-      dataPlaceholder: null,
-      dataType: null,
-      dataId: null,
-      dataValidate: true,
-      value: null,
-      errors: []
+    }
+  },
+  computed: {
+    component() {
+      return this.inputProps.type === 'textarea' ? FormFieldsetTextarea : FormFieldsetInput
     }
   },
   props: {
-    label: {
-      type: String,
-      required: true
-    },
-    placeholder: {
-      type: String,
-      required: true
-    },
-    type: {
-      type: String,
-      required: true
-    },
-    id: {
-      type: String, 
-      required: true
-    },
-    validate: {
-      type: String,
-      default: 'true'
-    }
+    fieldsetProps: {
+      type: Object
+    }   
   },
   methods: {
     blur() {
@@ -74,34 +59,30 @@ export default {
           }
         })
       } 
+    },
+    setProps(props) {
+      const {label, placeholder, type, id, classes, validate, component} = props
+      this.inputProps = {
+        placeholder,
+        type,
+        id,
+        component
+      }
+      this.validate = validate
+      this.label = label
     }
   },
   components: {
-    FormFieldsetInput
+    FormFieldsetInput,
+    FormFieldsetTextarea
   },
   watch: {
-    label: function(newValue, oldValue) {
-      this.dataLabel = newValue
-    },
-    placeholder: function(newValue, oldValue) {
-      this.dataPlaceholder = newValue
-    },
-    type: function(newValue, oldValue) {
-      this.dataType = newValue
-    },
-    id: function(newValue, oldValue) {
-      this.dataId = newValue
-    },
-    validate: function(newValue, oldValue) {
-      this.dataValidate = newValue === 'true'
+    fieldsetProps: function (newProps, oldProps) {
+      this.setProps(newProps)
     }
   },
   created() {
-    this.dataLabel = this.label
-    this.dataPlaceholder = this.placeholder
-    this.dataType = this.type
-    this.dataId = this.id
-    this.dataValidate = this.validate === 'true'
+    this.setProps(this.fieldsetProps)
   }
 }
 </script>

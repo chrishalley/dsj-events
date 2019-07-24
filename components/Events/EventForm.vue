@@ -1,27 +1,16 @@
 <template>
   <div>
     <form class="form event-form">
-      <h3 class="form-section__heading">Your Details</h3>
-      <section class="form-section">
-        <div class="form-section__group form-section__group--row">
-          <div class="form-section__group form-section__group--column">
-            <FormFieldset label="First name" id="client.firstName" type="text" placeholder="eg. John" @input="inputHandler"></FormFieldset>
-            <FormFieldset label="Last name" id="client.lastName" type="text" placeholder="eg. Smith" @input="inputHandler"></FormFieldset>
-            <div class="debug">{{$v}}</div>
-          </div>
-          <div class="form-section__group form-section__group--column">
-            <FormFieldset label="Email address" id="client.emailAddress" type="email" placeholder="eg. johnsmith@example.com" @input="inputHandler"></FormFieldset>
-            <FormFieldset label="Phone number" id="client.phoneNumber" type="text" placeholder="eg. 0712345678" @input="inputHandler"></FormFieldset>
-          </div>
-        </div>
-      </section>
+      <FormSection :formSectionProps="formSectionProps"/>
+      <FormSection :formSectionProps="eventSectionProps" />
       <h3 class="form-section__heading">Event Details</h3>
       <section class="form-section">
         <div class="form-section__group form-section__group--row">
-          <FormFieldset label="Event title" id="event.title" type="text" placeholder="eg. My Awesome Event" @input="inputHandler"></FormFieldset>
+          <!-- <FormFieldset label="Event title" id="event.title" type="text" placeholder="eg. My Awesome Event" @input="inputHandler"></FormFieldset> -->
         </div>
         <div class="form-section__group form-section__group--row">
-          <FormFieldset label="Event description" id="event.description" type="textarea" rows="10" placeholder="Add a description to let people know what your event is about" @input="inputHandler"></FormFieldset>
+          <!-- <FormFieldset :fieldsetProps="{label: 'Description', placeholder: 'Please add a short description', type: 'textarea', id: 'event.description', validate: false }" @input="inputHandler"></FormFieldset> -->
+          <!-- <FormFieldset label="Event description" id="event.description" type="textarea" rows="10" placeholder="Add a description to let people know what your event is about" @input="inputHandler"></FormFieldset> -->
           <fieldset class="form__fieldset">
             <label class="form__fieldset-label">Featured image</label>
             <image-upload></image-upload>
@@ -88,12 +77,51 @@ import marked from 'marked'
 import Toast from '~/components/Base/Toast.vue'
 import ImageUpload from '~/components/Base/ImageUpload.vue'
 import TimeslotPicker from '~/components/Base/TimeslotPicker/TimeslotPicker.vue'
-import FormFieldset from '~/components/Base/UI/FormFieldset/FormFieldset.vue'
+// import FormFieldset from '~/components/Base/UI/FormFieldset/FormFieldset.vue'
+// import FormFieldGroup from '~/components/Base/UI/FormFieldGroup/FormFieldGroup.vue'
+import FormSection from '~/components/Base/UI/FormSection/FormSection.vue'
+import FormFieldsetInput from '~/components/Base/UI/FormSection/FormFieldGroup/FormFieldset/Inputs/FormFieldsetInput.vue'
+import FormFieldsetTextarea from '~/components/Base/UI/FormSection/FormFieldGroup/FormFieldset/Inputs/FormFieldsetTextarea.vue'
+
 
   export default {
     name: 'eventForm',
     data() {
       return {
+        formSectionProps: {
+          sectionTitle: 'Your Details',
+          fieldGroups: [
+            {
+              fieldsets: [
+                { label: 'First name', placeholder: 'eg. John', type: 'text', id: 'client.firstName', validate: false, classes: ['form-fieldset__input'], component: FormFieldsetInput },
+                { label: 'Last name', placeholder: 'eg. Smith', type: 'text', id: 'client.lastName', validate: false, classes: ['form-fieldset__input'], component: FormFieldsetInput }
+              ]
+            },
+            {
+              fieldsets: [
+                { label: 'Email address', placeholder: 'eg. john@example.com', type: 'email', id: 'client.emailAddress', validate: false, classes: ['form-fieldset__input'], component: FormFieldsetInput },
+                { label: 'Phone number', placeholder: 'eg. 0712345678', type: 'text', id: 'client.phoneNumber', validate: false, classes: ['form-fieldset__input'], component: FormFieldsetInput }
+              ]
+            },
+          ]
+        },
+        eventSectionProps: {
+          sectionTitle: 'Event Details',
+          fieldGroups: [
+            {
+              fieldsets: [
+                { label: 'Event title', placeholder: 'eg. My awesome event', type: 'text', id: 'event.title', validate: false, classes: ['form-fieldset__input'], component: FormFieldsetInput },
+                { label: 'Event description', placeholder: 'Give your event a description', type: 'textarea', id: 'event.description', validate: false, classes: ['form-fieldset__input'], component: FormFieldsetTextarea }
+              ]
+            },
+            {
+              fieldsets: [
+                { label: 'Featured image', placeholder: 'Give your event an image!', type: 'text', id: 'event.img', validate: false, classes: ['form-fieldset__input'], component: FormFieldsetInput }
+              ]
+            }
+          ]
+
+        },
         client: {
           firstName: 'Geoff',
           lastName: null,
@@ -144,7 +172,8 @@ import FormFieldset from '~/components/Base/UI/FormFieldset/FormFieldset.vue'
       Toast,
       ImageUpload,
       TimeslotPicker,
-      FormFieldset
+      // FormFieldGroup,
+      FormSection
     },
     props: ['toast'],
     methods: {
